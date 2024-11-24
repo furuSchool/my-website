@@ -1,0 +1,427 @@
+---
+title: 最適化の気持ち
+---
+
+import MathTheorem from './../../../components/theorem';
+
+## 最適化とは
+:::warning[目標]
+minimize $f(x)$ subject to $x \in S(\subset \mathbb{R}^n)$
+
+$f:\mathbb{R}^n \rightarrow \mathbb{R}$：目的関数, $S$：実行可能領域（許容領域, 許容集合）
+
+(例) $S = \{x \subset \mathbb{R}^n~|~g_1(x) = 0,…,~g_n(x) = 0,~g_{n+1}(x) \le 0,…,~g_m(x) \le 0\}$
+:::
+
+## 知っておくべき用語, 定義と定理
+厳密な説明はしていない. 基本関数は十分滑らかと考えている.
+
+### 基本
+- 大域的最適解と局所的最適解
+- ヘシアンを $A$ として, $A$ は(半)正定値対称行列 $\Leftrightarrow$ $A$ のすべての固有値は(非負の)正の実数
+- 停留点：$\nabla f(x^*) = 0$
+    - 局所的最適解 $\Rightarrow$ 停留点 かつ $\nabla^2 f(x^*) \ge 0$
+- 凸関数と凹関数
+    - 凸関数の和は凸関数
+    - $f$ が凸関数の時, $\nabla f(x^*) = 0$ $\Rightarrow$ $x^* \in \mathbb{R}^n$ は大域的最適解
+- 凸集合
+    - $S$ が凸集合 $\Rightarrow$ 局所的最適解 $x^* \in S$ は大域的最適解
+- $f$ が凸 $\Leftrightarrow$ 任意の $x \in \mathbb{R}^n$ において $\nabla^2 f(x)$ が半正定値対称行列
+
+---
+
+## 無制約最適化問題
+:::warning[目標]
+停留点, つまり $\nabla f(x^*) = 0$ なる $x \in \mathbb{R}^n$ を求める.
+
+方針； $x_{k+1} = x_k + \alpha_k d_k~~(d_k:~$探索方向,$~\alpha_k:~$ステップサイズ$)$
+:::
+
+- $\nabla f(x_k) ^ T d_k < 0$ なる $d_k$ を選ぶ →  $d_k$ は $f$ の $x_k$ における降下方向
+    - $d_k=-\nabla f(x_k)$ が最急降下方向 $\rightarrow$ この $d_k$を用いるのが, **最急降下法**
+- $\alpha_k$ は, minimize $\phi(\alpha_k) = f(x_k+\alpha_k d_k)$ subject to $\alpha_k>0$ の大域的最適解を求めたいが, 最適解を求められない場合も.
+そこで, アルミホ条件などが使われる. 
+
+### 直線探索法
+:::tip[定理]
+$\nabla f(x_k)\neq 0 $ のとき, アルミホ条件は十分小さい $\alpha_k>0$ で成り立つ
+
+アルミホ条件：$\phi(\alpha_k) \le \phi(0) + c_1 \alpha_k \phi^\prime(0)~(0 < c_1 < 1)$ 
+:::
+
+#### バックトラッキング法
+> 1. アルミホ条件の $0 < c_1 < 1$, 縮小率 $0 < \rho < 1$, 大きめの初期値 $\alpha > 0$ を設定
+> 2. $\alpha$ がアルミホ条件を満たすなら $\alpha_k = \alpha$ で終了
+> 3. $\alpha \leftarrow \rho \alpha$ として 2 へ戻る
+
+### アルゴリズム
+
+> 1. $x_0 \in \mathbb{R}^n$  を定め, $k~\leftarrow 0$ とする
+> 2. 停止条件（ $||\nabla f(x_k)|| < \epsilon$ など）が満たされれば, 解として出力
+> 3. $\alpha_k,~d_k$ を計算する（例：$\alpha_k$ はバックトラッキング法, $d_k$ は最急降下法）
+> 4. $x_{k+1} = x_k + \alpha_k d_k$
+> 5. $k~\leftarrow k+1$ として 2 に戻る
+
+- $\{x_k\}$ はバックトラッキング法を用いた最急降下法によって生成された点列とする．ただし, 停止条件のステップは無視する．このとき $\{x_k\}$ のすべての集積点は停留点    
+- 目的関数 $f(x)$ は凸関数であり, 大域的最適解が存在したとする. $\{x_k\}$ はバックトラッキング法を用いた最急降下法によって生成された点列とする．
+ただし, 停止条件のステップは無視する．このとき $\{x_k\}$ は大域的最適解に収束する
+
+### Newton法
+最急降下法より収束が速い方法. 下記の事柄を考える.
+
+$f(x)=0$ の解 $x \in I$ を計算するアルゴリズム：$x_{k+1} = x_k - \frac{f(x_k)}{f^\prime(x_k)}\\$
+多変数の場合：$x_{k+1} = x_k - Jf(x_k)^{-1} f(x_k)~~~(Jf(x_k)^{-1}$: $f$ の $x$ におけるヤコビ行列$)$
+
+:::tip[定理]
+$f: \Omega \to \mathbb{R}^n$：滑らか$~~~\Omega \subset \mathbb{R}^n$：開集合  
+
+$f(x) = 0$ には一意な解 $a \in \Omega$ が存在し,  $Jf(a)$ は正則と仮定する.
+このとき, $a$ を含む有界な閉集合 $K \subset \Omega$ が存在して, 任意の $x_0 \in K$ に対して
+Newton法で $K$ 内の点列 $\{x_k\}$ を生成でき, $\{x_k\}$ は $a$ に2次収束する.
+:::
+
+- 一次収束：$\exists \beta \in (0, 1)$ s.t. $\| x_{k+1} - x^* \| \leq \beta \| x_k - x^* \|$
+- 超一次収束：$\lim_{k \rightarrow \infty} \frac{||x_{k+1} - x^*||}{||x_k - x^*||} = 0$
+- 二次収束：$\exists \beta \in (0, 1)$ s.t. $\| x_{k+1} - x^* \| \leq \beta \| x_k - x^* \|^2$
+
+したがって上記から, 下記のようなアルゴリズムで停留点を求められる.
+
+$x_{k+1} = x_k - (\nabla^2 f(x_k))^{-1}~\nabla f(x_k)~~~\left((\nabla^2 f(x))^{-1} = J\nabla f(x)\right)$
+
+:::danger[注意]
+Newton法は初期点によって最適解が求まらない
+:::
+
+### 比較
+|            | 最急降下法             | Newton法           |
+|------------|------------------------|--------------------|
+| 探索方向   | $d_k = -\nabla f(x_k)$ | Newton方向         |
+| ステップ幅 | バックトラッキング     | 1                  |
+| 停留点への収束性 | 大域的               | 局所的             |
+| 停留点への収束速度 | 1次               | 2次                 |
+| 1反復の計算コスト | 小                  | 大                 |
+
+- Newton方向：$\nabla^2 f(x_k) d_k = - \nabla f(x_k)$ を満たす $d_k$
+- 大域的収束性は, 必ず大域的最適解が得られることを**意味しない**. 
+任意の初期点から出発しても, 有限回の反復で解集合に到達することを意味する. 
+- 局所的収束性は, 解の十分近くに初期点を選べば点列が収束することを意味する.
+
+
+### 準ニュートン法
+
+大域的収束性を満たすようにしたもの. 次の条件を満たすように $B_k$ を選び, $d_k$ を定める. また, $B_k$ の定め方として, セカント条件というのがある. 
+1. $B_k > 0$ （正定値）: 局所最適解への収束保証
+2. $B_k$ は  $\nabla^2 f(x_k)$ の良い近似: 収束を速く
+
+:::tip[定理]
+$d_k$ の条件：$B_k d_k = - \nabla f(x_k)\\$ 
+セカント条件：$B_{k+1}(x_{k+1} - x_k) = \nabla f(x_{k+1}) - \nabla f(x_{k})$
+:::
+
+また, セカント条件だけでは $B_k$ は定まらない. 
+そこで, [BFGS](https://ja.wikipedia.org/wiki/BFGS%E6%B3%95), [DFP](https://ja.wikipedia.org/wiki/DFP%E6%B3%95) といった様々な公式がある.
+
+- 準ニュートン法では, **超一次収束** する.
+
+### 最急降下法の改善策
+前の点の情報を用いて収束を早めている
+- 共役勾配法：$d_{k+1} = -\nabla  f(x_k) + \beta_k d_{k-1},~\beta_{k+1} = \frac{||\nabla f(x_{k+1})||^2}{||\nabla f(x_{k})||^2}$
+- Nesterov の加速法：最適解を通り過ぎながら振動して収束するイメージ. 目的関数値が増加し始めた時点で通り過ぎないように一旦止めることも考えられる
+
+---
+## 少し休題
+これから最適化問題を解く際に重要な概念や定理をまとめている.
+
+:::tip[凸射影定理]
+$\boldsymbol{0} \ne C \subset \mathbb{R}^n$：閉凸集合（有界でなくても良い）
+$\\$ 任意の $x \in \mathbb{R}^n$ に対して $\min_{y \in C} ||x - y||$ の解 $x^* \in C$ が一意に存在する.
+
+このような場合, $x^* = P_C(x)$ と書き, $P_C: \mathbb{R}^n \rightarrow C$ を **凸射影** という.
+:::
+- $g(y) = ||x-y||^2$ が狭義凸関数であること, 凸集合であることから, $x^*$ は解が存在したら一意.
+- 存在性は, $C$ を $x$ を中心とするような円でとり直せばわかる.
+- 射影勾配法という, 最急降下法 + 凸射影 を用いる方法もある.
+- 定理：$x^* = P_C(x) \Leftrightarrow (x - x^*, y - x^*) \le 0~~ \text{for}~~ \forall y \in C$
+    - 括弧は内積を表す.まあ、内積正なら近づけるもんね.
+
+:::tip[分離超平面]
+$0 \neq a \in \mathbb{R}^n,~~ \gamma \in \mathbb{R},~~ H := \{ x \in \mathbb{R}^n | (a, x) = \gamma \}$：超平面(アフィン部分空間)
+$\\ \mathbb{R}^n = H^+ \cup H^-,~~H^+ := \{ x \in \mathbb{R}^n |(a, x) \geq \gamma \},~~H^- := \{ x \in \mathbb{R}^n |(a, x) \le \gamma \}$：半空間
+
+$H$ は $S, T \subset \mathbb{R}^n$ を分離する $\iff S \subset H^+$ かつ $T \subset H^-\\$
+$H:S$ と $T$ の分離超平面,  $~~S = \{ x \}$ のとき $H:T$ と $x$ の分離超平面
+:::
+- $a$ の向きと同じか違うか垂直かで分けるイメージ
+
+:::tip[分離定理]
+$\boldsymbol{0} \ne C \subset \mathbb{R}^n$：閉凸集合, $x \notin C\\$
+$\exists a \in \mathbb{R}^n \setminus \{ 0 \}, ~~\exists \gamma \in \mathbb{R} ~ \text{s.t.} ~ (a, x) > \gamma \geq (a, z)~~ (\forall z \in C)$
+:::
+- イメージは、$C$ の外側の $x$ と $C$ を分離できる超平面が存在する
+
+- $\boldsymbol{0} \ne C \subset \mathbb{R}^n~~$ **錐** $\Leftrightarrow$ 任意の $x \in C,~\alpha > 0$ に対して, $\alpha x \in C$
+:::tip[Farkasの補題]
+$a_1, a_2, \dots, a_n, b \in \mathbb{R}^m$ に対して, 以下の二つは片方は真であるが, 他方は偽である.
+
+1. $\exists y \in \mathbb{R}^m~$ s.t. $~a_i^T y \geq 0 \quad (i = 1, 2, \dots, n)~$ かつ $~b^T y < 0$
+2. $\exists x_1, x_2, \dots, x_n \geq 0~$ s.t. $~\sum_{i=1}^n x_i a_i = b$
+:::
+---
+## KKT条件
+:::warning[目標]
+minimize $f(x)$  $(x \in  \mathbb{R}^n)~$ subject to $~g(x)=0,~h(x) \le 0\\$
+($f:\mathbb{R}^n \rightarrow \mathbb{R},~~g:\mathbb{R}^n \rightarrow \mathbb{R}^n,~~h:\mathbb{R}^m \rightarrow \mathbb{R}^p$：すべて滑らか, この時, $S$ は閉集合)
+:::
+
+### 最適化の特徴
+- $h_j(x) = 0$ となる時, $h_j(x) \le 0$ は $x$ で **有効制約** であると言う.
+- $A(x) = \{ j \in \{1,…,p\} ~ | ~  h_j(x) = 0 \}$: $x$ で有効制約である不等式の添え字集合
+- 考えている局所的最適解は, $h(x) \le 0$ を $h_j(x) = 0~(j \in A(x^*))$ と直した時の局所的最適解でもある.
+
+:::tip[定理]
+$x^* \in \mathbb{R}^n$ において **制約想定** が成り立つとする.  
+$x^*$ が局所的最適解 $\Rightarrow$ ある $(\lambda^*, \mu^*) \in \mathbb{R}^m \times \mathbb{R}^p$ が存在して 
+$(x^*, \lambda^*, \mu^*)$ はKKT条件を満たす.
+:::
+
+### KKT条件
+$(x^*, \lambda^*,\mu^*) \in \mathbb{R}^n \times \mathbb{R}^m \times \mathbb{R}^p$ が, **KKT条件（Karush-Kuhn-Tucker条件）** を満たすとは, 下記が成り立つことを言う.
+> - 実行可能性条件： $x^* \in S$ （つまり, $g(x^*) = 0,~h(x^*) \le 0$）
+> - 停留条件： $\nabla f(x^*) + \sum_{i=1}^{m} \lambda_i^* \nabla g_i(x^*) + \sum_{j=1}^{p} \mu_j^* \nabla h_j(x^*) = 0$
+> - 相補性条件： $\mu_j^* h_j(x^*) = 0 ~~ (j=1,\dots,p)$
+> - 符号条件： $\mu_j^* \geq 0 ~~ (j=1,\dots,p)$
+
+また, 線形計画問題のKKT条件は, 
+> 目標： minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ 
+$($ただし, $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~c \in \mathbb{R}^n)$
+> - 実行可能性条件： $Ax = b, ~~ x \geq 0$
+> - 停留条件： $c + A^{T} \lambda - \mu = 0$
+> - 相補性条件： $x_i \mu_i = 0 ~~ (i=1,\dots,n)$
+> - 符号条件： $\mu_i \geq 0 ~~ (i=1,\dots,n)$
+
+下記は, なぜKKT条件で良いのかを考えるための材料たち
+
+### 等式制約条件のみの場合
+minimize $f(x)$  $(x \in  \mathbb{R}^n)~$ subject to $~g(x)=0$ の場合, 
+
+- $d \in \mathbb{R}^n$ は $f$ の $x$ における **制約付き降下方向** 
+$\Leftrightarrow  \nabla f(x)^{T} d < 0,~~\nabla g_i(x)^{T} d = 0 ~~ (i=1,\dots,m)$
+- $x^* \in \mathbb{R}^n$ において **制約想定** が成り立つとき, 
+$x^* \in \mathbb{R}^n$ が局所的最適解 $\Rightarrow x^*$ における制約付き降下方向が存在しない
+
+---
+
+## 線形計画問題
+:::warning[目標]
+minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ 
+
+$($ただし, $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~c \in \mathbb{R}^n)$
+:::
+これは等式標準形と呼ばれ, 任意の線形計画問題がこの形に変形できる.
+- 不等式制約や $x < 0$ が含まれていても変形すれば大丈夫
+### 端点
+:::tip[定義]
+$S \subset \mathbb{R}^n,~~x \in S:$ 端点 
+$\Leftrightarrow x = \lambda y + (1 - \lambda) z~~y,z \in S,~~\lambda \in (0,1) \Rightarrow y=z$
+:::
+
+まあ, 領域でイメージするようなキワキワの点と思えば大丈夫. この時, 下記のようなことが言える.
+
+:::tip[定理]
+minimize $c^T x~$ subject to $~~x \in S~~(S=\{ x \in \mathbb{R}^n |~Ax = b~(x \ge 0)\})$ が大域的最適解を持つ
+
+$\Rightarrow$ 実行可能領域 (凸集合) $S$ の端点で大域的最適解をもつ
+:::
+
+線形計画問題は端点がめちゃくちゃ重要！
+
+### 基底解
+
+$~ Ax = b~(x \ge 0)~~$  と $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~x \in \mathbb{R}^n$
+を考えると, $\mathrm{rank}(A) = m$ として良い. 
+このとき, $A_B \in \mathbb{R}^{m \times m}$ を $A$ に対応する列ベクトルから構成された正則行列として, 
+
+$Ax = b ~~\rightarrow~~(A_B~A_N) \begin{pmatrix}x_B \\ x_N \end{pmatrix} = b$
+
+と書き直せる. このとき, $x_B$ を基底変数 (basic variable), $x_N$ を非基底変数 (nonbasic variable) という．
+
+:::tip[定義]
+$x \in \mathbb{R}^n$ が **基底解** (basic solution) $~~\Leftrightarrow~~$  $x_B=A_B^{-1}b,~x_N=0$
+
+また, $x \ge 0$ を満たす基底解を **実行可能基底解** (basic feasible solution) といい, $x_B$ の成分の中に0がある基底解を退化 (degenerate)しているという．
+:::
+
+ここで, 次のようなことが言える. 
+
+:::tip[定理]
+$ S := \left\{ x \in \mathbb{R}^n \mid A x = b, \, x \geq 0 \right\},~ \mathrm{rank}A = m \\x \in S$ は基底解 $\iff x \in S$ は端点
+:::
+
+すなわち, 下記のことが言える. 
+:::tip[定理]
+minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ の最適解が存在する
+
+$\Rightarrow$ 実行可能領域の端点, すなわち高々 $_n \mathrm{C}_k$ 個の実行可能基底解の中に最適解が存在する.
+:::
+やったね！効率的に最適解を見つけ出す必要はあるけど…….
+
+### 双対性
+:::tip[定理]
+(P) minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ の **双対問題** は, 
+(D) maximize $b^T y~$ subject to $~ A^T y \le c ~~$ 
+
+**弱双対性** :  $x \in \mathbb{R}^n$ が P の任意の実行可能解, $y \in \mathbb{R}^m$ が D の任意の実行可能解 
+$\Rightarrow$ $b^T y \le c^T x\\$
+また, $b^T y = c^T x$ $\Rightarrow$ $x \in \mathbb{R}^n$ は P の最適解, $y \in \mathbb{R}^m$ は D の最適解.
+:::
+また, 次のようなことが言える. 
+:::tip[強双対定理]
+問題P, 問題Dがどちらも実行可能解を持つ, すなわち $\mathrm{min}({c^Tx}) = \mathrm{max}({b^Ty})\\$
+$\Rightarrow$ どちらにも最適解が存在して, 二つの問題の最適値は等しい.
+:::
+さらに, 下記のことも言える.
+> - P が実行可能で D は実行可能でないならば, P は非有界
+> - P が実行可能で最適解を持たないならば, P は非有界
+> - P が非有界ならば, D は実行可能でない
+> - P が最適解をもつ $\Leftrightarrow$ D が最適解をもつ
+
+したがって, 線形計画問題は下記の4パターンのみ
+> 1. P と D は共に最適解をもつ
+> 2. P は非有界で D は実行不可能である
+> 3. D は非有界で P は実行不可能である
+> 4. P と D は共に実行不可能である
+
+:::tip[相補性定理]
+(P) minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$, 
+(D) maximize $b^T y~$ subject to $~ A^T y + \mu = c ~(\mu \ge 0)~~$ 
+
+$x \in \mathbb{R}^n $ は P の最適解, $(y, \mu) \in \mathbb{R}^m \times \mathbb{R}^n$ は D の最適解
+$\Leftrightarrow (x, y, \mu) \in \mathbb{R}^n \times \mathbb{R}^m \times \mathbb{R}^n$ は下記の条件を満たす.
+1. P の実行可能性条件: $A x = b, \, x \geq 0$
+2. D の実行可能性条件: $A^T y + \mu = c, \, \mu \geq 0$
+3. 相補性条件: $x_i \mu_i = 0 ~~ (i = 1, \dots, n)$
+
+また, 下記の **KKT条件** と同値である.
+1. 実行可能性条件： $Ax = b, ~~ x \geq 0$
+2. 停留条件： $A^{T} y + \mu = c$
+3. 相補性条件： $x_i \mu_i = 0 ~~ (i=1,\dots,n)$
+4. 符号条件： $\mu_i \geq 0 ~~ (i=1,\dots,n)$
+:::
+---
+## 単体法
+:::warning[目標]
+効率よく線形計画問題の最適解を求める（実行可能基底解が最適解であるか否かのチェック方法）
+:::
+状況設定は線形計画問題の時と同じ.
+
+minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ $($ただし, $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~c \in \mathbb{R}^n)$
+### 準備
+下記を考える
+- $A_B x_B + A_N x_N = b~$ ($x_B$ は基底変数, $x_N$ は非基底変数)
+- $c^T x = c_B^T x_B + c_N^T x_N = \pi^T b + (c_N - A_N^T \pi)^T x_N$
+- $\pi := (A_B^{-1})^T c_B~$：単体乗数とよぶ
+- $c_N - A_N^T \pi$ の各要素：非基底変数 $x_N$ の簡約費用とよぶ
+:::tip[定理]
+$c_N - A_N^T \pi \ge 0~\Rightarrow~(x_B,x_N)=(A_B^{-1}b,0)$ は最適解
+
+そして実は, $c_N - A_N^T \pi \ge 0~\Leftarrow~(x_B,x_N)=(A_B^{-1}b,0)$ が最適解で $x_B > 0$
+:::
+1つ目は双対問題を考えて, 2つ目は背理法でわかる. 
+また, 基底変数と非基底変数を入れ替える操作を**ピボット操作**という. 
+さらに, $y = A_B^{-1} (A_N)_k$ に正の要素がなければ問題は有界でない.
+これで準備完了. 
+:::tip[単体法の定義]
+ピボット操作を行って目的関数値が減少するように新しい実行可能基底解（実行可能領域の端点）に移るアルゴリズム. 
+
+0. 初期実行可能基底解 $(x_B, x_N) = \left( A_B^{-1} b, 0 \right)$ を選ぶ．つまり，$(B, N)$ を選ぶ．
+1. 単体乗数 $\pi := \left( A_B^{-1} \right)^T c_B$ を計算する．
+2.  $c_N - A_N^T \pi \geq 0 \quad \Rightarrow$ 最適基底解が得られているので終了．
+$\\c_N - A_N^T \pi \ngeq 0 \quad \Rightarrow$ $(c_N - A_N^T \pi)_k < 0$ に対応する $k \in N$ を選ぶ．
+3. $y = A_B^{-1} (A_N)_k$ を計算し，$y$ に正の要素がなければ問題は有界でないので終了．
+$\\$そうでなければ，$\Delta := \min \{ \tilde{b}_i / y_i \mid y_i > 0 \} = \tilde{b}_i / y_i$ に対応する $i \in B$ を求める．
+ただし，$\tilde{b} := A_B^{-1} b$
+4. $B \leftarrow (B \setminus \{ i \}) \cup \{ k \} \quad N \leftarrow (N \setminus \{ k \}) \cup \{ i \}$ で, 1に戻る
+:::
+イメージ：目的関数値が減少しきるまで基底変数と非基底変数を入れ替える. その際の基準として $c_N - A_N^T \pi$ を用いる.
+- 最小添字規則 (smallest subscript rule)を使うと循環を回避できる. すなわち, k と i は常に最小のものを選ぶ.
+
+### 2段階法
+> 1. 実行可能性を判定し，実行可能なら実行可能基底解を求める
+> 2. 第1段階で求めた実行可能基底解を用いて単体法のステップを実行する
+
+---
+## ネットワーク最適化
+### グラフ
+
+:::note[諸々の用語]
+- **点**（頂点、ノード）：$V$,  **枝**（辺、エッジ）：$E \subset V \times V$,  **グラフ**：$G = (V, E)$
+- **$G$ の部分グラフ**：$G$ のいくつかの点と枝からなるグラフ
+- 枝の一つ $e = (v_i,v_j) \in E$ について, $v_i$ を $e$ の**始点**, $v_j$ を $e$ の**終点**といい, $v_i$ と $v_j$ は**隣接**しているという. 
+また, 始点と終点をまとめて $e$ の**端点**という.
+- **単純グラフ**：自己閉路と多重枝を含まないグラフ（以降は単純グラフのみを考える）
+- **次数**：グラフの点に接続する枝の数
+- **道**：枝の向きとは無関係に，接続する点と枝をたどることによって得られる点と枝の系列
+    - 道の最初の点をその道の始点，最後の点をその道の終点という
+    - 道を構成する枝の数を長さという
+    - 枝の向きに沿って進むことで得られる道を有向道という
+- **(有向)閉路**：始点と終点が一致する(有向)道
+:::
+
+:::note[連結性]
+#### **連結グラフ**：任意の2点の間に道が存在するグラフ（有向でも無向でも良い）
+- **木**：閉路を含まない連結グラフ
+- **葉**：接続する枝が１つだけの木の点（次数が1の点）
+- **根**：木の特定の点のこと（根を考えている木を根付き木という）
+- $G'$ が $G$ の**全域木グラフ**：$G = (V, E)$ の部分グラフ $G' = (V, E')$ が木である
+
+以下は定理など
+- $G$ に全域木グラフが存在する $\Leftrightarrow$ $G$ が連結である
+- 2点以上から成る木は葉が2つ以上ある
+- 連結グラフ $T$ について以下は同値
+    - $T$ は木
+    - 任意の2点間に一意に道が存在する
+    - 任意の枝を取り除くと非連結になる
+- 木は１つ枝を取り除くと，２つの木になる
+- 木から葉（次数1の点）とその点に接続する枝を取り除いたグラフも木である
+- $n$ 点の木は $n-1$ 本の枝をもつ
+:::
+
+### 様々なアルゴリズム
+詳しくはアルゴリズムの記事参照
+- クラスカル法：辺ベースで最小全域木を求めるアルゴリズム
+- プリム法：点ベースで最小全域木を求めるアルゴリズム
+- グラフ探索：グラフの各点と各枝を探索する手法
+    - 深さ優先探索（Depth-first search: DFS）：とりあえず⾏けるところまで⾏き, ダメなら後戻りするグラフ探索方法
+        - 根からすべての点を反時計回りするように一筆書き（帰りがけ順）
+    - 幅優先探索（Breadth-first search: BFS）：後戻りしないように, 可能性のあるルート全てにおいて1ステップずつ⾏くグラフ探索方法
+
+### 有向グラフの接続行列
+:::tip[接続行列]
+$G$: 有向グラフ（点が $n$ 個で枝が $m$ 本）. $n \geq 2$ とする枝には一意な番号 $e \in \{1, 2, \ldots, m\}$ が付いている
+
+接続行列 (incidence matrix)：$
+B(G) = (b_{ie}) \in \mathbb{Z}^{n \times m} \Leftrightarrow
+b_{ie} =
+\begin{cases}
+1 & \text{点 } i \text{ から枝 } e \text{ が出る} \\
+-1 & \text{点 } i \text{ に枝 } e \text{ が入る} \\
+0 & \text{点 } i \text{ と枝 } e \text{ が接続していない}
+\end{cases}
+$
+:::
+:::tip[定理]
+$B \in \mathbb{R}^{n \times (n-1)}$: $n$ 点の連結グラフのある全域木に対応する接続行列
+
+$B$ は行と列を入れ替えることで
+$
+\begin{pmatrix}
+\pm 1 & … & 0 \\
+\ast & … & … \\
+\ast & \ast & \pm 1 \\
+\ast & \ast & \ast \\
+\end{pmatrix}
+= PBQ
+\Rightarrow \text{rank } B = n - 1
+$  
+という形にできる
+:::

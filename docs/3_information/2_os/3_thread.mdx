@@ -1,0 +1,70 @@
+---
+title: 3. スレッド
+---
+## 基本
+:::tip[スレッドの目的]
+CPUを分け合うための抽象化！
+:::
+- 1プロセス = 複数スレッド（少なくとも1つのスレッド）
+- プロセス = アドレス空間 + スレッド
+
+#### 用語の注意
+CPU $\supset$  物理コア $\supset$ 仮想コア であり, 
+- 1CPUに複数の物理コア（マルチコアCPU）
+- 1物理コアに複数の仮想コア（ハイパースレッディング, Simultaneous Multithreading (SMT)）：仮想コアがコアを複数に見せかけているイメージ
+- 仮想コア分のスレッドは同時に実行される
+- OS が CPU を割り当てる = 仮想コアを割り当てる（OSが見せるプロセッサ数は仮想コア数）
+
+#### スレッドを観察したい場合
+- Unix CUI：`ps auxmww`（スレッドも表示）, `top -H` (H で Toggle)（`ps auxww` はプロセスのみ）
+- Linux：`/proc/pid/task/tid`
+---
+## スレッド関連のシステムコール（API）
+#### `pthread_create(tid, attr, f, arg)` 
+- `f(arg)` を実行するスレッド (子スレッド) を作る ≡ `pthread_create` 呼び出し以降と, `f(arg)` が並行して実行される
+（`f`: voidを受け取り voidを返す）
+- `*tid`に子スレッドの ID が書き込まれる
+- スレッドの引数は`arg`1つだけなので, 複数の引数を渡す場合は構造体を使う
+
+```c
+void * f(void * arg) {
+  // 処理
+  return;
+}
+
+pthread_t my_thread_id = pthread_self();
+pthread_t child_thread_id;
+/* スレッドを作る */
+if (pthread_create(&child_thread_id, 0, f, &arg)) {
+  err(1, "pthread_create");
+}
+```
+
+#### `pthread_exit(p)` ：`pthread_exit` を呼んだプロセスを, 指定した終了ステータス p で終了させる
+
+- p : ポインタ (void *)、p は `pthread_join` で取得可能
+- スレッドの開始関数が終了した場合も同じ効果（この場合, pの代わり `return value` が終了ステータス）
+
+#### `pthread_join(tid, p)`
+- 子スレッド tid の終了を待つ
+- 子スレッドの終了ステータスを `*p` に書き込む
+- `waitpid` と似ている（が親でなくても、スレッドを呼んでも良い）
+```c
+void * ret = 0;
+if (pthread_join(child_thread_id, &ret)) {
+  err(1, "pthread_join");
+}
+```
+
+### 流れまとめ
+:::tip[流れ]
+1. `pthread_create` により子スレッドが生成される
+2. 子スレッドが`f(arg)`を実行し, `子スレッドが終了する`(`pthread_exit` を呼ぶ,または子スレッド生成時に指定した関数が終了)
+ = ゾンビ状態
+3. どれかのスレッドが`pthread_join` を呼ぶ
+:::
+---
+## プロセスとスレッドの違い
+どちらも CPU（仮想コア） を複数使うための道具だけど, 
+- プロセス同士は独立したアドレス空間を持つ
+- 同じプロセス内のスレッドは, 同じアドレス空間を共有（= 他のスレッドとデータを共有）
