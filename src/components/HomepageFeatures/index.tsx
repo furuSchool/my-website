@@ -55,7 +55,7 @@ const FeatureList: FeatureItem[] = [
         <br />
         プログラミングの記事を書いています。
         <br />
-        言語には偏りがあります。
+        また、作成したプロダクトの紹介もしています。
       </>
     ),
     link: "/docs/programming",
