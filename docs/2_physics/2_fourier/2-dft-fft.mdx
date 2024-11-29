@@ -1,0 +1,94 @@
+---
+title: DFTとFFT
+---
+
+:::warning[目標]
+有限長のアナログ信号（離散信号）を周波数領域に変換して分析したい！
+:::
+- 現実の信号は連続で無限長だけど，そんなん測定も分析もできひんから離散化して有限長と考えて分析することが多い
+
+## 離散フーリエ変換（DFT）
+：時間領域と周波数領域の相互変換を離散表現の間で行うもの．
+:::tip[離散フーリエ変換（DFT）]
+原系列の長さ $N$，標本周期 $T_0$，$\Omega_0 = \frac{2 \pi}{N T_0}$ として，$N$ 個のデータ列を考える．
+
+離散フーリエ級数展開：$x(nT_0)~\leftrightarrow~\alpha_k = \frac{1}{NT_0} \sum^{N-1}_{n=0} x(nT_0) e^{-j \frac{2\pi k n}{N}}$  
+離散フーリエ変換（DFT）：$x(nT_0)~\leftrightarrow~X(k\Omega_0) = \sum^{N-1}_{n=0} x(nT_0) e^{-j \Omega_0 k n}$  
+これをさらに整理して，
+
+$
+\begin{cases} 
+X(k) = \sum^{N-1}_{n=0} x(n) e^{-j \frac{2\pi k n}{N}} = \sum^{N-1}_{n=0} x(n) W_n^{k \cdot n}~~(DFT)\\
+x(n) = \frac{1}{N} \sum^{N-1}_{k=0} X(k) e^{j \frac{2\pi k n}{N}} = \frac{1}{N} \sum^{N-1}_{k=0} X(k) W_n^{-k \cdot n}~~(IDFT)
+\end{cases}
+$
+- $X(k)$ は周期 $N$ を持つ $\to$ $X(k) = X(k + N)$ であり，長さ $N$ として考えることが多い
+:::
+- 離散フーリエ級数展開は周期 $NT_0$ の信号に対して，DFTは長さ $N$ のデータに対して行うもの．  
+DFTは，長さ $N$ の信号を周期 $N$ の周期信号として扱って見えてくるスペクトルを求めている = 近似的なもの
+- DFTでは肩につく変数が「正」，IDFTでは肩につく変数が「負」となる．フーリエ級数展開と逆
+- $W_n$ の右肩につくのは単なる累乗．添え字ではない
+
+回転子 $W_n = e^{-j \frac{2\pi}{N}}$ について
+1. $|W_n| = 1$
+2. $W_N^N = W_N^0 = 1$
+3. $W_N^{R+rN} = W_N^R~~(R,r \in \mathbb{Z})$
+
+### DFTの性質
+$x(n)~\leftrightarrow~X(k),~y(n)~\leftrightarrow~Y(k)$ とすると，
+1. Persevalの等式：$\sum_{n=0}^{N-1} x(n) \overline{y(n)} = \frac{1}{N} \sum_{k=0}^{N-1} X(k) \overline{Y(k)}$
+2. 実数値列：$x(n) \in \mathbb{R}~\to~X(k) = \overline{X(-k)} = \overline{X(N-k)}$ （フーリエ変換と一緒）
+3. 直線畳み込み：$h(n) \ast x(n) = \sum_{l=0}^{N-1} h(l)x(n-l)~\leftrightarrow~H(k)X(k)$
+    - $n-l < 0 \Rightarrow x(l) = 0$
+4. 循環畳み込み：$h(n) \ast x(n) = \sum_{l=0}^{N-1} h([l]_N) x([n-l]_N)~\leftrightarrow~H(k)X(k)$
+    - $[l]_N = l \mod N$：$l$ を $N$ で割った余り
+5. 標本角周波数 $\Omega_0 = \frac{2\pi}{NT_0}$，角周波数 $q\Omega_0$ の複素正弦波 $ x(n) = e^{j q \Omega_0 n T_0}$ のDFT  
+    - $q$ が整数：$X(k) = \sum_{n=0}^{N-1} x(n) W_N^{k \cdot n} = \sum_{n=0}^{N-1} W_N^{-(q-k)n} = N \delta_{k,q+rN}$  
+    = 離散化されると同時に，周期的に周波数成分が現れる
+    - $q$ が整数でない：ほとんど全ての周波数成分が現れる   
+    = 元の信号は復元できない．連続化すると不連続点が生じるため，窓関数などを使う
+
+### 行列での表記
+$X(k) = \sum^{N-1}_{n=0} x(n) e^{-j \frac{2\pi k n}{N}} = \sum^{N-1}_{n=0} x(n) W_n^{k \cdot n}$ を行列で表記すると，
+
+$\begin{bmatrix}
+X(0) \\
+X(1) \\
+\vdots \\
+X(N-1)
+\end{bmatrix} = \begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & W_N^{1} & W_N^{2} & \cdots & W_N^{N-1} \\
+1 & W_N^{2} & W_N^{4} & \cdots & W_N^{2(N-1)} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & W_N^{N-1} & W_N^{2(N-1)} & \cdots & W_N^{(N-1)(N-1)}
+\end{bmatrix}
+\begin{bmatrix}
+x(0) \\
+x(1) \\
+\vdots \\
+x(N-1)
+\end{bmatrix}
+$
+
+これがFFTにつながる
+
+---
+
+## 高速フーリエ変換（FFT）
+:::warning[目標]
+DFTの高速演算！
+- DFT は $O(N^2)$ ，FFT は $O(N \log N)$
+:::
+### FFT のアルゴリズム
+1. データ長 $N = 2^M$ とする（調整して）．
+2. データ $x(n)$ を偶数番目と奇数番目に分ける．$\to$ $g(0),h(0),g(1),h(1),\dots$：それぞれ長さ $\frac{N}{2}$，標本周期 $2T_0$
+3. ここで計算すると，$X(k) = G(k) + W_N^k H(k), ~X(k + \frac{N}{2}) = G(k) - W_N^k H(k)$ がわかる  
+$\to$ 2つの DFT の計算に分けられる
+
+### FFTバタフライ
+：FFTのアルゴリズムを可視化したもの．下記は，https://www1.gifu-u.ac.jp/~yktlab/sp1.pdf より引用．
+<img src="/img/physics/fft.png" alt="FFTバタフライ" style={{ width: '50%' }} />
+各蝶々が，$X(k) = G(k) + W_N^k H(k), ~X(k + \frac{N}{2}) = G(k) - W_N^k H(k)$に相当する．
+- まっすぐ進むものはそのまま足す，右上がりのものは $W_N^k$ をかけて足す，右下がりのものは $W_N^k$ をかけて引く
+- 一つ目の方は，入力順序は2進数ビット逆順になっている（001 $\to$ 100，010 $\to$ 010）
