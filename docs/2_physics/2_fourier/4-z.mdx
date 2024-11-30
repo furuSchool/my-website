@@ -1,0 +1,47 @@
+---
+title: z変換
+---
+
+:::warning[目標]
+離散信号のシステムを解析したい！
+:::
+- 特定のフィルタを作ったり，逆に入力と出力の関係からシステムの特性を求めたり $\to$ z変換が便利
+- ラプラス変換離散版
+
+:::tip[z変換]
+**z変換：離散信号のシステムを表現するための手法**
+
+片側z変換：$X(z) = \sum_{n=0}^{\infty} x(n) z^{-n}$ （因果性：$h(n) = 0~(n < 0)$が成立する時）  
+両側z変換：$X(z) = \sum_{n=-\infty}^{\infty} x(n) z^{-n}$  
+逆z変換：$x(n) = \frac{1}{2\pi j} \oint_C X(z) z^{n-1} dz$
+:::
+- $z = e^{sT} = e^{(\sigma + j \omega) T}$
+- サンプル値列：$x^*(t) = \sum_{n=0}^{\infty} x(nT) \delta(t - nT) \leftrightarrow X^*(s) = \sum_{n=0}^{\infty} x(nT) e^{-snT}$
+
+これにより，離散信号のシステムの安定性や特性を解析できるようになる．主に，**差分方程式を解く際**に使われる．
+- $x(n)$ の差分方程式をz変換すると，$X(z)$ になる
+- $x(n-1) \leftrightarrow z^{-1}X(z)$ を使えば，差分方程式は代数方程式に
+
+---
+
+## z変換の性質
+- 片側z変換：$\exists A > 0,~\exists \alpha,~|x_n| < A e^{-\alpha n}~(n \ge 0)~\Rightarrow~X(z)$ は $|z| > e^\alpha$ で収束
+    - 別に単なる無限級数の収束条件と同じ = 収束半径の存在：収束領域を $|z| > r_0$ と表現できる
+- 両側z変換：$\sum_{n=0}^{\infty} x(n) z^{-n}$ と $\sum_{n=-\infty}^{-1} x(n) z^{-n}$ が共に収束すれば良い $\to$ ドーナツみたいになることも
+    - ローラン展開みたいなイメージ，というかそのもの
+
+> 1. 線形性：$a x(n) + b y(n)~\leftrightarrow~a X(z) + b Y(z)$
+> 2. 時間の移動：$x(n-k)u(n-k)~\leftrightarrow~z^{-k}X(z)$
+> 3. 離散畳み込み：$y(n) = h(n) \ast x(n) = \sum_{k=0}^{\infty}h(k)x(n-k)~\leftrightarrow~Y(z) = H(z)X(z)$  
+（因果性：$h(n) = 0~(n < 0)$が成立する時）
+
+他にもいろんな性質があるが，あまり使わないので省略．
+
+### 片側z変換表
+<img src="/img/physics/z.png" alt="z変換表" style={{ width: '50%' }} />
+上記は，https://www1.gifu-u.ac.jp/~yktlab/sp1.pdf より引用
+
+### z領域と周波数領域の関係
+$z = e^{sT} = e^{(\sigma + j \omega) T}$ なので，z領域の伝達関数 $H(z)$ の周波数伝達関数 $H(\omega) = H(z)|_{z = e^{j \omega T}}$ となる．
+- $T$ は標本周期であり，ここから $H(\omega)$ は周期 $\omega = \frac{2\pi}{T}$ を持つ
+- 別に，標本化したからそらそうだよねという話
