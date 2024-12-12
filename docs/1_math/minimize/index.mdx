@@ -2,8 +2,6 @@
 title: 最適化の気持ち
 ---
 
-import MathTheorem from './../../../components/theorem';
-
 ## 最適化とは
 :::warning[目標]
 minimize $f(x)$ subject to $x \in S(\subset \mathbb{R}^n)$
@@ -424,4 +422,35 @@ $
 \Rightarrow \text{rank } B = n - 1
 $  
 という形にできる
+:::
+
+### 最小費用流問題
+:::warning[目標]
+連結グラフ $G = (V, E)$ 
+
+minimize $\sum_{(i,j) \in E} c_{ij} x_{ij}~\\$ 
+subject to $~\sum_{(k,i)\in \delta^+ (k)} x_{ki} - \sum_{(j,k)\in \delta^- (k)} x_{jk} = b_k,~k \in V,~x_{ij} \ge 0,~(i,j) \in E$
+- $c_{ij}$：枝 $(i,j)$ の費用, $x_{ij}$：枝 $(i,j)$ のフロー
+- 仮定：点 $k$ はフロー $b_k$ を生成する（各点の供給量 - 需要量）, $\sum b_k = 0$（各点の総需要量 = 総供給量）
+- $\delta^+ (k)$：点 $k \in V$ から出る枝の集合, $\delta^- (k)$：点 $k \in V$ に入る枝の集合
+:::
+要するに, 点ごとのフローのバランスを保ちながら, 最小費用でフローを流す問題
+- 各点での需要と供給の差が $b_k$ である
+
+命題：
+$G$ ：連結グラフ, $A \in \mathbb{R}^{n \times m}$：$G$ に対応する接続行列 
+$\Rightarrow \exists P $：置換行列 $ \ \text{s.t.} \ \text{rank}\left(PA \ \middle| \ e_n\right) = n$
+- これは, 接続行列をうまいこと入れ替えればできるよというだけ
+（$P$ は, $G$ のある全域木 $T$ に深さ優先探索（帰りがけ順）で点に順番をつけて, その順番に $A$ の行が並ぶようにする置換行列）
+- $e_n$ は根に人工枝をつけることに相当する
+
+その結果として, 最小費用流問題は次のような線形計画問題に帰着できる
+:::warning[目標]
+minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$
+$($ただし, $A \in \mathbb{R}^{n \times m},~b \in \mathbb{R}^n,~c \in \mathbb{R}^m)$
+- $n$：点の数, $m$：辺の数
+- $A$：連結グラフに対応する接続行列, $b$：各点のフローのバランス $(\sum b_k = 0)$, $c$：各辺の費用
+- 連結なので, $\text{rank}(A) = n-1$
+
+これは, 単体法などで解くことができる
 :::
