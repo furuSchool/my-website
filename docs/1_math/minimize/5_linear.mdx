@@ -1,0 +1,99 @@
+---
+title: 線形計画問題
+---
+
+:::warning[目標]
+minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ 
+
+$($ただし, $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~c \in \mathbb{R}^n)$
+:::
+これは等式標準形と呼ばれ, 任意の線形計画問題がこの形に変形できる.
+- 不等式制約や $x < 0$ が含まれていても変形すれば大丈夫
+## 端点
+:::tip[定義]
+$S \subset \mathbb{R}^n,~~x \in S:$ 端点 
+$\Leftrightarrow x = \lambda y + (1 - \lambda) z~~y,z \in S,~~\lambda \in (0,1) \Rightarrow y=z$
+:::
+
+まあ, 領域でイメージするようなキワキワの点と思えば大丈夫. この時, 下記のようなことが言える.
+
+:::tip[定理]
+minimize $c^T x~$ subject to $~~x \in S~~(S=\{ x \in \mathbb{R}^n |~Ax = b~(x \ge 0)\})$ が大域的最適解を持つ
+
+$\Rightarrow$ 実行可能領域 (凸集合) $S$ の端点で大域的最適解をもつ
+:::
+
+線形計画問題は端点がめちゃくちゃ重要！
+
+## 基底解
+
+$~ Ax = b~(x \ge 0)~~$  と $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~x \in \mathbb{R}^n$
+を考えると, $\mathrm{rank}(A) = m$ として良い. 
+このとき, $A_B \in \mathbb{R}^{m \times m}$ を $A$ に対応する列ベクトルから構成された正則行列として, 
+
+$Ax = b ~~\rightarrow~~(A_B~A_N) \begin{pmatrix}x_B \\ x_N \end{pmatrix} = b$
+
+と書き直せる. このとき, $x_B$ を基底変数 (basic variable), $x_N$ を非基底変数 (nonbasic variable) という．
+
+:::tip[定義]
+$x \in \mathbb{R}^n$ が **基底解** (basic solution) $~~\Leftrightarrow~~$  $x_B=A_B^{-1}b,~x_N=0$
+
+また, $x \ge 0$ を満たす基底解を **実行可能基底解** (basic feasible solution) といい, $x_B$ の成分の中に0がある基底解を退化 (degenerate)しているという．
+:::
+
+ここで, 次のようなことが言える. 
+
+:::tip[定理]
+$ S := \left\{ x \in \mathbb{R}^n \mid A x = b, \, x \geq 0 \right\},~ \mathrm{rank}A = m \\x \in S$ は基底解 $\iff x \in S$ は端点
+:::
+
+すなわち, 下記のことが言える. 
+:::tip[定理]
+minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ の最適解が存在する
+
+$\Rightarrow$ 実行可能領域の端点, すなわち高々 $_n \mathrm{C}_k$ 個の実行可能基底解の中に最適解が存在する.
+:::
+やったね！効率的に最適解を見つけ出す必要はあるけど…….
+
+## 双対性
+:::tip[定理]
+(P) minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ の **双対問題** は, 
+(D) maximize $b^T y~$ subject to $~ A^T y \le c ~~$ 
+
+**弱双対性** :  $x \in \mathbb{R}^n$ が P の任意の実行可能解, $y \in \mathbb{R}^m$ が D の任意の実行可能解 
+$\Rightarrow$ $b^T y \le c^T x\\$
+また, $b^T y = c^T x$ $\Rightarrow$ $x \in \mathbb{R}^n$ は P の最適解, $y \in \mathbb{R}^m$ は D の最適解.
+:::
+また, 次のようなことが言える. 
+:::tip[強双対定理]
+問題P, 問題Dがどちらも実行可能解を持つ, すなわち $\mathrm{min}({c^Tx}) = \mathrm{max}({b^Ty})\\$
+$\Rightarrow$ どちらにも最適解が存在して, 二つの問題の最適値は等しい.
+:::
+さらに, 下記のことも言える.
+> - P が実行可能で D は実行可能でないならば, P は非有界
+> - P が実行可能で最適解を持たないならば, P は非有界
+> - P が非有界ならば, D は実行可能でない
+> - P が最適解をもつ $\Leftrightarrow$ D が最適解をもつ
+
+したがって, 線形計画問題は下記の4パターンのみ
+> 1. P と D は共に最適解をもつ
+> 2. P は非有界で D は実行不可能である
+> 3. D は非有界で P は実行不可能である
+> 4. P と D は共に実行不可能である
+
+:::tip[相補性定理]
+(P) minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$, 
+(D) maximize $b^T y~$ subject to $~ A^T y + \mu = c ~(\mu \ge 0)~~$ 
+
+$x \in \mathbb{R}^n $ は P の最適解, $(y, \mu) \in \mathbb{R}^m \times \mathbb{R}^n$ は D の最適解
+$\Leftrightarrow (x, y, \mu) \in \mathbb{R}^n \times \mathbb{R}^m \times \mathbb{R}^n$ は下記の条件を満たす.
+1. P の実行可能性条件: $A x = b, \, x \geq 0$
+2. D の実行可能性条件: $A^T y + \mu = c, \, \mu \geq 0$
+3. 相補性条件: $x_i \mu_i = 0 ~~ (i = 1, \dots, n)$
+
+また, 下記の **KKT条件** と同値である.
+1. 実行可能性条件： $Ax = b, ~~ x \geq 0$
+2. 停留条件： $A^{T} y + \mu = c$
+3. 相補性条件： $x_i \mu_i = 0 ~~ (i=1,\dots,n)$
+4. 符号条件： $\mu_i \geq 0 ~~ (i=1,\dots,n)$
+:::

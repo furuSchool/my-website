@@ -1,0 +1,26 @@
+---
+title: 基本
+---
+## 最適化とは
+:::warning[目標]
+minimize $f(x)$ subject to $x \in S(\subset \mathbb{R}^n)$
+
+$f:\mathbb{R}^n \rightarrow \mathbb{R}$：目的関数, $S$：実行可能領域（許容領域, 許容集合）
+
+(例) $S = \{x \subset \mathbb{R}^n~|~g_1(x) = 0,…,~g_n(x) = 0,~g_{n+1}(x) \le 0,…,~g_m(x) \le 0\}$
+:::
+
+## 知っておくべき用語, 定義と定理
+厳密な説明はしていない. 基本関数は十分滑らかと考えている.
+
+### 基本
+- 大域的最適解と局所的最適解
+- ヘシアンを $A$ として, $A$ は(半)正定値対称行列 $\Leftrightarrow$ $A$ のすべての固有値は(非負の)正の実数
+- 停留点：$\nabla f(x^*) = 0$
+    - 局所的最適解 $\Rightarrow$ 停留点 かつ $\nabla^2 f(x^*) \ge 0$
+- 凸関数と凹関数
+    - 凸関数の和は凸関数
+    - $f$ が凸関数の時, $\nabla f(x^*) = 0$ $\Rightarrow$ $x^* \in \mathbb{R}^n$ は大域的最適解
+- 凸集合
+    - $S$ が凸集合 $\Rightarrow$ 局所的最適解 $x^* \in S$ は大域的最適解
+- $f$ が凸 $\Leftrightarrow$ 任意の $x \in \mathbb{R}^n$ において $\nabla^2 f(x)$ が半正定値対称行列

@@ -1,0 +1,44 @@
+---
+title: KKT条件
+---
+
+:::warning[目標]
+minimize $f(x)$  $(x \in  \mathbb{R}^n)~$ subject to $~g(x)=0,~h(x) \le 0\\$
+($f:\mathbb{R}^n \rightarrow \mathbb{R},~~g:\mathbb{R}^n \rightarrow \mathbb{R}^n,~~h:\mathbb{R}^m \rightarrow \mathbb{R}^p$：すべて滑らか, この時, $S$ は閉集合)
+:::
+
+## 最適化の特徴
+- $h_j(x) = 0$ となる時, $h_j(x) \le 0$ は $x$ で **有効制約** であると言う.
+- $A(x) = \{ j \in \{1,…,p\} ~ | ~  h_j(x) = 0 \}$: $x$ で有効制約である不等式の添え字集合
+- 考えている局所的最適解は, $h(x) \le 0$ を $h_j(x) = 0~(j \in A(x^*))$ と直した時の局所的最適解でもある.
+
+:::tip[定理]
+$x^* \in \mathbb{R}^n$ において **制約想定** が成り立つとする.  
+$x^*$ が局所的最適解 $\Rightarrow$ ある $(\lambda^*, \mu^*) \in \mathbb{R}^m \times \mathbb{R}^p$ が存在して 
+$(x^*, \lambda^*, \mu^*)$ はKKT条件を満たす.
+:::
+
+## KKT条件
+$(x^*, \lambda^*,\mu^*) \in \mathbb{R}^n \times \mathbb{R}^m \times \mathbb{R}^p$ が, **KKT条件（Karush-Kuhn-Tucker条件）** を満たすとは, 下記が成り立つことを言う.
+> - 実行可能性条件： $x^* \in S$ （つまり, $g(x^*) = 0,~h(x^*) \le 0$）
+> - 停留条件： $\nabla f(x^*) + \sum_{i=1}^{m} \lambda_i^* \nabla g_i(x^*) + \sum_{j=1}^{p} \mu_j^* \nabla h_j(x^*) = 0$
+> - 相補性条件： $\mu_j^* h_j(x^*) = 0 ~~ (j=1,\dots,p)$
+> - 符号条件： $\mu_j^* \geq 0 ~~ (j=1,\dots,p)$
+
+また, 線形計画問題のKKT条件は, 
+> 目標： minimize $c^T x~$ subject to $~ Ax = b~(x \ge 0)~~$ 
+$($ただし, $A \in \mathbb{R}^{m \times n},~b \in \mathbb{R}^m,~c \in \mathbb{R}^n)$
+> - 実行可能性条件： $Ax = b, ~~ x \geq 0$
+> - 停留条件： $c + A^{T} \lambda - \mu = 0$
+> - 相補性条件： $x_i \mu_i = 0 ~~ (i=1,\dots,n)$
+> - 符号条件： $\mu_i \geq 0 ~~ (i=1,\dots,n)$
+
+下記は, なぜKKT条件で良いのかを考えるための材料たち
+
+## 等式制約条件のみの場合
+minimize $f(x)$  $(x \in  \mathbb{R}^n)~$ subject to $~g(x)=0$ の場合, 
+
+- $d \in \mathbb{R}^n$ は $f$ の $x$ における **制約付き降下方向** 
+$\Leftrightarrow  \nabla f(x)^{T} d < 0,~~\nabla g_i(x)^{T} d = 0 ~~ (i=1,\dots,m)$
+- $x^* \in \mathbb{R}^n$ において **制約想定** が成り立つとき, 
+$x^* \in \mathbb{R}^n$ が局所的最適解 $\Rightarrow x^*$ における制約付き降下方向が存在しない

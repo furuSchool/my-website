@@ -1,0 +1,40 @@
+---
+title: 少し休憩
+---
+
+ここでは, これから最適化問題を解く際に重要な概念や定理をまとめている.
+
+:::tip[凸射影定理]
+$\boldsymbol{0} \ne C \subset \mathbb{R}^n$：閉凸集合（有界でなくても良い）
+$\\$ 任意の $x \in \mathbb{R}^n$ に対して $\min_{y \in C} ||x - y||$ の解 $x^* \in C$ が一意に存在する.
+
+このような場合, $x^* = P_C(x)$ と書き, $P_C: \mathbb{R}^n \rightarrow C$ を **凸射影** という.
+:::
+- $g(y) = ||x-y||^2$ が狭義凸関数であること, 凸集合であることから, $x^*$ は解が存在したら一意.
+- 存在性は, $C$ を $x$ を中心とするような円でとり直せばわかる.
+- 射影勾配法という, 最急降下法 + 凸射影 を用いる方法もある.
+- 定理：$x^* = P_C(x) \Leftrightarrow (x - x^*, y - x^*) \le 0~~ \text{for}~~ \forall y \in C$
+    - 括弧は内積を表す.まあ、内積正なら近づけるもんね.
+
+:::tip[分離超平面]
+$0 \neq a \in \mathbb{R}^n,~~ \gamma \in \mathbb{R},~~ H := \{ x \in \mathbb{R}^n | (a, x) = \gamma \}$：超平面(アフィン部分空間)
+$\\ \mathbb{R}^n = H^+ \cup H^-,~~H^+ := \{ x \in \mathbb{R}^n |(a, x) \geq \gamma \},~~H^- := \{ x \in \mathbb{R}^n |(a, x) \le \gamma \}$：半空間
+
+$H$ は $S, T \subset \mathbb{R}^n$ を分離する $\iff S \subset H^+$ かつ $T \subset H^-\\$
+$H:S$ と $T$ の分離超平面,  $~~S = \{ x \}$ のとき $H:T$ と $x$ の分離超平面
+:::
+- $a$ の向きと同じか違うか垂直かで分けるイメージ
+
+:::tip[分離定理]
+$\boldsymbol{0} \ne C \subset \mathbb{R}^n$：閉凸集合, $x \notin C\\$
+$\exists a \in \mathbb{R}^n \setminus \{ 0 \}, ~~\exists \gamma \in \mathbb{R} ~ \text{s.t.} ~ (a, x) > \gamma \geq (a, z)~~ (\forall z \in C)$
+:::
+- イメージは、$C$ の外側の $x$ と $C$ を分離できる超平面が存在する
+
+- $\boldsymbol{0} \ne C \subset \mathbb{R}^n~~$ **錐** $\Leftrightarrow$ 任意の $x \in C,~\alpha > 0$ に対して, $\alpha x \in C$
+:::tip[Farkasの補題]
+$a_1, a_2, \dots, a_n, b \in \mathbb{R}^m$ に対して, 以下の二つは片方は真であるが, 他方は偽である.
+
+1. $\exists y \in \mathbb{R}^m~$ s.t. $~a_i^T y \geq 0 \quad (i = 1, 2, \dots, n)~$ かつ $~b^T y < 0$
+2. $\exists x_1, x_2, \dots, x_n \geq 0~$ s.t. $~\sum_{i=1}^n x_i a_i = b$
+:::
