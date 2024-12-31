@@ -3,11 +3,14 @@ title: 無制約最適化問題
 ---
 
 :::warning[目標]
+無制約最適化問題：minimize $f(x)$ subject to $x \in \mathbb{R}^n$  
 停留点, つまり $\nabla f(x^*) = 0$ なる $x \in \mathbb{R}^n$ を求める.
 
-方針； $x_{k+1} = x_k + \alpha_k d_k~~(d_k:~$探索方向,$~\alpha_k:~$ステップサイズ$)$
+方針：$x_{k+1} = x_k + \alpha_k d_k~~(d_k:~$探索方向,$~\alpha_k:~$ステップサイズ$)$
 :::
+- 例えば, 最急降下法 + 直線探索法で解を求めることができる
 
+## 最急降下法
 - $\nabla f(x_k) ^ T d_k < 0$ なる $d_k$ を選ぶ →  $d_k$ は $f$ の $x_k$ における降下方向
     - $d_k=-\nabla f(x_k)$ が最急降下方向 $\rightarrow$ この $d_k$を用いるのが, **最急降下法**
 - $\alpha_k$ は, minimize $\phi(\alpha_k) = f(x_k+\alpha_k d_k)$ subject to $\alpha_k>0$ の大域的最適解を求めたいが, 最適解を求められない場合も.
@@ -17,10 +20,10 @@ title: 無制約最適化問題
 :::tip[定理]
 $\nabla f(x_k)\neq 0 $ のとき, アルミホ条件は十分小さい $\alpha_k>0$ で成り立つ
 
-アルミホ条件：$\phi(\alpha_k) \le \phi(0) + c_1 \alpha_k \phi^\prime(0)~(0 < c_1 < 1)$ 
+アルミホ条件：$\phi(\alpha_k) \le \phi(0) + c_1 \alpha_k \phi^\prime(0)~~(0 < c_1 < 1,~\phi(\alpha_k) = f(x_k+\alpha_k d_k))$
 :::
 
-#### バックトラッキング法
+#### バックトラッキング法：$\alpha_k$ がアルミホ条件を満たすようにする方法
 > 1. アルミホ条件の $0 < c_1 < 1$, 縮小率 $0 < \rho < 1$, 大きめの初期値 $\alpha > 0$ を設定
 > 2. $\alpha$ がアルミホ条件を満たすなら $\alpha_k = \alpha$ で終了
 > 3. $\alpha \leftarrow \rho \alpha$ として 2 へ戻る
@@ -37,33 +40,47 @@ $\nabla f(x_k)\neq 0 $ のとき, アルミホ条件は十分小さい $\alpha_k
 - 目的関数 $f(x)$ は凸関数であり, 大域的最適解が存在したとする. $\{x_k\}$ はバックトラッキング法を用いた最急降下法によって生成された点列とする．
 ただし, 停止条件のステップは無視する．このとき $\{x_k\}$ は大域的最適解に収束する
 
-### Newton法
+:::tip[まとめ]
+方針：$x_{k+1} = x_k + \alpha_k d_k~~(d_k:~$探索方向,$~\alpha_k:~$ステップサイズ$)$
+- $d_k = -\nabla f(x_k)$：最急降下法
+- $\alpha_k$：バックトラッキング法などでアルミホ条件を満たすように選ぶ
+:::
+
+--- 
+
+## Newton法
 最急降下法より収束が速い方法. 下記の事柄を考える.
 
-$f(x)=0$ の解 $x \in I$ を計算するアルゴリズム：$x_{k+1} = x_k - \frac{f(x_k)}{f^{\prime}(x_k)}\\$
-多変数の場合：$x_{k+1} = x_k - Jf(x_k)^{-1} f(x_k)~~~(Jf(x_k)^{-1}$: $f$ の $x$ におけるヤコビ行列$)$
+$f(x_k + d) \approx f(x_k) + \nabla f(x_k)^T d + \frac{1}{2} d^T \nabla^2 f(x_k) d + …$
+
+$\rightarrow$ 右辺を最小化する $d$ を求める $\rightarrow$ $\nabla f(x_k) + \nabla^2 f(x_k) d = 0$ となる $d$ を求める
+ 
+
+- ここで, $f(x)=0$ の解 $x \in I$ を計算するアルゴリズム
+    - $x_{k+1} = x_k - \frac{f(x_k)}{f^{\prime}(x_k)}\\$
+    - $f$ が多変数の場合：$x_{k+1} = x_k - Jf(x_k)^{-1} f(x_k)~~~(Jf(x_k)$: $f$ の $x$ におけるヤコビ行列$)$
 
 :::tip[定理]
 $f: \Omega \to \mathbb{R}^n$：滑らか$~~~\Omega \subset \mathbb{R}^n$：開集合  
 
 $f(x) = 0$ には一意な解 $a \in \Omega$ が存在し,  $Jf(a)$ は正則と仮定する.
 このとき, $a$ を含む有界な閉集合 $K \subset \Omega$ が存在して, 任意の $x_0 \in K$ に対して
-Newton法で $K$ 内の点列 $\{x_k\}$ を生成でき, $\{x_k\}$ は $a$ に2次収束する.
+Newton法で $K$ 内の点列 $\{x_k\}$ を生成でき, $\{x_k\}$ は $a$ に二次収束する.
+
+Newton法：$x_{k+1} = x_k - (\nabla^2 f(x_k))^{-1}~\nabla f(x_k)~~~(\nabla^2 f(x)$ ：ヘッセ行列 $)$
 :::
 
 - 一次収束：$\exists \beta \in (0, 1)$ s.t. $\| x_{k+1} - x^* \| \leq \beta \| x_k - x^* \|$
 - 超一次収束：$\lim_{k \rightarrow \infty} \frac{||x_{k+1} - x^*||}{||x_k - x^*||} = 0$
 - 二次収束：$\exists \beta \in (0, 1)$ s.t. $\| x_{k+1} - x^* \| \leq \beta \| x_k - x^* \|^2$
 
-したがって上記から, 下記のようなアルゴリズムで停留点を求められる.
-
-$x_{k+1} = x_k - (\nabla^2 f(x_k))^{-1}~\nabla f(x_k)~~~\left((\nabla^2 f(x))^{-1} = J\nabla f(x)\right)$
-
 :::danger[注意]
 Newton法は初期点によって最適解が求まらない
 :::
 
-### 比較
+---
+
+## 比較
 |            | 最急降下法             | Newton法           |
 |------------|------------------------|--------------------|
 | 探索方向   | $d_k = -\nabla f(x_k)$ | Newton方向         |
@@ -80,7 +97,8 @@ Newton法は初期点によって最適解が求まらない
 
 ### 準ニュートン法
 
-大域的収束性を満たすようにしたもの. 次の条件を満たすように $B_k$ を選び, $d_k$ を定める. また, $B_k$ の定め方として, セカント条件というのがある. 
+大域的収束性を満たすようにしたもの. 次の条件を満たすように $B_k$ を選び, $d_k$ を定める.  
+また, $B_k$ の定め方として, セカント条件というのがある. 
 1. $B_k > 0$ （正定値）: 局所最適解への収束保証
 2. $B_k$ は  $\nabla^2 f(x_k)$ の良い近似: 収束を速く
 
@@ -93,8 +111,11 @@ $d_k$ の条件：$B_k d_k = - \nabla f(x_k)\\$
 そこで, [BFGS](https://ja.wikipedia.org/wiki/BFGS%E6%B3%95), [DFP](https://ja.wikipedia.org/wiki/DFP%E6%B3%95) といった様々な公式がある.
 
 - 準ニュートン法では, **超一次収束** する.
+- $\alpha_k$ はバックトラッキング法などで選ぶ
+- その他, [Wolfeの条件](https://ja.wikipedia.org/wiki/%E3%82%A6%E3%83%AB%E3%83%95%E6%9D%A1%E4%BB%B6)なども使われる
 
 ### 最急降下法の改善策
 前の点の情報を用いて収束を早めている
 - 共役勾配法：$d_{k+1} = -\nabla  f(x_k) + \beta_k d_{k-1},~\beta_{k+1} = \frac{||\nabla f(x_{k+1})||^2}{||\nabla f(x_{k})||^2}$
+（他にも $\beta_k$ の決め方はある）
 - Nesterov の加速法：最適解を通り過ぎながら振動して収束するイメージ. 目的関数値が増加し始めた時点で通り過ぎないように一旦止めることも考えられる
