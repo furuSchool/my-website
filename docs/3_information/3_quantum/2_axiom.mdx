@@ -1,10 +1,9 @@
 ---
-title: 2. 公理系と測定
+title: 2. 公理系
 ---
 
 :::warning[目標]
 **量子力学を公理によって特徴づける．ここが原点になる所なので，とても大事！**  
-**また，測定について知る！**
 :::
 
 以下では，Hilbert 空間 $\mathscr{H}$ 上の演算子の集合を $\mathscr{L}(\mathscr{H})$ とし，
@@ -20,7 +19,8 @@ $A,B,C \in \mathscr{L}(\mathscr{H})$，$P,Q$ を射影演算子とする．
     - 量子状態：$\ket{\psi} \in \mathscr{H}$：単位ベクトル（$\braket{\psi|\psi} = 1$）
     - 物理量 $A$：$\mathscr{H}$ 上の Hermite 演算子
     - 測定値：Hermite 演算子の固有値で与えられる（物理量 $A$ の固有値がランダムに観測される）
-2. 時間発展：閉じた量子系は Schrödinger 方程式に従う：$i\hbar \frac{d}{dx}\ket{\psi} = H\ket{\psi}$ - 全てのユニタリに対応するハミルトニアン $H$ が存在し、量子系の状態変化はユニタリ変換によって記述できる
+2. 時間発展：閉じた量子系は Schrödinger 方程式に従う：$i\hbar \frac{d}{dx}\ket{\psi} = H\ket{\psi}$ 
+    - 全てのユニタリに対応するハミルトニアン $H$ が存在し、量子系の状態変化はユニタリ変換によって記述できる
    :::
 
 ### Born の確率規則
@@ -76,73 +76,3 @@ $A$ を物理量（ = エルミート演算子），$f$ を実関数とする．
 物理量 $f(A)$ の測定 = **物理量 $A$ を測定して，測定値 $a$ が得られたとき，$f(a)$ を出力する測定**
 :::
 これは，例えば物理量 $A^2$ を直接測定する代わりに，物理量 $A$ を測定してからその測定値 $a$ を二乗しても良いことを意味する．
-
----
-
-## 測定による状態の変化
-
-:::tip[測定による状態の変化]
-量子力学では測定の影響を取り除くことは原理的に不可能．
-:::
-
-#### von Neumann の射影測定：測定前の状態 $\ket{\psi}~\rightarrow~$ 測定後の状態 $\ket{\psi^{\prime}} = \frac{P_a\ket{\psi}}{|| P_a\ket{\psi} ||}$
-
--   いろんな可能性があった状態ベクトルから一つの固有ベクトルが選ばれたイメージ
--   特に縮退がある場合は Lüders の射影測定という
-
-より一般化した測定の枠組みがいくつか存在する
-
-#### PVM（projection-valued measure）測定：物理量 $A$ に対応する射影演算子 $P_a$ の集合 $\{P_a\}$ による測定
-
--   物理量 $A$ の代わりに，射影演算子 $P_a$ の組 $\{P_a\}$ を考える
--   こうすれば，測定値 $a$ が実数でない場合でも対応できる．測定値は，シンボルだろうがベクトルだろうがなんでも良い
--   ただし，$\sum_a P_a = I$ が成り立つ必要がある
-
-#### POVM（positive operator-valued measure）測定：演算子の組 $\{E_m\}$ による測定
-
-### まとめ
-
-<table>
-  <thead>
-    <tr>
-      <th>種類</th>
-      <th>定義</th>
-      <th>測定値</th>
-      <th>測定演算子</th>
-      <th>測定後の状態</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>射影測定</td>
-      <td>エルミート演算子 $A = \sum_a a P_a$</td>
-      <td>実数</td>
-      <td>射影演算子 $P_a$</td>
-      <td>
-        $\lvert \psi' \rangle \propto P_a \lvert \psi \rangle$  
-        $\rho \propto P_a \rho P_a$
-      </td>
-    </tr>
-    <tr>
-      <td>PVM</td>
-      <td>演算子の組 $\{P_m\}$</td>
-      <td>任意</td>
-      <td>射影演算子 $P_m$</td>
-      <td>
-        $\lvert \psi' \rangle \propto P_m \lvert \psi \rangle$  
-        $\rho \propto P_m \rho P_m$
-      </td>
-    </tr>
-    <tr>
-      <td>POVM</td>
-      <td>演算子の組 $\{E_m\}$</td>
-      <td>任意</td>
-      <td>$\sum_m E_m = \mathbb{I},~E_m \geq 0 \\$ を満たす演算子 $E_m$</td>
-      <td>
-        $E_m = M_m^\dagger M_m$ の時  
-        $\lvert \psi' \rangle \propto M_m \lvert \psi \rangle,~\rho' \propto M_m \rho M_m^\dagger$  
-        典型的には $M_m = \sqrt{E_m}$
-      </td>
-    </tr>
-  </tbody>
-</table>

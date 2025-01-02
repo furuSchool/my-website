@@ -1,0 +1,72 @@
+---
+title: 6. 量子ビット
+---
+:::warning[目標]
+ここからは前までの数学的な基礎を踏まえて，**量子コンピュータの基本単位である量子ビット（qubit）を解析する**
+:::
+---
+## 基本
+:::tip[量子ビット系]
+測定を行った際に，二つの測定値がランダムに起こる物理系．
+- 通常，$\ket{0}, \ket{1} \in \mathbb{C}^2$ の状態を取る
+- 量子ビットの状態は，$\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$ と表現できる
+:::
+- 実験系としては，電子のスピンや光子の偏向など
+- $\ket{0}, \ket{1}$：計算基底（computational basis）
+
+### 量子ビットの観測
+:::tip[観測]
+量子ビットの観測は，量子ビットは計算基底 $\ket{0}, \ket{1}$ による射影測定で行われる．
+- すなわち，物理量 $A = 0\ket{0}\bra{0} + 1\ket{1}\bra{1} = 0P_0 + 1P_1$ による測定
+:::
+- Bornの確率規則より
+    - $0$ を観測する確率：$\bra{\psi}P_0\ket{\psi} = \braket{\psi|0}\braket{0|\psi} = |\alpha|^2$ 
+    $\to$ 測定後の状態：$\ket{\psi^{\prime}} = P_0\ket{\psi} = \ket{0}$
+    - $1$ を観測する確率：$\bra{\psi}P_1\ket{\psi} = \braket{\psi|1}\braket{1|\psi} = |\beta|^2$
+    $\to$ 測定後の状態：$\ket{\psi^{\prime}} = P_1\ket{\psi} = \ket{1}$
+
+### Bloch球
+:::tip[Bloch球]
+Bloch球は，量子ビットの状態の可視化手法．
+- $\left| \psi \right\rangle = \cos\left(\frac{\theta}{2}\right) \left| 0 \right\rangle + 
+e^{i\varphi} \sin\left(\frac{\theta}{2}\right) \left| 1 \right\rangle$ として，
+$\theta, \varphi~(-\pi \leq \theta \leq \pi, 0 \leq \varphi \leq 2\pi)$ で表現
+- 球面上のある点に対応する
+<img src="/img/information/quantum/Bloch_sphere.png" alt="命令一覧" style={{ width: '30%' }} />
+:::
+図は [wiki](https://en.wikipedia.org/wiki/Bloch_sphere) より引用．  
+下記は基底の取り方の他の例
+- 計算基底 $\ket{0}, \ket{1}$ は，Bloch球の $Z$ 軸上に対応
+- $X$ 軸上の正規直交基底（アダマール基底）：$\ket{+} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1}), \ket{-} = \frac{1}{\sqrt{2}}(\ket{0} - \ket{1})$
+- $Y$ 軸上の正規直交基底：$\ket{+i} = \frac{1}{\sqrt{2}}(\ket{0} + i\ket{1}), \ket{-i} = \frac{1}{\sqrt{2}}(\ket{0} - i\ket{1})$
+
+### 量子ビットの時間発展
+:::tip[時間発展]
+量子ビットの時間発展は，公理によりユニタリ演算子 $U_t$ によって行われるユニタリ変換で表現される．
+また，シュレディンガー方程式では，$U_t = e^{-iHt}$ と表現される．
+- 終状態 $\ket{\psi^{\prime}} = U_t\ket{\psi}$
+- ユニタリ変換なので，内積が保存（= 単位ベクトル）：$\braket{\psi^{\prime}|\psi^{\prime}} = \braket{\psi|\psi}$
+- 任意のユニタリ演算子 $U$ に対応するハミルトニアン $H$ が存在すると仮定する
+:::
+
+### 多量子ビット系
+述べたように，多量子ビット系はテンソル積で表現される：
+$\ket{\psi} = \ket{\psi_1} \otimes \cdots \otimes \ket{\psi_n} = \ket{\psi_1 \cdots \psi_n}$  
+上記は積状態と呼ばれるが，一方で上記では表現できない状態も存在する：**エンタングル状態**
+- $n$ qubit 系における観測は，計算基底による観測が行われることが多い $\to$ 測定値は $2^n$ 個
+    - 計算基底：$\ket{i_1 \cdots i_n}~(i_1, \cdots, i_n \in \{0, 1\})$
+    - 状態ベクトルは $2^n$ 次元，ユニタリ変換は $2^n \times 2^n$ の行列
+- 量子計算では環境からのノイズの影響が不可避
+    - ユニタリ変換の時間発展（理論） $\leftrightarrow$ 量子ビットと環境とのエンタングルメント（実際）
+
+### 多量子ビット系の部分観測
+$n$ 量子ビットのうち $m$ 量子ビット（ $m \leq n$ ）のみを観測する場合，
+- 射影演算子：$P_{i_1, \dots, i_m} = \left| i_1, \dots, i_m \right\rangle \left\langle i_1, \dots, i_m \right| \otimes \mathbb{I}$
+- $(i_1,…i_m)$ が観測される確率は Born 規則により$\sum_{i_{m+1},…,i_n} |x_{i_1,…,i_n}|^2$
+
+---
+## その他
+- デコヒーレンス：量子ビットの状態が環境との相互作用により，重ね合わせ状態が失われること．$\ket{0}$ か $\ket{1}$ のどちらかに収束し，古典ビットになる
+- コヒーレンス時間：量子ビットが重ね合わせ状態を保つ時間
+    - $T_1$：$\ket{1}$ が $\ket{0}$ になってしまう時間
+    - $T_2$：重ね合わせ状態が壊れてしまう時間
