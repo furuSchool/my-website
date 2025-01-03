@@ -1,0 +1,105 @@
+---
+title: 7. 量子回路の基本
+---
+:::warning[目標]
+量子回路を形作る量子ゲートについて知る！
+- 量子コンピュータは量子ビットに対して量子ゲート操作をして計算を行う．
+- なお，量子計算で許されるのは**ユニタリ変換**と**観測**のみである．
+:::
+
+## 基本
+#### **量子計算（全ての量子系）で許される操作は「ユニタリ変換」と「観測」のみ**
+- 「計算」＝「ユニタリ変換」
+- 「量子素子」＝「目的のユニタリ変換を実現するためのパーツ」
+### 特徴
+- ユニタリ行列は可逆．測定を含まない量子ビットに対する計算過程は必ず逆演算が存在する：$(U^{-1}=U^\dag)$
+    - 一方で，古典計算は逆演算が存在しない $\to$ 必ず情報消失分のエネルギーを発熱しなければならない
+- 量子計算では，低次元のユニタリ演算を組み合わせることで任意のユニタリ演算を実現し，量子計算を行う
+
+### 量子回路について
+- 横線は量子ビットを表す
+- 箱や縦線，$\oplus, \bullet$ などは量子ゲートを表す
+- 量子回路は左から右に進む
+- 多くの量子プログラミングは，量子回路を書くことと等価
+
+---
+## 1量子ビットゲート
+### Pauli ゲート
+- $X$ ゲート = NOT 演算，ビット反転：$X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix},~X|0\rangle = |1\rangle,~X|1\rangle = |0\rangle$
+    - $X = \ket{0}\bra{1} + \ket{1}\bra{0}$ とも書ける
+- $Y$ ゲート = ビット反転＋位相反転：$Y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix},~Y|0\rangle = i|1\rangle,~Y|1\rangle = -i|0\rangle$
+    - $Y = -i\ket{0}\bra{1} + i\ket{1}\bra{0}$ とも書ける
+- $Z$ ゲート = 位相反転：$Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix},~Z|0\rangle = |0\rangle,~Z|1\rangle = -|1\rangle$
+    - $Z = \ket{0}\bra{0} - \ket{1}\bra{1}$ とも書ける
+
+### Hadamard ゲート
+- $H$ ゲート = 量子ビットの重ね合わせを作る：$\\H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix},~
+H|0\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) = \ket{+},~H|1\rangle = \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle) = \ket{-}$
+    - 基底変換ですね
+
+### 位相ゲート
+- $S$ ゲート = $Z$ 軸周り $\frac{\pi}{2}$ 回転：$S = \begin{pmatrix} 1 & 0 \\ 0 & i \end{pmatrix},~S|0\rangle = |0\rangle,~S|1\rangle = i|1\rangle$
+- $T$ ゲート = $Z$ 軸周り $\frac{\pi}{4}$ 回転：$T = \begin{pmatrix} 1 & 0 \\ 0 & e^{i\frac{\pi}{4}} \end{pmatrix},~T|0\rangle = |0\rangle,~T|1\rangle = e^{i\frac{\pi}{4}}|1\rangle$
+- $R_x(\theta)$ ゲート = $X$ 軸周り $\theta$ 回転：$R_x(\theta) = e^{-i\frac{\theta}{2}X} = \begin{pmatrix} \cos\frac{\theta}{2} & -i\sin\frac{\theta}{2} \\ -i\sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{pmatrix}$
+    - $X$ 軸要素は不変
+- $R_y(\theta)$ ゲート = $Y$ 軸周り $\theta$ 回転：$R_y(\theta) = e^{-i\frac{\theta}{2}Y} = \begin{pmatrix} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{pmatrix}$
+- $R_z(\theta)$ ゲート = $Z$ 軸周り $\theta$ 回転：$R_z(\theta) = e^{-i\frac{\theta}{2}Z} = \begin{pmatrix} e^{-i\frac{\theta}{2}} & 0 \\ 0 & e^{i\frac{\theta}{2}} \end{pmatrix}$
+---
+## 2量子ビットゲート
+2量子ビットゲートは，$\ket{00},~\ket{01},~\ket{10},~\ket{11}$ の4つの基底に対して，$4\times4$ のユニタリ行列を作用させる．
+- 量子状態は2量子ビットのテンソル積 = $4$ 次元ベクトル，量子ゲートは $4\times4$ のユニタリ行列
+
+### CNOT(制御NOT) ゲート
+<img src="/img/information/quantum/cnot.png" alt="CNOTゲート" style={{ width: '30%' }} />
+https://xtech.nikkei.com/atcl/nxt/column/18/01901/00025/?SS=imgview&FD=-1972773010 より引用．   
+$\text{CNOT} = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix},~
+~\text{CNOT}|\text{01}\rangle = |\text{01}\rangle,~\text{CNOT}|\text{10}\rangle = |\text{11}\rangle$
+- 1ビット目 = 制御量子ビット，2ビット目 = ターゲット量子ビット
+- 制御量子ビットが $1$ のとき，ターゲット量子ビットを反転する
+- $\ket{ij} \xrightarrow{CNOT} \ket{i(j \oplus i)}$，$\oplus$ は $XOR$ 演算
+
+### SWAP ゲート
+<img src="/img/information/quantum/swap.png" alt="SWAPゲート" style={{ width: '20%' }} />
+https://whyitsso.net/physics/quantum_mechanics/swaptest.html より引用．  
+$\text{SWAP} = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix},~
+~\text{SWAP}|\text{01}\rangle = |\text{10}\rangle,~\text{SWAP}|\text{10}\rangle = |\text{01}\rangle\\$
+$\text{SWAP} (a_0b_0\ket{00} + a_1b_0\ket{01} + a_0b_1\ket{10} + a_1b_1\ket{11}) = a_0b_0\ket{00} + a_0b_1\ket{01} + a_1b_0\ket{10} + a_1b_1\ket{11}$
+- $\text{SWAP}_{ij} = \text{CNOT}_{ij}\text{CNOT}_{ji}\text{CNOT}_{ij}$
+
+### OR ゲート
+<img src="/img/information/quantum/or.png" alt="ORゲート" style={{ width: '30%' }} />
+
+### AND ゲート
+<img src="/img/information/quantum/and.png" alt="ANDゲート" style={{ width: '20%' }} />
+
+### 制御 $U$ ゲート
+<img src="/img/information/quantum/u.png" alt="制御Uゲート" style={{ width: '30%' }} />
+- 制御ビット $a$ と標的ビット $b$ として，$a = 1$ のときのみ $U$ ゲートを作用させる
+- $\ket{b} ~ \text{if} ~ a = 0,~U\ket{b} ~ \text{if} ~ a = 1$
+- また，条件部を NOT 処理した場合もよく使われる：$\ket{b} ~ \text{if} ~ a = 1,~U\ket{b} ~ \text{if} ~ a = 0$
+    - この場合は，OR ゲートの時のように制御ビット部分を $X$ ゲートで挟んで反転させれば良い
+
+---
+## 多量子ビットゲート
+### GCNOT ゲート
+- 一般化された CNOT ゲート
+- 制御ビットを $k$ 個持ち，そのうち全てが $1$ のときのみターゲットビットを反転する
+- $\text{GCNOT}\ket{x_1x_2\cdots x_ky} = \ket{x_1x_2\cdots x_k(y \oplus (x_1 \land x_2 \land \cdots \land x_k))}$
+
+### Toffoli ゲート(CCNOT ゲート)
+<img src="/img/information/quantum/ccnot.png" alt="Toffoliゲート" style={{ width: '30%' }} />
+- GCNOT ゲートのうち，制御ビットが $2$ 個の場合 = 3量子ビットゲート
+- **量子版 NAND ゲート**
+
+### 複数制御 $U$ ゲート
+- 制御ビットを $n$ 個持ち，標的ビットを $k$ 個持つ $U$ ゲート．制御ビットが全て $1$ のときのみ $U$ ゲートを作用させる
+- $C^n(U)\ket{x_1x_2\cdots x_n}\ket{\psi} = \ket{x_1x_2\cdots x_n}U^{x_1x_2\cdots x_n}\ket{\psi}$
+
+### Hadamard ゲートの組み合わせ
+- $n$ ビット全てに Hadamard ゲートを作用させると，$n$ ビットの重ね合わせ状態を作ることができる
+    - $H\ket{0} \otimes \cdots \otimes H\ket{0} = \frac{1}{\sqrt{2^n}}\sum_{x=0}^{2^n-1}\ket{x}$
+- すなわち，すべての基底が等振幅で重ねあわされた量子ビット列 = **等振幅生成**
+:::warning[重要]
+量子計算の一つの利点は並列性による探索 $\to$ すべてのビット列を等確率で重ね合わせて入力して全てのビット列を一度に探索できる．
+- でも，観測すると確率振幅が一つの基底に集中するので，全結果を同時に得ることはできない：実用的に並列性を活かすには工夫が必要
+:::
