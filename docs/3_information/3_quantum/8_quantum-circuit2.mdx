@@ -6,3 +6,22 @@ title: 8. 量子回路の実装
 - 低次元のユニタリ演算を組み合わせることで任意の量子計算を行う
 :::
 
+## $Z$-$Y$ 分解
+:::tip[$Z$-$Y$ 分解]
+任意の $2\times2$ のユニタリ行列 $U$ は，このような形に分解できる：$U = e^{i\alpha} R_z(\beta) R_y(\gamma) R_z(\delta)$
+- $R_z(\theta) = e^{-i\frac{\theta}{2}Z} = \begin{pmatrix} e^{-i\frac{\theta}{2}} & 0 \\ 0 & e^{i\frac{\theta}{2}} \end{pmatrix},
+~R_y(\theta) = e^{-i\frac{\theta}{2}Y} = \begin{pmatrix} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{pmatrix}$
+
+**つまり，$R_y(\theta)$ ゲートと $R_z(\theta)$ ゲートがあれば，任意の１量子ビット上のユニタリ演算を実現できる．**
+:::
+- $2\times2$ のユニタリ行列なので，これは１量子ビットゲートの話
+
+また，$A,B,C$ を以下のように定義すると，$U$ をユニタリ演算子として，以下を満たすユニタリ演算子 $A,B,C$ が存在する：**回路実装時に便利**
+- $A = R_z(\beta) R_y(\frac{\gamma}{2}),~B = R_z(-\frac{\gamma}{2}) R_y(-\frac{\delta + \beta}{2}),~C = R_z(\frac{\delta - \beta}{2})$
+- $ABC = I,~U = e^{i\alpha}AXBXC,~\left(X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix},~X^2 = I\right)$
+
+### 例
+#### Hadamard変換
+$H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix} = e^{\frac{i\pi}{2}}R_z(\frac{\pi}{2}) R_y(\frac{\pi}{2}) R_z(\frac{\pi}{2})$
+#### 制御 $U$ 素子
+
