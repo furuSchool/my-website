@@ -67,9 +67,9 @@ exit(status);
 ### `waitpid`：子プロセスの終了待ち + 処理(ゾンビ状態を解消; プロセス番号の回収)
 - 変種: wait, wait3, wait4
 - プロセス C がゾンビ (defunct) = C が終了しているが,その親が (waitpid などで)C の終了を確認していない状態
-= C のプロセス番号を再利用できない状態 「waitpod = “the parent reaps the child”」
+= C のプロセス番号を再利用できない状態 「waitpid = “the parent reaps the child”」
     - `waitpid` は、子がプロセスを終了するまで待ち, プロセス番号を回収して処理を終える = 子プロセスがなくなる
-    - 親が子より先に終了する → 全プロセスの先祖 (init) が C の親をする
+    - 親が子より先に終了する $\rightarrow$ 全プロセスの先祖 (init) が C の親をする
 
 ```c
 int ws;
