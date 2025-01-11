@@ -121,20 +121,60 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: '記事',
           items: [
             {
-              label: 'Home',
-              to: '/',
+              label: 'このサイトについて',
+              to: '/docs/intro',
+            },
+            {
+              label: '数学',
+              to: '/docs/math',
+            },
+            {
+              label: '物理',
+              to: '/docs/physics',
+            },
+            {
+              label: '情報系',
+              to: '/docs/information',
+            },
+            {
+              label: 'プログラミング',
+              to: '/docs/programming',
+            },
+            {
+              label: '気象',
+              to: '/docs/weather',
+            },
+            {
+              label: 'その他',
+              to: '/docs/others',
             },
           ],
         },
         {
-          title: 'Community',
+          title: '外部リンク',
           items: [
             {
-              label: 'yakushoku-gime',
+              label: '役職決め',
               href: 'https://furuschool.github.io/yakushoku-sort/',
+            },
+            {
+              label: '気象データ可視化サイト',
+              href: 'https://capstone-project-a-fjk.onrender.com/',
+            },
+            {
+              label: '竜馬の一生を体験してみよう',
+              href: 'https://storymaps.arcgis.com/stories/6b8b5d07c543411a88dff8f960c8aad7',
+            },
+            {
+              label: '東京の今と昔を『写真 × 地図』で冒険しよう',
+              href: 'https://gihdedhbfj.reearth.io/',
+            },
+            {
+              label: 'QRコードを体験してみよう！',
+              href: 'https://ut-code.github.io/qrcode/',
             },
           ],
         },
