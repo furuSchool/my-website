@@ -1,0 +1,61 @@
+---
+title: デジタル変調
+---
+
+:::warning[デジタル変調]
+デジタル信号を変調してアナログ信号に乗せる方法のことをデジタル変調という
+:::
+
+----
+## PAM（パルス振幅変調）
+デジタル信号を振幅の大きさとして符号化する方法。[ISDN](https://ja.wikipedia.org/wiki/ISDN) などで使われる。
+
+PCM は A/D 変換の一種であり，PAM はどちらかというとデジタル変調の一部，という位置づけらしい。
+
+---
+## ASK, PSK, FSK
+### OOK(On-Off Keying) = ASK(Amplitude Shift Keying)
+：搬送波 $m(t) = A_c \cos(2\pi f_c t)$ に対して，0,1 の方形波を掛けるだけ。0 なら振幅 0，1 なら搬送波そのまま。
+- めっちゃシンプルで良い
+- 雑音に弱い（振幅に影響することが多いため），効率は良くない
+- 光ファイバーやモールス信号，ETC などで使われる
+
+### PSK（位相偏移変調）
+PSK は位相によって信号を表現する
+- BPSK(Binary PSK) は polar ASK（-1, 1 の信号を振幅変調したもの） と同じ
+- DPSK(Differential PSK) は 1 なら位相を反転させる $\rightarrow$ 波形が不連続
+- QPSK(Quadrature PSK) など，複数の位相を使う場合が多い（多値化）：位相が 180 度変わる可能性がある
+- OQPSK：波形の位相が 90 度以上変わるにならないようにしたもの（信号空間ダイアグラム参照）
+- **位相が一気に変化するほど，周波数帯域が広くなってしまう**
+
+### FSK（周波数偏移変調）
+FSK は周波数の違いによって信号を表現する
+- 大体 2 つの周波数を使い，周波数領域では二つのピークが見える
+    - 一方で，ASK と PSK は周波数領域では一つのピーク
+- MSK：帯域幅を小さくしたもの
+    - GMSK：ガウスフィルタ（ガウス特性のローパスフィルタ）で帯域制限した MSK
+    - GFSK：Blootooth などで使われる
+
+
+### 復調
+- ASK：包絡線検波、コヒーレント検波（キャリアと位相を同期させる必要あり）
+- PSK：包絡線検波は無理。DSB-SC demodulator などのようなコヒーレント検波（同期必要）
+- FSK：包絡線検波 → どちらの周波数が大きいか判断（ $f_1, f_2$ のいずれか） or コヒーレント検波
+
+---
+## QAM（Quadrature Amplitude Modulation）
+振幅変調と位相変調を組み合わせたもの。信号空間ダイアグラムを見るとわかりやすい。
+
+---
+## 信号空間ダイアグラム（Constellation Diagram）
+振幅を原点からの距離，位相を x 軸からの角度としてプロットしたもので，デジタル変調の信号の可視化に使う。
+### 特徴
+- 信号点が大きいほど多値化 $\rightarrow$ 伝送効率が良い
+- 信号点間距離が大きいほど雑音に強い $\rightarrow$ BER が良い
+
+### 例
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px' }}>
+  <img src="/img/physics/PSK.png" style={{ width: '80%' }} />
+  <img src="/img/physics/QAM.png" style={{ width: '20%' }} />
+</div>
+[wiki](https://ja.wikipedia.org/wiki/%E4%BF%A1%E5%8F%B7%E7%A9%BA%E9%96%93%E3%83%80%E3%82%A4%E3%83%A4%E3%82%B0%E3%83%A9%E3%83%A0) より引用

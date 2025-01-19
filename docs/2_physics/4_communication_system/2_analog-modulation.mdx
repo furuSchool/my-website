@@ -1,0 +1,135 @@
+---
+title: アナログ変調
+---
+
+正直難しくてよくわからん部分がある。まあでも，デジタル変調の時代やしいいっちゃいいのか？
+
+## 変調とは
+:::tip[変調]
+変調：通信路を通じて情報を送信しやすくするために，情報を別の信号に変換するプロセス
+- キャリア信号の生成（搬送波）→ キャリア信号の特性を変更 → 受信機による信号の検出・復元
+- 変調により，周波数の変換・周波数分割多重化・ノイズ耐性の向上 といったメリットがある
+:::
+
+---
+## ベースバンド変調
+いわゆる，変調しない通信。効率が悪く，雑音の影響を受けやすい
+- 例）電話: 300 ~ 3700 Hz, イーサネット: 0 ~ 20 MHz，TV: 0 ~ 4.3 MHz
+
+---
+## アナログ変調
+:::tip[アナログ変調の基礎]
+変調後の信号：$s(t) = A(t) \cos(\omega_c(t) + \phi(t))$  
+搬送波（正弦波：$c(t) = A_c \cos(\omega_c t + \theta_0)$）に情報信号 $m(t)$ を乗せる
+- AM：振幅 $A(t)$ に $m(t)$ を乗せる：主に音声信号に使われる
+- FM：周波数 $\omega_c(t)$ に $m(t)$ を乗せる
+- PM：位相 $\phi(t)$ に $m(t)$ を乗せる
+:::
+---
+## AM変調
+### DSB-SC（両側帯域 AM 変調）
+：あまり使われない
+:::tip[DSB-SC]
+搬送波 $c(t) = A_c \cos(\omega_c t + \theta_0)$，情報信号 $m(t)$ として，  
+変調後の信号 $s(t) = m(t) \cdot c(t) = A_c m(t) \cos(\omega_c t + \theta_0)$
+- $m(t)$ の周波数成分 $f$ として，$|f| < W < f_c$
+:::
+- 周波数領域では，$S(f) = \frac{A_c}{2} M(f - f_c) + \frac{A_c}{2} M(f + f_c)$
+- 情報信号の帯域幅 $B_c = 2W$ として，$(-f_c - W, -f_c + W), (f_c - W, f_c + W)$
+- USB（Upper Side Band）：周波数（の絶対値）が $f_c$　より小さい部分，LSB（Lower Side Band）：その逆
+- 送信信号の電力 $P_s = \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} s^2(t) dt 
+= \frac{A_c^2}{2}P_m$，情報信号の電力効率 $P_m = \frac{1}{2} \int_{-W}^{W} m^2(t) dt$
+- 電力効率がよい！
+- 直流には弱い
+
+#### 受信器
+$v(t) = s(t)\cos(2\pi f_ct)$ として，$v(t) = \frac{A_c}{2} m(t) + \frac{A_c}{2} m(t) \cos(4\pi f_c t)$ で復元
+- $f_c$ はすぐわかるが，位相を合わせて掛け合わせるのが難しい $\rightarrow$ PLL(phase-locked loop) ：めんどい
+    - これを，コヒーレント受信/コヒーレント検波などという
+- VCO（Voltage Controlled Oscillator）：入力電圧と出力周波数が比例する発振器。PLL では基準信号として使われる
+### 実用的な AM 変調
+：例えば，AM ラジオ放送で使われている
+:::tip[AM 変調]
+PLL はしたくない $\rightarrow$ 搬送波も一緒に送る。変調波：$s(t) = A_c(1+k_a m(t))\cos (\omega_c t+\theta_0)$
+:::
+- 帯域幅 $B_c = 2W$
+- 電力 $P_s = \frac{A_c^2}{2}+\frac{k_a^2 A_c^2}{2}P_m$
+- 変調効率：$E =\frac{k_a^2 P_m}{1+k_a^2 P_m}$：75 % くらいを搬送波に使っている
+- $k_a < 1$ でないと情報を復元できない
+
+#### 受信器
+LPF により包絡線検波を行う：受信した信号を整流して，RC並列回路で平滑化すればよい
+
+### SSB（単側帯域 AM 変調）
+:::tip[SSB]
+DSB-SC は帯域幅を 2 倍使ってしまっている。そこで，DSB からフィルターを行って USB または LSB のどちらかを選ぶ
+:::
+- 帯域幅が小さく電力効率がよいが，フィルターが難しいためほとんど使われていない。
+- $s_{SSB}(t) = m(t) \cos(\omega_c t) -m_h(t) \sin(\omega_c t)$
+    - $m_h(t)$ は $m(t)$ をヒルベルト変換により 90 度回転させたもの
+
+### VSB（Vestigial Side Band）
+：例えば，アナログテレビ放送で使われている
+:::tip[VSB]
+音声などでは，低周波数（300Hz 以下など）はほとんど存在しない。
+そこで，変調信号の周波数帯 $(f_c - W, f_c + W)$ のうち，$(f_c, f_c + W)$ の周波数成分を残し，$f_c$ 付近以下を緩やかにカットしても問題ない
+- すなわち，SSB と異なりシャープなカットオフを行わず，LSB の一部も残る
+:::
+
+### アナログ QAM
+：$𝑚_{QAM,c}(t) = 𝑚_1(t)\cos 2\pi f_ct + 𝑚_2(t)\sin(2πf_c t)$
+- 直交する搬送波を用いて効率を上げる変調法
+---
+## FM 変調と PM 変調
+PM 変調と FM 変調では， $\phi(t) = A\cos \theta(t)$ と一般化した信号で， 一般化角 $\theta(t)$ に情報を乗せる：Angle Modulation
+- **瞬時周波数 $\omega(t) = \frac{d\theta(t)}{dt} = \theta'(t)$：周波数は位相の微分となる**
+    - 逆に，位相は周波数の積分となる： $\theta(t) = w(0) + \int_{0}^{t} \omega(u) du$
+- FM と PM の波形は区別がつかない
+- 振幅の大きさが変わらない = 干渉に強い
+
+:::tip[PM 変調]
+変調後の信号：$s(t) = A_c \cos(\omega_c t + k_p m(t))$
+:::
+- 瞬時周波数 $f_i = f_c + \frac{k_p}{2\pi} \dot{m}(t)$
+    - 例えば， $f_i = 10^8 + 5 \dot{m}(t)$
+
+:::tip[FM 変調]
+変調後の信号：$s(t) = A_c \cos(\omega_c t + k_f a(t)) = A_c \cos(\omega_c t + k_f \int_{-\infty}^{t} m(u) du)$
+:::
+- 信号を積分してから PM したのと同じ
+- 瞬時周波数 $f_i = f_c + \frac{k_f}{2\pi} m(t)$
+    - 例えば， $f_i = 10^8 + 10^5 m(t)$
+- $m(t)$ と $a(t)$ の帯域幅は同じ：フーリエ変換をするとわかる
+- ただし，FM は原理的には無限の帯域幅を持つ
+    - $\phi_{FM}(t) = \text{Re}(A\exp(j\omega_c t + jk_f a(t)))$ をテイラー展開すればわかる $\rightarrow$ どうやって近似するか？
+
+### narrowband approximation (NBFM)
+$\phi_{FM}(t)  = A(\cos\omega_c t - k_f a(t) \sin\omega_c t)$ と近似するもの
+- このとき，帯域幅は $2W$：AM と同じ
+- PM なら，$\phi_{PM}(t)  = A(\cos\omega_c t - k_p m(t)\sin\omega_c t)$
+- 位相の 90 度回転はステップ関数を使う？
+
+### wideband approximation (WBFM)
+Carson’s Rule：帯域幅は $2(\Delta f + W)$
+- 最大周波数偏差 $\Delta f = \frac{k_f}{2\pi} \max |m(t)|$
+- PM なら $\Delta f = \frac{k_p}{2\pi} \max |m'(t)|$：スペクトルが高い方に集中すると帯域幅が広くなる $\left(\frac{dm(t)}{dt} \leftrightarrow j\omega M(\omega)\right)$
+
+### 正弦波の FM 変調
+この部分は必要なのかよくわからん
+
+入力 $m(t) = A_m \cos(\omega_m t)$ のとき，$\phi_{FM}(t) = A \exp(j\omega_c t + j\beta \sin(\omega_m t))$
+- 変調指数（modulation index）：$\beta = \frac{k_f}{\omega_m}$
+
+### FM の復調方法
+FM の復調は，帯域通過リミッタに通した後，微分回路に通した上で包絡線検波を行う…が，詳細はむずい。けど、実装がそこまで難しいわけではない。
+- RC 回路などを用いて微分すると：$\frac{d\phi_{FM}(t)}{dt} = -A(\omega_c + k_f m(t))\sin(\omega_c t + k_f a(t))$
+
+#### スーパーヘテロダイン受信機
+- 受信信号を搬送波周波数よりも低い周波数 $f_{IF}$ に変換してから復調する
+
+### FM の長所
+- 振幅一定のため，フェージング（不規則な信号の減衰）に強い：AGC（自動利得制御）が有効に働く
+- 非線形歪みに強い：復調時にバンドパスフィルターで取り除くことができる（AM は難しい）
+- また，弱い干渉は抑圧してしまう（弱肉強食理論というらしい）
+    - AM だと，干渉による影響は搬送波振幅 $A$ によらない
+- 総じて，雑音や干渉に強い $\rightarrow$ FM の方が音楽番組が多い
