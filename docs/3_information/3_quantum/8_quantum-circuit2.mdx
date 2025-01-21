@@ -12,7 +12,7 @@ title: 8. 量子回路の実装
 - $R_z(\theta) = e^{-i\frac{\theta}{2}Z} = \begin{pmatrix} e^{-i\frac{\theta}{2}} & 0 \\ 0 & e^{i\frac{\theta}{2}} \end{pmatrix},
 ~R_y(\theta) = e^{-i\frac{\theta}{2}Y} = \begin{pmatrix} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{pmatrix}$
 
-**つまり，$R_y(\theta)$ ゲートと $R_z(\theta)$ ゲートがあれば，任意の１量子ビット上のユニタリ演算を実現できる．**
+**つまり，$R_y(\theta)$ ゲートと $R_z(\theta)$ ゲートがあれば，任意の１量子ビット上のユニタリ演算を実現できる。**
 :::
 - $2\times2$ のユニタリ行列なので，これは１量子ビットゲートの話
 
@@ -26,17 +26,17 @@ $H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix} = e^{\frac{
 
 ### その他の素子の実装
 #### 制御 $U$ 素子
-下記のように実装できる．
+下記のように実装できる。
 <img src="/img/information/quantum/u2.png" alt="制御 $U$ 素子" width="50%"/>
 ただし，$ABC = I,~U = e^{i\alpha}AXBXC,~\left(X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix},~X^2 = I\right)$
 
 #### Toffoli （CCNOT）素子の実装
-Toffoli 素子は，CNOT 素子と 1 入出力素子の組み合わせで実装できる．  
-ただし，$V = \frac{1}{2} (1-i)(I + iX),~\left(V^2 = X,~VV^{\dagger} = I\right)$ である．
+Toffoli 素子は，CNOT 素子と 1 入出力素子の組み合わせで実装できる。  
+ただし，$V = \frac{1}{2} (1-i)(I + iX),~\left(V^2 = X,~VV^{\dagger} = I\right)$ である。
 <img src="/img/information/quantum/ccnot2.png" alt="Toffoli素子" width="50%"/>
 
 #### $C^n(U)$ 素子の実装
-：複数の条件部を持つ場合，work qubitを導入すると，カスケードによって **Toffoli 素子と制御 $U$ 素子** によって簡単に実現できる．  
+：複数の条件部を持つ場合，work qubitを導入すると，カスケードによって **Toffoli 素子と制御 $U$ 素子** によって簡単に実現できる。  
 例えば，$C^n(U)\ket{x_1x_2\cdots x_n}\ket{\psi} = \ket{x_1x_2\cdots x_n}U^{x_1x_2\cdots x_n}\ket{\psi}$ の場合，
 - 制御ビット：$x_1,~x_2,~\cdots,~x_{n}$，work qubit：$w_i = 0$ を $n-1$ 個用意，ターゲットビット：$\ket{\psi}$
 1. $\ket{w_1} = U^{x_1 \land x_2}\ket{0},~\ket{w_2} = U^{w_1 \land x_3}\ket{0},~\cdots,~\ket{w_{n-1}} = U^{w_{n-2} \land x_n}\ket{0}$：Tofolli 素子
@@ -46,11 +46,11 @@ Toffoli 素子は，CNOT 素子と 1 入出力素子の組み合わせで実装�
 ---
 ## ユニバーサル量子素子
 :::tip[ユニバーサル]
-任意のユニタリ変換を実現するための素子のセットを，**ユニバーサル（Universal）** であるという．
+任意のユニタリ変換を実現するための素子のセットを，**ユニバーサル（Universal）** であるという。
 :::
 - 古典計算の例：AND, OR, NOT ゲートのセットは Universal：AND, OR, NOT ゲートによって全ての計算が可能
 
-$n$ qubit 系のユニバーサル素子の実現は以下のようにしてできる．
+$n$ qubit 系のユニバーサル素子の実現は以下のようにしてできる。
 
 ### 2 レベルユニタリ素子の組み合わせ
 $n$ qubit 系のユニバーサル素子は，**2 レベルユニタリ素子の組み合わせ** で実現できる
@@ -59,14 +59,14 @@ $n$ qubit 系のユニバーサル素子は，**2 レベルユニタリ素子の
 - したがって，2 レベルユニタリ素子を $2^{n-1}(2^n - 1)$ 個組み合わせることで，任意の $n$ qubit 系のユニタリ変換を実現できる
 
 ### 1 量子ビット入出力素子と，CNOT 素子の組み合わせ
-さらに，2 レベルユニタリ素子を **1 量子ビット入出力素子と CNOT 素子** で表現することができる．
+さらに，2 レベルユニタリ素子を **1 量子ビット入出力素子と CNOT 素子** で表現することができる。
 - 1 量子ビット入出力素子 $U$：$2 \times 2$ のユニタリ行列
 - CNOT 素子：$4 \times 4$ のユニタリ行列 $\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix}$
 - 1 ビット入出力量子素子と CNOT 素子を合計 $O(n^22^{2n})$ 個使用すれば 任意の $n$ qubit 系のユニタリ変換を実現できる
 
 ### 1 量子ビットに対するユニタリ変換の実現
 :::tip[定理]
-任意の1 量子ビットに対するユニタリ変換は，$H$ と $T$ ゲートで任意精度で近似できる．
+任意の1 量子ビットに対するユニタリ変換は，$H$ と $T$ ゲートで任意精度で近似できる。
 - $H$ ゲート：$H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$
 - $T$ ゲート：$T = \begin{pmatrix} 1 & 0 \\ 0 & e^{i\frac{\pi}{4}} \end{pmatrix}$
 :::

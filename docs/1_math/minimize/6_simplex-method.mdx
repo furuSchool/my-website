@@ -25,12 +25,12 @@ $c_N - A_N^T \pi \ge 0~\Rightarrow~(x_B,x_N)=(A_B^{-1}b,0)$ は最適解
 :::tip[単体法の定義]
 ピボット操作を行って目的関数値が減少するように新しい実行可能基底解（実行可能領域の端点）に移るアルゴリズム. 
 
-0. 初期実行可能基底解 $(x_B, x_N) = \left( A_B^{-1} b, 0 \right)$ を選ぶ．つまり，$(B, N)$ を選ぶ．
-1. 単体乗数 $\pi := \left( A_B^{-1} \right)^T c_B$ を計算する．
-2.  $c_N - A_N^T \pi \geq 0 \quad \Rightarrow$ 最適基底解が得られているので終了．
-$\\c_N - A_N^T \pi \ngeq 0 \quad \Rightarrow$ $(c_N - A_N^T \pi)_k < 0$ に対応する $k \in N$ を選ぶ．
-3. $y = A_B^{-1} (A_N)_k$ を計算し，$y$ に正の要素がなければ問題は有界でないので終了．
-$\\$そうでなければ，$\Delta := \min \{ \tilde{b}_i / y_i \mid y_i > 0 \} = \tilde{b}_i / y_i$ に対応する $i \in B$ を求める．
+0. 初期実行可能基底解 $(x_B, x_N) = \left( A_B^{-1} b, 0 \right)$ を選ぶ。つまり，$(B, N)$ を選ぶ。
+1. 単体乗数 $\pi := \left( A_B^{-1} \right)^T c_B$ を計算する。
+2.  $c_N - A_N^T \pi \geq 0 \quad \Rightarrow$ 最適基底解が得られているので終了。
+$\\c_N - A_N^T \pi \ngeq 0 \quad \Rightarrow$ $(c_N - A_N^T \pi)_k < 0$ に対応する $k \in N$ を選ぶ。
+3. $y = A_B^{-1} (A_N)_k$ を計算し，$y$ に正の要素がなければ問題は有界でないので終了。
+$\\$そうでなければ，$\Delta := \min \{ \tilde{b}_i / y_i \mid y_i > 0 \} = \tilde{b}_i / y_i$ に対応する $i \in B$ を求める。
 ただし，$\tilde{b} := A_B^{-1} b$
 4. $B \leftarrow (B \setminus \{ i \}) \cup \{ k \} \quad N \leftarrow (N \setminus \{ k \}) \cup \{ i \}$ で, 1に戻る
 :::

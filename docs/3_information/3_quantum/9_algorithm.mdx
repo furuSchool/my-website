@@ -1,0 +1,139 @@
+---
+title: 9. 量子アルゴリズム
+---
+
+:::warning[目標]
+量子コンピュータで作成可能なアルゴリズムを学ぶ！
+:::
+
+---
+## 基本原理
+### Quantum arithmetic
+:::tip[Quantum arithmetic]
+古典コンピュータ上のあらゆる計算は量子コンピュータ上でも計算可能。
+:::
+- 量子ゲートによって，AND，OR，NORは実現可能のため
+- 入力として，重ね合わせも使える。が，測定は確率的になるため，入力を重ね合わせにするだけでは量子的な高速化はない
+
+### No cloning theorem
+:::tip[No cloning theorem]
+量子コンピュータ上では，任意の量子状態のコピーは原理的に不可能。
+:::
+証明）任意の状態 $\ket{\psi}_A$ を $\ket{\psi}_B = \ket{0}$ にコピーできるユニタリ操作 $U_{COPY}$ を仮定すると
+- $U_{COPY}(\ket{\psi}_A\ket{0}_B) = \ket{\psi}_A\ket{\psi}_B$
+- $U_{COPY}(\ket{\phi}_A\ket{0}_B) = \ket{\phi}_A\ket{\phi}_B$
+
+この二つの内積をとると，$\bra{\psi}_A\bra{0}_B U_{COPY}^{\dagger} U_{COPY} \ket{\phi}_A\ket{0}_B = \bra{\psi}_A\bra{\psi}_B\ket{\phi}_A\ket{\phi}_B$ より，  
+$\braket{\psi | \phi} = (\braket{\psi | \phi})^2$ となり，矛盾。
+
+---
+## アダマールテスト
+:::tip[アダマールテスト]
+ユニタリ行列 $U$ に対して，その固有値を推定するサブルーチン。
+:::
+<img src="/img/information/quantum/hadamard_test.png" alt="アダマールテスト" style={{ width: '50%' }} />
+1. アダマールゲートに通す：$\frac{1}{\sqrt{2}}(\ket{0} + \ket{1}) \otimes \ket{\psi}$
+2. 制御 $U$ ゲートを通す：$\frac{1}{\sqrt{2}}(\ket{0} \otimes \ket{\psi} + \ket{1} \otimes U\ket{\psi}) 
+= \frac{1}{\sqrt{2}}(\ket{0}+e^{i\lambda}\ket{1}) \otimes \ket{\psi}$
+3. アダマールゲートに通す：$(\frac{1+e^{i\lambda}}{2}\ket{0} + \frac{1-e^{i\lambda}}{2}\ket{1}) \otimes \ket{\psi}$
+
+観測基底 $\ket{0}, \ket{1}$ で測定すると，それぞれ確率 $\frac{1+\cos\lambda}{2}, \frac{1-\cos\lambda}{2}$ で得られる。
+
+---
+## Swap test
+:::tip[Swap test]
+規格化されたベクトル $\ket{a} = \sum_i a_i\ket{i}, \ket{b} = \sum_i b_i\ket{i}$ に対して，内積 $\braket{a|b}$ を推定するサブルーチン。
+:::
+---
+## 量子フーリエ変換
+:::tip[量子フーリエ変換]
+量子コンピュータで離散フーリエ変換を行うサブルーチン。  
+規格化された配列 $\{x_j\}(j = 0, 1, \cdots, 2^n - 1)$ に対して，
+$y_k = \frac{1}{\sqrt{2^n}}\sum_{j=0}^{2^n-1}x_j\exp(i \frac{2\pi kj}{2^n})$ を計算する。
+
+言い換えると，$\ket{x} = \sum_{j=0}^{2^n-1}x_j\ket{j}$，$\ket{y} = \sum_{k=0}^{2^n-1}y_k\ket{k}$ に対して，  
+$\ket{y} = \sum_{j=0}^{2^n-1}x_j\left(\frac{1}{\sqrt{2^n}}\sum_{k=0}^{2^n-1}\exp(i \frac{2\pi kj}{2^n})\ket{k}\right)$ となるので，
+
+$\ket{j} \xrightarrow{QFT} \frac{1}{\sqrt{2^n}}\sum_{k=0}^{2^n-1}\exp(i \frac{2\pi kj}{2^n})\ket{k}$ という量子回路を作成する。
+:::
+
+---
+## 量子位相推定
+:::tip[量子位相推定]
+ユニタリ行列の固有値を求めるアルゴリズムで，多くの量子アルゴリズムの基礎になる重要なサブルーチン。
+:::
+
+---
+## 振幅増幅
+:::tip[振幅増幅]
+重ね合わせ状態の中の望みの量子状態の確率振幅を選択的に大きくするアルゴリズム。グローバーの探索アルゴリズムの基礎。
+:::
+
+---
+## ショアのアルゴリズム
+:::tip[ショアのアルゴリズム]
+素因数分解を行うアルゴリズム。位相推定サブルーチンの応用例であり，位数発見問題に帰着させて解く。
+:::
+
+---
+## Deutsch-Jozsa（ドイッチュ・ジョザ）のアルゴリズム
+:::tip[Deutsch-Jozsaのアルゴリズム]
+与えられた関数 $f:\{0,1\}^n\rightarrow \{0,1\}$ が定数関数かバランス関数かを判定するアルゴリズム。
+- 定数関数：すべての入力 $x$ に対して $f(x) = 0$ または $f(x) = 1$
+- バランス関数：すべての入力 $x$ に対して $f(x)$ が $0$ と $1$ のいずれかで等しい入力がちょうど半分
+:::
+
+---
+## グローバーの探索アルゴリズム
+:::tip[グローバーの探索アルゴリズム]
+ソートされていないデータベースから特定のデー夕を探索するアルゴリズム。
+- 古典計算では $O(N)$ の計算量が必要だが，量子計算では $O(\sqrt{N})$ で済む。
+:::
+
+---
+## エンコーディング
+:::warning[目標]
+古典データの $n$ ビットを量子ビットに落とし込む！
+:::
+
+### 基底エンコーディング
+古典ビットをそのまま量子ビットに置き換える。
+- $\ket{0} \rightarrow \ket{0000},~\ket{1} \rightarrow \ket{0001},~\ket{2} \rightarrow \ket{0010},~\cdots$
+- 確率振幅にはなんの情報も入力されない
+
+### 振幅エンコーディング
+確率振幅に情報をエンコードする。
+- 古典ベクトル $\bm{x} = (x_1, x_2, \cdots, x_{2^n-1})$ に対して，$\ket{x} = \sum_{j=0}^{2^n-1}x_j\ket{j}$ とする
+    - ただし，$\sum_{j=0}^{2^n-1}|x_j|^2 = 1$ となるように規格化する
+- $2^m \times 2^n$ の行列 $A$ に対して，$A = \sum_{i = 0}^{2^m-1}\sum_{j = 0}^{2^n-1}a_{ij}\ket{i}\ket{j}$ とする
+    - ただし，$\sum_{i = 0}^{2^m-1}\sum_{j = 0}^{2^n-1}|a_{ij}|^2 = 1$ となるように規格化する
+- HHLアルゴリズムなどの量子機械学習アルゴリズムでは，この振幅エンコーディングが重要
+
+### ゲートエンコーディング
+古典データをユニタリゲート操作にエンコードする。
+- 古典データの行列 $A$ を $\begin{pmatrix} 0 & A \\ A^{\dagger} & 0 \end{pmatrix}$ としてエルミートとして，
+ユニタリ操作 $\exp(-i\begin{pmatrix} 0 & A \\ A^{\dagger} & 0 \end{pmatrix}t)$ としてエンコードする
+
+---
+## QRAM(量子ランダムアクセスメモリ)
+:::tip[QRAM]
+アドレスを表すレジスタとデータが出力されるレジスタが共に量子ビットで表現される。
+入力 $\ket{i}_a$ に対して，出力 $\ket{x_i}_r$ がこのように得られる。
+
+$\ket{i}_a\ket{0…0}_r \xrightarrow{QRAM} \ket{i}_a\ket{x_i}_r$
+:::
+- QRAMは，入力として重ね合わせ状態を受け取れる
+
+### QRAM による振幅エンコーディング
+目標：$N$ 次元ベクトル $\bm{v}$ を $\ket{\bm{v}} = \sum_i v_i \ket{i}$ と振幅エンコーディングしたい
+
+1. QRAM に $v_i$ を基底エンコーディングしたものを重ね合わせで取り出す：
+$\frac{1}{\sqrt{N}}\sum_i\ket{i}_a\ket{0…0}_r\ket{0}$ $\rightarrow$ $\frac{1}{\sqrt{N}}\sum_i\ket{i}_a\ket{v_i}_r\ket{0}$
+2. 補助量子ビットの状態に応じた制御回転ゲート操作：$\frac{1}{\sqrt{N}}\sum_i\ket{i}_a\ket{v_i}_r(v_i\ket{0} + \sqrt{1-v_i^2}\ket{1})$
+3. 補助量子ビットを測定し，$\ket{0}$ であれば：$\frac{1}{\sqrt{N}}\sum_i\ket{i}_a\ket{v_i}_rv_i\ket{0}$
+4. QRAM の uncomputation：$\frac{1}{\sqrt{N}}\sum_i v_i\ket{i}_a\ket{0…0}_r\ket{0}$
+
+---
+## 量子機械学習
+### Harrow-Hassidim-Lloyd(HHL) アルゴリズム
+:::tip[HHL アルゴリズム]

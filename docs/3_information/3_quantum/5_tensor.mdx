@@ -4,12 +4,12 @@ title: 5. 合成系
 :::warning[目標]
 **2つ以上量子ビットがある系を考えたい！ $\rightarrow$ 密度演算子を使って考える！**
 :::
-- 詳しい量子ビットの説明については，[6. 量子ビット](/docs/information/quantum/quantum-bit) を参照．
+- 詳しい量子ビットの説明については，[6. 量子ビット](/docs/information/quantum/quantum-bit) を参照。
 複数の異なる量子状態 $\ket{\psi_1}, \ket{\psi_2}, \cdots$ が互いに影響を及ぼす系を考える
 ---
 ## テンソル積
 :::tip[テンソル積]
-テンソル積は二つのベクトル空間をくっつけてより大きなベクトル空間を構成する方法．多粒子系において特に重要
+テンソル積は二つのベクトル空間をくっつけてより大きなベクトル空間を構成する方法。多粒子系において特に重要
 
 $V,~W$ をベクトル空間（それぞれ，$m, n$ 次元）とすると，$V\otimes W$ は $mn$ 次元であり，  
 要素として$\ket{v}\otimes\ket{w}$ をもつ（$\ket{vw},~\ket{v,~w}$ とも書く）
@@ -25,9 +25,9 @@ $V,~W$ をベクトル空間（それぞれ，$m, n$ 次元）とすると，$V\
 = \sum_{i,j} a_i^* b_j \bra{v_i}v_j^{\prime}\rangle \bra{w_i}w_j^{\prime}\rangle$
 
 ### 演算子のテンソル積
-演算子 $A,B$ はそれぞれ，ベクトル空間 $V,W$ に作用するとする．この時，下記で演算子のテンソル積を定義する．  
+演算子 $A,B$ はそれぞれ，ベクトル空間 $V,W$ に作用するとする。この時，下記で演算子のテンソル積を定義する。  
 > $(A\otimes B)(\ket{v}\otimes\ket{w}) = (A\ket{v})\otimes(B\ket{w})$
-> - また，行列を使えば具体的に記述可能．例えば，  
+> - また，行列を使えば具体的に記述可能。例えば，  
 > $\begin{pmatrix}1&2\\3&4\end{pmatrix}\otimes\begin{pmatrix}5&6\\7&8\end{pmatrix} 
 > = \begin{pmatrix}1\begin{pmatrix}5&6\\7&8\end{pmatrix}&2\begin{pmatrix}5&6\\7&8\end{pmatrix}\\3\begin{pmatrix}5&6\\7&8\end{pmatrix}&4\begin{pmatrix}5&6\\7&8\end{pmatrix}\end{pmatrix} = \begin{pmatrix}5&6&10&12\\7&8&14&16\\15&18&20&24\\21&24&28&32\end{pmatrix}$
 
@@ -41,7 +41,7 @@ $V,~W$ をベクトル空間（それぞれ，$m, n$ 次元）とすると，$V\
 ## 合成系
 :::tip[合成系]
 系 $S_1$ と $S_2$ のヒルベルト空間をそれぞれ $\mathcal{H}_1, \mathcal{H}_2$ とすると，
-合成系 $S_{12}$ のヒルベルト空間はこれらのテンソル積 $\mathcal{H} = \mathcal{H}_1\otimes\mathcal{H}_2$ で与えられる．
+合成系 $S_{12}$ のヒルベルト空間はこれらのテンソル積 $\mathcal{H} = \mathcal{H}_1\otimes\mathcal{H}_2$ で与えられる。
 :::
 - $S_1$ 系の物理量 $A_1$ $\rightarrow$ $S_{12}$ 系の物理量 $A_1\otimes I_2$
 - $S_2$ 系の物理量 $A_2$ $\rightarrow$ $S_{12}$ 系の物理量 $I_1\otimes A_2$
@@ -53,35 +53,35 @@ $V,~W$ をベクトル空間（それぞれ，$m, n$ 次元）とすると，$V\
 $\ket{\psi}=a_0\ket{0}+a_1\ket{1} = [a_0, a_1]^T$ と $\ket{\phi}=b_0\ket{0}+b_1\ket{1} = [b_0, b_1]^T$ に対して，  
 $\ket{\psi}\otimes\ket{\phi} = \begin{pmatrix}a_0\\a_1\end{pmatrix}\otimes\begin{pmatrix}b_0\\b_1\end{pmatrix} = \begin{pmatrix}a_0b_0\\a_0b_1\\a_1b_0\\a_1b_1\end{pmatrix}$
 :::
-ただし2量子ビット系は必ずしも $\ket{\psi}\otimes\ket{\phi}$ で表現されるわけではない．
+ただし2量子ビット系は必ずしも $\ket{\psi}\otimes\ket{\phi}$ で表現されるわけではない。
 - 例えば，$\ket{\psi} = \frac{1}{\sqrt{2}}(\ket{00}+\ket{11}) = \frac{1}{\sqrt{2}}[1,0,0,1]^T$ は積状態ではない $\rightarrow$ エンタングル状態
 
 ### 合成系の測定
 $S_1$ 系の物理量 $A$ は $S_{12}$ 系の物理量 $A\otimes I_2$，$S_2$ 系の物理量 $B$ は $S_{12}$ 系の物理量 $I_1\otimes B$ でこれらは可換なので，  
-同時測定可能であり，同時確率は $P(A = a, B = b | \ket{\psi}) = \bra{\psi}(P_a \otimes Q_b)\ket{\psi}$ で与えられる．
+同時測定可能であり，同時確率は $P(A = a, B = b | \ket{\psi}) = \bra{\psi}(P_a \otimes Q_b)\ket{\psi}$ で与えられる。
 - $P_a$ は $A$ の固有値 $a$ に対応する固有射影演算子，$Q_b$ は $B$ の固有値 $b$ に対応する固有射影演算子
 
 ---
 ## 一般的な量子状態
-単位ベクトル $\rightarrow$ 量子状態だが，単位ベクトルでない量子状態も考えられる．
+単位ベクトル $\rightarrow$ 量子状態だが，単位ベクトルでない量子状態も考えられる。
 :::tip[一般的な量子状態]
 - 純粋状態：単位ベクトル $\ket{\psi}$ で表現される量子状態
-- 混合状態：複数の純粋状態の重ね合わせで表現される量子状態．確率混合によって広がっている
+- 混合状態：複数の純粋状態の重ね合わせで表現される量子状態。確率混合によって広がっている
     - 多粒子が互いに影響を及ぼすイメージ
     - **密度演算子** $\rho = \sum_i p_i \ket{\psi_i}\bra{\psi_i}$ で表現される
-    - $\ket{\psi_i}$：純粋状態（正規直交基底なら何でもOK）．それを $p_i$ の確率で選ぶ確率混合
+    - $\ket{\psi_i}$：純粋状態（正規直交基底なら何でもOK）。それを $p_i$ の確率で選ぶ確率混合
 :::
 
 確率 $p_i$ で状態 $\ket{\psi_i} \in \mathcal{H}$ を用意する確率混合を考え，  
-一般の状態 $s = \{p_1, p_2, \cdots p_n| \ket{\psi_1}, \ket{\psi_2}, \cdots \ket{\psi_n}\}$ と書く．  
+一般の状態 $s = \{p_1, p_2, \cdots p_n| \ket{\psi_1}, \ket{\psi_2}, \cdots \ket{\psi_n}\}$ と書く。  
 この時，物理量 $A = \sum_a aP_a$ の測定を考えると，
 > 測定値 $a$ を得る確率：$Pr(A = a | s) = \sum_i p_i \bra{\psi_i}P_a\ket{\psi_i}$  
 > ここで，密度演算子 $\rho = \sum_i p_i \ket{\psi_i}\bra{\psi_i}$ を用いると，$Pr(A = a | s) = \text{Tr}(\rho P_a)$  
 > 純粋状態 $\ket{\psi}$ の場合，$\rho = \ket{\psi}\bra{\psi}$ となる
 
 :::tip[密度演算子]
-純粋状態と混合状態を密度演算子によって統一的に扱うことができる．  
-密度演算子 $\rho = \sum_i p_i \ket{\psi_i}\bra{\psi_i}$：確率混合によって広がっている量子状態を表す．
+純粋状態と混合状態を密度演算子によって統一的に扱うことができる。  
+密度演算子 $\rho = \sum_i p_i \ket{\psi_i}\bra{\psi_i}$：確率混合によって広がっている量子状態を表す。
 :::
 
 :::warning[重ね合わせと確率混合]
@@ -93,8 +93,8 @@ $S_1$ 系の物理量 $A$ は $S_{12}$ 系の物理量 $A\otimes I_2$，$S_2$ �
 
 ### 密度演算子の性質
 密度演算子：$\rho = \sum_i p_i \ket{\psi_i}\bra{\psi_i}$ に対して，
-- $\rho \ge 0$：正定値性．すなわち，$\rho$ はエルミート演算子であり，固有値は非負
-- $\text{Tr}(\rho) = 1$．ただし，$\text{Tr}(\rho) = \sum_{i=1}^d \bra{\phi_i}\rho\ket{\phi_i}$ であり，
+- $\rho \ge 0$：正定値性。すなわち，$\rho$ はエルミート演算子であり，固有値は非負
+- $\text{Tr}(\rho) = 1$。ただし，$\text{Tr}(\rho) = \sum_{i=1}^d \bra{\phi_i}\rho\ket{\phi_i}$ であり，
 $a_{ij} = \bra{\phi_i}\rho\ket{\phi_j}$ とすると，$\text{Tr}(\rho) = \sum_{i=1}^d a_{ii}$
     - トレースの性質
         - $\text{Tr}(A)^* = \text{Tr}(A^\dagger)$
@@ -106,7 +106,7 @@ $a_{ij} = \bra{\phi_i}\rho\ket{\phi_j}$ とすると，$\text{Tr}(\rho) = \sum_{
 - 密度演算子の集合：$\mathcal{S}(\mathcal{H}) = \{\rho \in \mathscr{L}(\mathcal{H})_h|~\rho \ge 0, \text{Tr}(\rho) = 1\}$
     - $\mathscr{L}(\mathcal{H})_h$：ヒルベルト空間 $\mathcal{H}$ 上のエルミート演算子全体の集合
 
-また，下記の4つはすべて同値である．
+また，下記の4つはすべて同値である。
 > 1. $\rho$ は純粋状態
 > 2. $\rho^2 = \rho$
 > 3. $\text{Tr}(\rho^2) = 1$
@@ -115,12 +115,12 @@ $a_{ij} = \bra{\phi_i}\rho\ket{\phi_j}$ とすると，$\text{Tr}(\rho) = \sum_{
 ---
 ## 縮約状態
 :::tip[合成系]
-量子系 $S, E$ のヒルベルト空間を $H_S,~H_E$ とする．この時，合成系 $S+E$ のヒルベルト空間は $H_{SE} = H_S \otimes H_E$
+量子系 $S, E$ のヒルベルト空間を $H_S,~H_E$ とする。この時，合成系 $S+E$ のヒルベルト空間は $H_{SE} = H_S \otimes H_E$
 :::
 - イメージは，注目する系（対象系）$S$ とそれ以外の系（環境系）$E$ を考えて，$S$ の状態(= 密度演算子)を考える
 - 合成系 $S+E$ が純粋状態であっても，部分系 $S$ は混合状態になることがある
 
-また，環境系 $E$ 上の部分トレースを以下で定義する．
+また，環境系 $E$ 上の部分トレースを以下で定義する。
 :::tip[部分トレース]
 $H_{SE} = H_S \otimes H_E$ の任意の線形演算子 $C = \sum_j A_j \otimes B_j$ に対して，$\text{Tr}_E(C) = \sum_j A_j \text{Tr}(B_j)$
 
@@ -133,7 +133,7 @@ $\bra{\psi}\text{Tr}_E(C)\ket{\phi} = \sum_k \bra{\psi \otimes e_k}C\ket{\phi \o
 :::tip[縮約状態]
 環境系 $E$ に対する部分トレースを取った密度演算子 $\rho_S = \text{Tr}_E(\rho_{SE})$ を縮約状態と呼ぶ  
 （$\rho_{SE}$：合成系 $S+E$ の密度演算子）
-- 縮約状態は，環境系 $E$ の影響を取り除いた系 $S$ の状態を記述する．そのために部分トレースを取るイメージ
+- 縮約状態は，環境系 $E$ の影響を取り除いた系 $S$ の状態を記述する。そのために部分トレースを取るイメージ
 :::
 - イメージ的には，同時確率の周辺化に似ている：$P(S) = \sum_E P(S,E)$
 
@@ -157,7 +157,7 @@ $\bra{\psi}\text{Tr}_E(C)\ket{\phi} = \sum_k \bra{\psi \otimes e_k}C\ket{\phi \o
 ---
 ## von Neumann方程式
 :::tip[von Neumann方程式]
-量子系の時間発展を記述する方程式．密度演算子 $\rho(t)$ に対して，$i \hbar \frac{\partial}{\partial t}\rho(t) = [H, \rho(t)]$ と書ける
+量子系の時間発展を記述する方程式。密度演算子 $\rho(t)$ に対して，$i \hbar \frac{\partial}{\partial t}\rho(t) = [H, \rho(t)]$ と書ける
 :::
 - 比較：状態ベクトル $\ket{\psi(t)}$ に対するシュレディンガー方程式：$i \hbar \frac{\partial}{\partial t}\ket{\psi(t)} = H\ket{\psi(t)}$
 - 時間発展は，ユニタリ演算子 $U(t) = e^{-iHt/\hbar}$ を用いて $\rho(t) = U(t)\rho(0)U^\dagger(t)$ と書ける

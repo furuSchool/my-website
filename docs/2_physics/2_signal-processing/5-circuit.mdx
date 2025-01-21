@@ -7,13 +7,13 @@ title: 離散信号回路
 - 連続信号回路 = アナログ回路 $\approx$ 電気回路，離散信号回路 = デジタル回路 で良いと思う
 
 ## 離散信号の基本
-半分復習．
+半分復習。
 - 離散信号 $x(n)$：連続信号 $x(t)$ をサンプリング $\to~x(nT)~\to x(n)$
 - 単位パルス信号 $\delta(n)$：$n=0$ のとき $1$，それ以外は $0$
 - ステップ信号 $u(n)$：$n \ge 0$ のとき $1$，それ以外は $0$
 - 一般の信号：$x(n) = \sum_{k=-\infty}^{\infty} x(k) \delta(n-k)$ と表せる
 
-離散時間システム：$x(n)$ を $y(n)$ に変換するシステム．$y(n) = \phi[x(n)]$ と表す．
+離散時間システム：$x(n)$ を $y(n)$ に変換するシステム。$y(n) = \phi[x(n)]$ と表す。
 - 線形性： $ax_1(n) + bx_2(n)~\to~ay_1(n) + by_2(n)$
 - 時不変性：$x(n-k)~\rightarrow~y(n-k)$
 - 因果性：$x(n) = 0~(n < 0)~\rightarrow~h(n) = y(n) = 0~(n < 0)$
@@ -37,14 +37,14 @@ $\to~y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ という形�
 
 ### システムの安定性
 :::tip[安定性]
-システムが安定：有界な任意の入力に対して出力が常に有界であること．下記の2つは安定であるための必要十分条件
+システムが安定：有界な任意の入力に対して出力が常に有界であること。下記の2つは安定であるための必要十分条件
 1. $\sum_{k=0}^{\infty} |h(k)| < \infty$
 2. $H(z)$ の極が単位円の内側にある
     - 極 $s = p_i < 0,~z = e^{sT}$ から考えればわかる
 :::
 
 ### 素子の種類
-画像は，https://www7b.biglobe.ne.jp/~yizawa/InfSys1/basic/chap10/index.htm より引用．
+画像は，https://www7b.biglobe.ne.jp/~yizawa/InfSys1/basic/chap10/index.htm より引用。
 1. 加算器：入力：$x_1(n), x_2(n)$，出力：$x_1(n) + x_2(n)$ 
 <img src="/img/physics/sum.png" alt="加算器" style={{ width: '20%', marginLeft: '40px' }} />
 2. 定数倍：入力：$x(n)$，出力：$ax(n)$
@@ -53,12 +53,12 @@ $\to~y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ という形�
 <img src="/img/physics/delay.png" alt="遅延器" style={{ width: '20%', marginLeft: '40px' }} />
 
 ### FIRシステム
-$Y(z) = H(z)X(z)$ と表せる．ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$
+$Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$
 - 非再帰型システムとして実装できる
 - 常に安定なシステム
 
 #### 実際の回路設計
-画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用．
+画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用。
 1. **直接型構成（トランスバーサル構成）**：$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$ をそのまま用いる
 <img src="/img/physics/fir.png" style={{ width: '40%', marginLeft: '40px' }} />
 2. **縦続型構成**：$H(z) = H_1(z)H_2(z)…$ と分解して，$H_i(z)$ を別々に実装してから合成する
@@ -67,14 +67,14 @@ $Y(z) = H(z)X(z)$ と表せる．ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$
 
 ### IIRシステム
 $y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ から，  
-$Y(z) = H(z)X(z)$ と表せる．ただし，$H(z) = \frac{N(z)}{D(z)} = \frac{\sum_{k=0}^{K} a(k)z^{-k}}{1 + \sum_{l=1}^{L} b(l)z^{-l}}$
+$Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \frac{N(z)}{D(z)} = \frac{\sum_{k=0}^{K} a(k)z^{-k}}{1 + \sum_{l=1}^{L} b(l)z^{-l}}$
 
 - 再帰型システムとして実装できる
 - 不安定になる可能性がある
 
 #### 実際の回路設計
 画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf と   
-http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用．
+http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用。
 1. **直接型構成**：$H(z) = N(z) \times \frac{1}{D(z)}$ を縦続接続
 <div style={{ display: 'flex', justifyContent: 'left', gap: '20px' }}>
   <img src="/img/physics/iir.png" style={{ width: '30%' }} />
@@ -136,6 +136,6 @@ $ s = \frac{2}{T}\cdot\frac{1 - z^{-1}}{1 + z^{-1}}$ で置き換えて，$K(s)$
 
 #### 双一次z変換の特徴
 - 折り返し歪みが生じない
-- 非線形の周波数歪みが生じる．特にナイキスト周波数付近で大きくなる
+- 非線形の周波数歪みが生じる。特にナイキスト周波数付近で大きくなる
 - インパルス応答は不変ではない
 - 全ての周波数で安定なシステムを設計できる

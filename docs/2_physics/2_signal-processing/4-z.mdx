@@ -18,7 +18,7 @@ title: z変換
 - $z = e^{sT} = e^{(\sigma + j \omega) T}$
 - サンプル値列：$x^*(t) = \sum_{n=0}^{\infty} x(nT) \delta(t - nT) \leftrightarrow X^*(s) = \sum_{n=0}^{\infty} x(nT) e^{-snT}$
 
-これにより，離散信号のシステムの安定性や特性を解析できるようになる．主に，**差分方程式を解く際**に使われる．
+これにより，離散信号のシステムの安定性や特性を解析できるようになる。主に，**差分方程式を解く際**に使われる。
 - $x(n)$ の差分方程式をz変換すると，$X(z)$ になる
 - $x(n-1) \leftrightarrow z^{-1}X(z)$ を使えば，差分方程式は代数方程式に
 
@@ -35,13 +35,13 @@ title: z変換
 > 3. 離散畳み込み：$y(n) = h(n) \ast x(n) = \sum_{k=0}^{\infty}h(k)x(n-k)~\leftrightarrow~Y(z) = H(z)X(z)$  
 （因果性：$h(n) = 0~(n < 0)$が成立する時）
 
-他にもいろんな性質があるが，あまり使わないので省略．
+他にもいろんな性質があるが，あまり使わないので省略。
 
 ### 片側z変換表
 <img src="/img/physics/z.png" alt="z変換表" style={{ width: '50%' }} />
 上記は，https://www1.gifu-u.ac.jp/~yktlab/sp1.pdf より引用
 
 ### z領域と周波数領域の関係
-$z = e^{sT} = e^{(\sigma + j \omega) T}$ なので，z領域の伝達関数 $H(z)$ の周波数伝達関数 $H(\omega) = H(z)|_{z = e^{j \omega T}}$ となる．
+$z = e^{sT} = e^{(\sigma + j \omega) T}$ なので，z領域の伝達関数 $H(z)$ の周波数伝達関数 $H(\omega) = H(z)|_{z = e^{j \omega T}}$ となる。
 - $T$ は標本周期であり，ここから $H(\omega)$ は周期 $\omega = \frac{2\pi}{T}$ を持つ
 - 別に，標本化したからそらそうだよねという話
