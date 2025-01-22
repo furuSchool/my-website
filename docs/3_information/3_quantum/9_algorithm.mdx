@@ -137,3 +137,25 @@ $\frac{1}{\sqrt{N}}\sum_i\ket{i}_a\ket{0…0}_r\ket{0}$ $\rightarrow$ $\frac{1}{
 ## 量子機械学習
 ### Harrow-Hassidim-Lloyd(HHL) アルゴリズム
 :::tip[HHL アルゴリズム]
+$N \times N$ のエルミート行列 $A$ と $N$ 次元ベクトル $b$ に対して，$Ax = b$ を解くアルゴリズム。
+- 計算量は，$s$：$A$の非ゼロ要素数，$\kappa$：$A$の条件数，$\epsilon$：誤差の精度として，$O(\kappa s~\text{poly}(\log(\frac{s\kappa}{\epsilon})))$
+    - 条件数：最大固有値と最小固有値の差の絶対値
+:::
+
+---
+### 量子線形回帰
+:::tip[量子線形回帰]
+入力 $\bm{x}$ に対して，$y = \bm{w}^T\bm{x} + b$ を推定する。  
+$X = [\bm{x}_1, \bm{x}_2, \cdots, \bm{x}_N],~\bm{y} = [y_1, y_2, \cdots, y_N]$ として，  
+$\bm{w} = (X^TX)^{-1}X^T\bm{y}$ となる $\bm{w}$ を求めることに帰着されることが知られている。
+- HHL アルゴリズムによる $XX^T$ の逆行列計算がベース
+:::
+
+---
+### 量子SVM(サポートベクターマシン)
+:::tip[量子SVM]
+SVM を線形回帰問題として定式化した Least square SVM を量子コンピュータで高速化する。
+- SVM：$\min_{\bm{w}, b} \frac{1}{2}\bm{w}^T\bm{w} \text{ s.t. } y_i(\bm{w}^T\bm{x}_i + b) \geq 1$
+- Least square SVM はややこしくてようわからん
+:::
+
