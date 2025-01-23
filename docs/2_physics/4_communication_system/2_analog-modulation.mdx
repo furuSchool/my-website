@@ -20,7 +20,7 @@ title: アナログ変調
 ## アナログ変調
 :::tip[アナログ変調の基礎]
 変調後の信号：$s(t) = A(t) \cos(\omega_c(t) + \phi(t))$  
-搬送波（正弦波：$c(t) = A_c \cos(\omega_c t + \theta_0)$）に情報信号 $m(t)$ を乗せる
+搬送波（正弦波：$c(t) = A_c \cos(\omega_c t + \theta_0)$）に情報信号（ベースバンド信号） $m(t)$ を乗せる
 - AM：振幅 $A(t)$ に $m(t)$ を乗せる：主に音声信号に使われる
 - FM：周波数 $\omega_c(t)$ に $m(t)$ を乗せる
 - PM：位相 $\phi(t)$ に $m(t)$ を乗せる
@@ -58,7 +58,7 @@ PLL はしたくない $\rightarrow$ 搬送波も一緒に送る。変調波：$
 - $k_a < 1$ でないと情報を復元できない
 
 #### 受信器
-LPF により包絡線検波を行う：受信した信号を整流して，RC並列回路で平滑化すればよい
+LPF により包絡線検波を行う：受信した信号を整流して，RC並列回路で平滑化すればよい。
 
 ### SSB（単側帯域 AM 変調）
 :::tip[SSB]
@@ -96,11 +96,11 @@ PM 変調と FM 変調では， $\phi(t) = A\cos \theta(t)$ と一般化した�
 :::tip[FM 変調]
 変調後の信号：$s(t) = A_c \cos(\omega_c t + k_f a(t)) = A_c \cos(\omega_c t + k_f \int_{-\infty}^{t} m(u) du)$
 :::
-- 信号を積分してから PM したのと同じ
 - 瞬時周波数 $f_i = f_c + \frac{k_f}{2\pi} m(t)$
     - 例えば， $f_i = 10^8 + 10^5 m(t)$
+- FM = 「$m(t)$ を積分してから PM」，「PM = $m(t)$ を微分してから FM」
 - $m(t)$ と $a(t)$ の帯域幅は同じ：フーリエ変換をするとわかる
-- ただし，FM は原理的には無限の帯域幅を持つ
+- ただし，FM と PM は原理的には無限の帯域幅を持つ
     - $\phi_{FM}(t) = \text{Re}(A\exp(j\omega_c t + jk_f a(t)))$ をテイラー展開すればわかる $\rightarrow$ どうやって近似するか？
 
 ### narrowband approximation (NBFM)
@@ -113,12 +113,6 @@ $\phi_{FM}(t)  = A(\cos\omega_c t - k_f a(t) \sin\omega_c t)$ と近似するも
 Carson’s Rule：帯域幅は $2(\Delta f + W)$
 - 最大周波数偏差 $\Delta f = \frac{k_f}{2\pi} \max |m(t)|$
 - PM なら $\Delta f = \frac{k_p}{2\pi} \max |m'(t)|$：スペクトルが高い方に集中すると帯域幅が広くなる $\left(\frac{dm(t)}{dt} \leftrightarrow j\omega M(\omega)\right)$
-
-### 正弦波の FM 変調
-この部分は必要なのかよくわからん
-
-入力 $m(t) = A_m \cos(\omega_m t)$ のとき，$\phi_{FM}(t) = A \exp(j\omega_c t + j\beta \sin(\omega_m t))$
-- 変調指数（modulation index）：$\beta = \frac{k_f}{\omega_m}$
 
 ### FM の復調方法
 FM の復調は，帯域通過リミッタに通した後，微分回路に通した上で包絡線検波を行う…が，詳細はむずい。けど、実装がそこまで難しいわけではない。
