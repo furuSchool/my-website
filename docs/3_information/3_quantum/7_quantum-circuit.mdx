@@ -51,15 +51,16 @@ H|0\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle) = \ket{+},~H|1\rangle = \
 - 量子状態は2量子ビットのテンソル積 = $4$ 次元ベクトル，量子ゲートは $4\times4$ のユニタリ行列
 
 ### CNOT(制御NOT) ゲート
+：$\ket{ij} \xrightarrow{CNOT} \ket{i(j \oplus i)}$，$\oplus$ は $XOR$ 演算
 <img src="/img/information/quantum/cnot.png" alt="CNOTゲート" style={{ width: '30%' }} />
 https://xtech.nikkei.com/atcl/nxt/column/18/01901/00025/?SS=imgview&FD=-1972773010 より引用。   
 $\text{CNOT} = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix},~
 ~\text{CNOT}|\text{01}\rangle = |\text{01}\rangle,~\text{CNOT}|\text{10}\rangle = |\text{11}\rangle$
 - 1ビット目 = 制御量子ビット，2ビット目 = ターゲット量子ビット
 - 制御量子ビットが $1$ のとき，ターゲット量子ビットを反転する
-- $\ket{ij} \xrightarrow{CNOT} \ket{i(j \oplus i)}$，$\oplus$ は $XOR$ 演算
 
 ### SWAP ゲート
+：$\ket{ij} \xrightarrow{SWAP} \ket{ji}$
 <img src="/img/information/quantum/swap.png" alt="SWAPゲート" style={{ width: '20%' }} />
 https://whyitsso.net/physics/quantum_mechanics/swaptest.html より引用。  
 $\text{SWAP} = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix},~
@@ -68,12 +69,15 @@ $\text{SWAP} (a_0b_0\ket{00} + a_1b_0\ket{01} + a_0b_1\ket{10} + a_1b_1\ket{11})
 - $\text{SWAP}_{ij} = \text{CNOT}_{ij}\text{CNOT}_{ji}\text{CNOT}_{ij}$
 
 ### OR ゲート
+：$\ket{ij1} \xrightarrow{OR} \ket{ij(i \lor j)}$，$\lor$ は $OR$ 演算
 <img src="/img/information/quantum/or.png" alt="ORゲート" style={{ width: '30%' }} />
 
 ### AND ゲート
+：$\ket{ij0} \xrightarrow{AND} \ket{ij(i \land j)}$，$\land$ は $AND$ 演算
 <img src="/img/information/quantum/and.png" alt="ANDゲート" style={{ width: '20%' }} />
 
 ### 制御 $U$ ゲート
+：$\ket{ab} \xrightarrow{C-U} \ket{a~U^ab}$，$U^a$ は $a$ が $1$ のときのみ $U$ ゲートを作用させる
 <img src="/img/information/quantum/u.png" alt="制御Uゲート" style={{ width: '30%' }} />
 - 制御ビット $a$ と標的ビット $b$ として，$a = 1$ のときのみ $U$ ゲートを作用させる
 - $\ket{b} ~ \text{if} ~ a = 0,~U\ket{b} ~ \text{if} ~ a = 1$

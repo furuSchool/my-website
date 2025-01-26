@@ -6,25 +6,18 @@ title: 2. 公理系
 **量子力学を公理によって特徴づける。ここが原点になる所なので，とても大事！**  
 :::
 
-以下では，Hilbert 空間 $\mathscr{H}$ 上の演算子の集合を $\mathscr{L}(\mathscr{H})$ とし，
-$A,B,C \in \mathscr{L}(\mathscr{H})$，$P,Q$ を射影演算子とする。
-
 ---
-
 ## 結論
-
 :::tip[量子力学の公理]
-
 1. 量子力学は $\mathbb{C}^d$ 上の Hilbert 空間 $\mathscr{H}$ で定義される
     - 量子状態：$\ket{\psi} \in \mathscr{H}$：単位ベクトル（$\braket{\psi|\psi} = 1$）
     - 物理量 $A$：$\mathscr{H}$ 上の Hermite 演算子
     - 測定値：Hermite 演算子の固有値で与えられる（物理量 $A$ の固有値がランダムに観測される）
 2. 時間発展：閉じた量子系は Schrödinger 方程式に従う：$i\hbar \frac{d}{dx}\ket{\psi} = H\ket{\psi}$ 
     - 全てのユニタリに対応するハミルトニアン $H$ が存在し、量子系の状態変化はユニタリ変換によって記述できる
-   :::
+:::
 
 ### Born の確率規則
-
 :::tip[ボルンの確率規則]
 $Pr(A = a~|\ket{\psi})=\bra{\psi}P_a\ket{\psi}$：状態 $\ket{\psi}$ に対し，物理量 $A$ を測定する時，測定値が固有値 $a$ となる確率
 :::
@@ -40,7 +33,7 @@ $Pr(A = a~|\ket{\psi})=\bra{\psi}P_a\ket{\psi}$：状態 $\ket{\psi}$ に対し�
     -   なので，単位ベクトルならすべて量子状態だし，エルミート演算子ならすべて物理量だよ
     -   しかも，物理量 $A$ はエルミート演算子だから，必ず $A = \sum_a aP_a$ と書けるよね
 -   物理量の測定値は実数だから，期待値や分散を考えられる
-    -   測定するたびに，物理量 $A$ に対応する固有値がランダムに選ばれるから
+    -   測定するたびに，物理量 $A$ に対応する固有値(測定値)がランダムに選ばれるから
     -   期待値：$\mathbb{E}_\psi[A] = \sum_a a~Pr(A = a~|\ket{\psi}) = \bra{\psi}P_a\ket{\psi} = \bra{\psi}A\ket{\psi}$
     -   分散：$\mathbb{V}_\psi[A] = \sum (a - \mathbb{E}_\psi[A])^2~Pr(A = a~|\ket{\psi}) = \bra{\psi}A^2\ket{\psi} - \bra{\psi}A\ket{\psi}^2
      = \mathbb{E}_\psi[A^2] - \mathbb{E}_\psi[A]^2$
@@ -56,17 +49,17 @@ $A,~B$ を任意の物理量（ = 任意のエルミート演算子），$\ket{\
 このとき，$\Delta_\psi[A] \Delta_\psi[B] \ge \frac{1}{2} \left| \bra{\psi} [A, B] \ket{\psi} \right|$
 :::
 
--   コーシーシュワルツの不等式：$\left| \braket{\psi|\phi} \right|^2 \le \braket{\psi|\psi} \braket{\phi|\phi}$
-    で等号成立条件は $\ket{\psi}$ と $\ket{\phi}$ が一次従属のとき - これから不確定性関係を証明できる s
+- コーシーシュワルツの不等式：$\left| \braket{\psi|\phi} \right|^2 \le \braket{\psi|\psi} \braket{\phi|\phi}$
+で等号成立条件は $\ket{\psi}$ と $\ket{\phi}$ が一次従属のとき
+- これから不確定性関係を証明できる
 
 ### 命題
-
 :::tip[命題 1]
 可換な物理量 $A,B$ すなわち，$[A,B]=AB-BA=0$ の時，物理量 $A,B$ は同時に測定することができる.
-
 -   $\psi$ を $A,B$ で同時測定した場合の同時確率分布：$Pr(A = a, B = b~|\ket{\psi}) = \bra{\psi}P_aQ_b\ket{\psi}$
 -   $A = \sum_a aP_a,~B = \sum_b bQ_b$ としている（スペクトル分解）
 :::
+
 また，同時対角化可能なとき，その時に限り二つの演算子は可換である.
 - 同時対角化可能 $\Leftrightarrow$ $A = \sum_i a_i \ket{i}\bra{i},~B = \sum_i b_i \ket{i}\bra{i}$ と表せる
 - 同じ正規直交基底 $\ket{i}$ で貼られる領域というイメージ

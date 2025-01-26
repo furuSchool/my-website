@@ -45,8 +45,8 @@ $V,~W$ をベクトル空間（それぞれ，$m, n$ 次元）とすると，$V\
 :::
 - $S_1$ 系の物理量 $A_1$ $\rightarrow$ $S_{12}$ 系の物理量 $A_1\otimes I_2$
 - $S_2$ 系の物理量 $A_2$ $\rightarrow$ $S_{12}$ 系の物理量 $I_1\otimes A_2$
-- $\ket{\psi} \in S_1,\ket{phi} \in S_2$ に対して，$\ket{\psi}\otimes\ket{\phi} \in S_{12}$：$\mathcal{H}_1 \otimes \mathcal{H}_2$ 上の単位ベクトル
-- $\ket{\psi}\otimes\ket{\phi}$ と書ける時，積状態と呼ぶ $\leftrightarrow$ エンタングル状態
+- $\ket{\psi} \in S_1,\ket{\phi} \in S_2$ に対して，$\ket{\psi}\otimes\ket{\phi} \in S_{12}$：$\mathcal{H}_1 \otimes \mathcal{H}_2$ 上の単位ベクトル
+- $\ket{\psi}\otimes\ket{\phi}$ と書ける時，**積状態と呼ぶ $\leftrightarrow$ エンタングル状態**
 
 ### 2量子ビット系
 :::tip[2量子ビット系]
@@ -131,7 +131,7 @@ $\bra{\psi}\text{Tr}_E(C)\ket{\phi} = \sum_k \bra{\psi \otimes e_k}C\ket{\phi \o
 - 部分トレースは，環境系 $E$ に対してのみトレースを取る操作になる
 
 :::tip[縮約状態]
-環境系 $E$ に対する部分トレースを取った密度演算子 $\rho_S = \text{Tr}_E(\rho_{SE})$ を縮約状態と呼ぶ  
+環境系 $E$ に対する部分トレースを取った密度演算子 $\rho_S = \text{Tr}_E(\rho_{SE})$ を縮約状態と呼ぶ。  
 （$\rho_{SE}$：合成系 $S+E$ の密度演算子）
 - 縮約状態は，環境系 $E$ の影響を取り除いた系 $S$ の状態を記述する。そのために部分トレースを取るイメージ
 :::
@@ -153,11 +153,3 @@ $\bra{\psi}\text{Tr}_E(C)\ket{\phi} = \sum_k \bra{\psi \otimes e_k}C\ket{\phi \o
     2. $H_A$ の正規直交系を$\ket{a_i}$ とする
     3. 合成系の純粋状態：$\ket{\psi}=\sum \sqrt{q_i}\ket{s_i}\otimes\ket{a_i}$（これは $H_{SA}$ の単位ベクトルなので，純粋状態）
     4. 縮約密度演算子：$\rho_S=\text{Tr}_A(\ket{\psi}\bra{\psi})$
-
----
-## von Neumann方程式
-:::tip[von Neumann方程式]
-量子系の時間発展を記述する方程式。密度演算子 $\rho(t)$ に対して，$i \hbar \frac{\partial}{\partial t}\rho(t) = [H, \rho(t)]$ と書ける
-:::
-- 比較：状態ベクトル $\ket{\psi(t)}$ に対するシュレディンガー方程式：$i \hbar \frac{\partial}{\partial t}\ket{\psi(t)} = H\ket{\psi(t)}$
-- 時間発展は，ユニタリ演算子 $U(t) = e^{-iHt/\hbar}$ を用いて $\rho(t) = U(t)\rho(0)U^\dagger(t)$ と書ける
