@@ -12,6 +12,7 @@ title: 3. 保存則
 物体に働く力が $\vec{F} = 0$ のとき，運動量保存則が成り立つ：$\vec{p}(t_{\text{fin}}) = \vec{p}(t_{\text{ini}})$  
 
 一般には，$\vec{I} = \vec{p}(t_{\text{fin}}) - \vec{p}(t_{\text{ini}})$ が成り立つ。
+（運動量の定理：$\vec{p}(t_{\text{fin}}) - \vec{p}(t_{\text{ini}}) = \int_{t_{\text{ini}}}^{t_{\text{fin}}} \vec{F}(t, \vec{r}, \vec{v}) dt$ とも呼ばれる）
 :::
 $m\frac{d\vec{v}}{dt} = \vec{F}$ を時間積分すれば， 
 $\vec{p}(t_{\text{fin}}) - \vec{p}(t_{\text{ini}}) = \int_{t_{\text{ini}}}^{t_{\text{fin}}} \vec{F} dt$ がわかる。
@@ -49,6 +50,7 @@ $\vec{F}(\vec{r}, \vec{v}, t) = -\mathrm{grad} U(\vec{r}) = - \nabla U(\vec{r})$
 - $U_{\text{fin}} - U_{\text{ini}} = - W_{\vec{r}_{\text{ini}} \to \vec{r}_{\text{fin}}}$ は，
 保存力の仕事分だけポテンシャルエネルギーが減っているイメージ
 - 保存力は少なくとも位置のみに依存する
+- $\nabla \times \vec{F} = 0$ は，$\oint \vec{F} \cdot d\vec{r} = 0$ とも表せる。これは，ストークスの定理と対応する
 
 ### (力学的)エネルギー保存則
 :::tip[(力学的)エネルギー保存則]
@@ -101,7 +103,7 @@ $\vec{e_r} = \frac{\vec{r}}{|\vec{r}|} = \frac{x}{r}\vec{e_x} + \frac{y}{r}\vec{
 :::
 $\nabla \times \vec{F}(\vec{r}) = 0$ であるので，中心力は保存力である。  
 そこで，無限遠点を基準としてポテンシャル $U(r)$ を定義すると，$U(r) = \int_{r}^{\infty} f(s)ds$ となる。
-- 万有引力 $f(r) = -\frac{GmM}{r^2}$，$U(r) = -\frac{GmM}{r}$ などは中心力である
+- 万有引力 $f(r) = -\frac{GmM}{r^2}$，$U(r) = -\frac{GmM}{r}$ やクーロン力 $f(r) = k\frac{qQ}{r^2}$，$U(r) = k\frac{qQ}{r}$ などは中心力である
 
 ### 角運動量とトルク
 :::tip[角運動量とトルク]
@@ -119,7 +121,7 @@ m\frac{d\vec{r}}{dt} \times \vec{v} + m\vec{r} \times \frac{d\vec{v}}{dt} = \vec
 
 ### 角運動量保存則
 :::tip[角運動量保存則]
-中心力の場合，$\vec{N} = 0$ であるので，角運動量 $\vec{L}$ は保存される。すなわち，$\frac{d\vec{L}}{dt} = 0$ である。
+中心力の下の運動の場合，$\vec{N} = 0$ であるので，角運動量 $\vec{L}$ は保存される。すなわち，$\frac{d\vec{L}}{dt} = 0$ である。
 :::
 角運動量保存則を変形すると，$m\vec{r} \times \frac{d\vec{r}}{dt} = \vec{L}$ ($\vec{L}$：任意の定ベクトル) であり，
 これは $\dot{x} = \pm \sqrt{\frac{2}{m}(E - U(x))}$ と同様に，運動方程式を積分した形である。

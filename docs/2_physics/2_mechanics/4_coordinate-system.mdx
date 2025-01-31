@@ -1,3 +1,205 @@
 ---
 title: 4. 座標系と運動
 ---
+
+## 座標系の例
+普段はデカルト座標 $(x, y, z)$ を使っており，基底は $\vec{e_x}, \vec{e_y}, \vec{e_z}$ である。
+
+### 極座標系
+:::tip[極座標系]
+極座標系 $(r, \theta, \phi)$ は，基底を $\bm{e_r}, \bm{e_\theta}, \bm{e_\phi}$ とする座標系である。以下のような関係が成り立つ。  
+$x = r \sin \theta \cos \phi,~ y = r \sin \theta \sin \phi,~ z = r \cos \theta~(r \geq 0,~ 0 \leq \theta \leq \pi,~ 0 \leq \phi < 2\pi)$
+
+この時，基底ベクトルは以下のようになる。
+- $\bm{e_r} = \sin \theta \cos \phi~\vec{e_x} + \sin \theta \sin \phi~\vec{e_y} + \cos \theta~\vec{e_z} 
+= (\sin \theta \cos \phi, \sin \theta \sin \phi, \cos \theta)$
+- $\bm{e_\theta} = \cos \theta \cos \phi~\vec{e_x} + \cos \theta \sin \phi~\vec{e_y} - \sin \theta~\vec{e_z} 
+= (\cos \theta \cos \phi, \cos \theta \sin \phi, -\sin \theta)$
+- $\bm{e_\phi} = -\sin \phi~\vec{e_x} + \cos \phi~\vec{e_y} = (-\sin \phi, \cos \phi, 0)$
+:::
+また，極座標系は以下のような性質を持つ。
+- $r = \sqrt{x^2 + y^2 + z^2},~\theta = \cos^{-1} \left( \frac{z}{r} \right),~\phi = \tan^{-1} \left( \frac{y}{x} \right)$
+- $\bm{e_r} = \frac{\partial}{\partial r} \bm{r},~\bm{e_\theta} = \frac{1}{r} \frac{\partial}{\partial \theta} \bm{r},
+~\bm{e_\phi} = \frac{1}{r \sin \theta} \frac{\partial}{\partial \phi} \bm{r}$
+- $dV = r^2 \sin \theta~dr d\theta d\phi$
+- $\nabla = \bm{e_r} \frac{\partial}{\partial r} + \frac{1}{r} \bm{e_\theta} \frac{\partial}{\partial \theta} +
+\frac{1}{r \sin \theta}\bm{e_\phi} \frac{\partial f}{\partial \phi}$
+- $\frac{\partial}{\partial x} = \sin \theta \cos \phi \frac{\partial}{\partial r} + \frac{\cos \theta \cos \phi}{r} \frac{\partial}{\partial \theta} -
+\frac{\sin \phi}{r \sin \theta} \frac{\partial}{\partial \phi},~\frac{\partial}{\partial y} = \sin \theta \sin \phi \frac{\partial}{\partial r} +
+\frac{\cos \theta \sin \phi}{r} \frac{\partial}{\partial \theta} + \frac{\cos \phi}{r \sin \theta} \frac{\partial}{\partial \phi},~
+\frac{\partial}{\partial z} = \cos \theta \frac{\partial}{\partial r} - \frac{\sin \theta}{r} \frac{\partial}{\partial \theta}$
+
+座標変換は以下のようになる。基底変換は，量子力学の時などに特に重要。
+- $\begin{pmatrix} \bm{e_r} \\ \bm{e_\theta} \\ \bm{e_\phi} \end{pmatrix} = 
+\begin{pmatrix} \sin \theta \cos \phi & \sin \theta \sin \phi & \cos \theta \\
+\cos \theta \cos \phi & \cos \theta \sin \phi & -\sin \theta \\
+-\sin \phi & \cos \phi & 0 \end{pmatrix} \begin{pmatrix} \vec{e_x} \\ \vec{e_y} \\ \vec{e_z} \end{pmatrix}$
+- $\begin{pmatrix} \frac{\partial}{\partial x} \\ \frac{\partial}{\partial y} \\ \frac{\partial}{\partial z} \end{pmatrix} =
+\begin{pmatrix} \sin \theta \cos \phi & \frac{\cos \theta \cos \phi}{r} & -\frac{\sin \phi}{r\sin \theta} \\
+\sin \theta \sin \phi & \frac{\cos \theta \sin \phi}{r} & \frac{\cos \phi}{r\sin \theta} \\
+\cos \theta & -\frac{\sin \theta}{r} & 0 \end{pmatrix} \begin{pmatrix} \frac{\partial}{\partial r} \\ 
+\frac{\partial}{\partial \theta} \\ \frac{\partial}{\partial \phi} \end{pmatrix}$
+
+#### 二次元極座標系 $(r, \theta)$
+- $x = r \cos \theta,~y = r \sin \theta~(r \geq 0,~0 \leq \theta < 2\pi)$
+- $\bm{e_r} = \cos \theta~\vec{e_x} + \sin \theta~\vec{e_y} = (\cos \theta, \sin \theta)$
+- $\bm{e_\theta} = -\sin \theta~\vec{e_x} + \cos \theta~\vec{e_y} = (-\sin \theta, \cos \theta)$
+- $\frac{d}{d\theta} \bm{e_r} = \bm{e_\theta},~\frac{d}{d\theta} \bm{e_\theta} = -\bm{e_r}$：質点の位置によって基底ベクトルが変わる
+- $dS = r~drd\theta$
+- $\nabla = \bm{e_r} \frac{\partial}{\partial r} + \frac{1}{r} \bm{e_\theta} \frac{\partial}{\partial \theta}$
+- $\frac{\partial}{\partial x} = \cos \theta \frac{\partial}{\partial r} - \frac{\sin \theta}{r} \frac{\partial}{\partial \theta},~
+\frac{\partial}{\partial y} = \sin \theta \frac{\partial}{\partial r} + \frac{\cos \theta}{r} \frac{\partial}{\partial \theta}$
+
+この時，$\dot{x} = \dot{r} \cos \theta - r \dot{\theta} \sin \theta,~\dot{y} = \dot{r} \sin \theta + r \dot{\theta} \cos \theta$ であり，
+$\bm{v} = \dot{r} \bm{e_r} + r \dot{\theta} \bm{e_\theta}$ である。  
+また，$\bm{a} = (\ddot{r} - r \dot{\theta}^2) \bm{e_r} + (r \ddot{\theta} + 2 \dot{r} \dot{\theta}) \bm{e_\theta}$ である。
+
+### 円柱座標系
+:::tip[円柱座標系]
+円柱座標系 $(\rho, \phi, z)$ は，基底を $\bm{e_\rho}, \bm{e_\phi}, \bm{e_z}$ とする座標系である。以下のような関係が成り立つ。  
+$x = \rho \cos \phi,~ y = \rho \sin \phi,~ z = z~(\rho \geq 0,~0 \leq \phi < 2\pi)$
+
+この時，基底ベクトルは以下のようになる。
+- $\bm{e_\rho} = \cos \phi~\vec{e_x} + \sin \phi~\vec{e_y} = (\cos \phi, \sin \phi, 0)$
+- $\bm{e_\phi} = -\sin \phi~\vec{e_x} + \cos \phi~\vec{e_y} = (-\sin \phi, \cos \phi, 0)$
+- $\bm{e_z} = \vec{e_z} = (0, 0, 1)$
+:::
+また，円柱座標系は以下のような性質を持つ。
+- $\rho = \sqrt{x^2 + y^2},~\phi = \tan^{-1} \left( \frac{y}{x} \right)$
+- $\bm{e_\rho} = \frac{\partial}{\partial \rho} \bm{r},~
+\bm{e_\phi} = \frac{1}{\rho} \frac{\partial}{\partial \phi} \bm{r},~\bm{e_z} = \frac{\partial}{\partial z} \bm{r}$
+- $dV = \rho~d\rho d\phi dz$
+- $\nabla = \bm{e_\rho} \frac{\partial}{\partial \rho} + \frac{1}{\rho} \bm{e_\phi} \frac{\partial}{\partial \phi} + \bm{e_z} \frac{\partial}{\partial z}$
+- $\frac{\partial}{\partial x} = \cos \phi \frac{\partial}{\partial \rho} - \frac{\sin \phi}{\rho} \frac{\partial}{\partial \phi},~
+\frac{\partial}{\partial y} = \sin \phi \frac{\partial}{\partial \rho} + \frac{\cos \phi}{\rho} \frac{\partial}{\partial \phi},~
+\frac{\partial}{\partial z} = \frac{\partial}{\partial z}$
+
+座標変換は以下のようになる。
+- $\begin{pmatrix} \bm{e_\rho} \\ \bm{e_\phi} \\ \bm{e_z} \end{pmatrix} =
+\begin{pmatrix} \cos \phi & \sin \phi & 0 \\ -\sin \phi & \cos \phi & 0 \\ 0 & 0 & 1 \end{pmatrix} 
+\begin{pmatrix} \vec{e_x} \\ \vec{e_y} \\ \vec{e_z} \end{pmatrix}$
+- $\begin{pmatrix} \frac{\partial}{\partial x} \\ \frac{\partial}{\partial y} \\ \frac{\partial}{\partial z} \end{pmatrix} =
+\begin{pmatrix} \cos \phi & -\frac{\sin \phi}{\rho} & 0 \\ \sin \phi & \frac{\cos \phi}{\rho} & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\begin{pmatrix} \frac{\partial}{\partial \rho} \\ \frac{\partial}{\partial \phi} \\ \frac{\partial}{\partial z} \end{pmatrix}$
+
+---
+## 極座標系の運動方程式
+二次元平面での運動を極座標系で考える。
+:::tip[二次元極座標系での運動方程式]
+$\bm{e_r}$ 方向：$m(\ddot{r} - r \dot{\theta}^2) = F_r$，$\bm{e_\theta}$ 方向：$m(r \ddot{\theta} + 2 \dot{r} \dot{\theta}) = F_\theta$  
+特に，中心力のみ働く場合は，$F_\theta = 0$ である。
+:::
+この時，下記のようになる。
+- 速度 $\bm{v} = \dot{r} \bm{e_r} + r \dot{\theta} \bm{e_\theta}$
+- 角運動量 $\bm{L} = m \bm{r} \times \bm{v} = m r \bm{e_r} \times (\dot{r} \bm{e_r} + r \dot{\theta} \bm{e_\theta}) 
+= m r^2 \dot{\theta} \bm{e_z}$
+- エネルギー $E = \frac{1}{2} m (\dot{r}^2 + r^2 \dot{\theta}^2) + U(r) = \frac{1}{2} m \dot{r}^2 + \frac{L^2}{2 m r^2} + U(r)$
+
+すると，動径方向の運動方程式は中心力のみの場合， $m \ddot{r} = \frac{L^2}{m r^3} + f(r)$ と変形でき，$\frac{L^2}{m r^3}$ は遠心力と呼ばれる（詳しくは後述）。
+これは $r$ のみの微分方程式であり，動径方程式と呼ばれる
+
+また，偏角方向の運動方程式は中心力のみの場合，$m r \ddot{\theta} + 2 m \dot{r} \dot{\theta} = \frac{d}{dt} (m r^2 \dot{\theta}) = 0$ となり，
+これは角運動量保存則そのものである。
+
+さらに，中心力 $f(r)$ のポテンシャルを $U(r)$ とし，$U_{\text{eff}}(r) = U(r) + \frac{L^2}{2 m r^2}$ とおくと， 
+$m \ddot{r} = -U_{\text{eff}}'(r)$ となる。$U_{\text{eff}}(r)$ は有効ポテンシャルと呼ばれ，遠心力の影響を考慮したポテンシャルである。
+また，$E = \frac{1}{2} m \dot{r}^2 + U_{\text{eff}}(r)$ となる。
+
+---
+## 重力単振り子の運動
+一様重力場の中を，軽い糸で吊るしたおもりの振動振動を考える。ただし，運動は円周に沿って生じるとする。
+すると，運動方程式は極座標系で考えると以下のようになる。($\dot{r} = 0$ である)
+
+$\begin{cases} -mr\dot{\theta}^2 = mg\cos \theta - T \\ m r \ddot{\theta} = -mg\sin \theta \end{cases}$
+
+振幅が小さい時は，$\sin \theta = \theta + O(\theta^3)$ から，$\ddot{\theta} = -\frac{g}{r} \theta$ となり，
+$\omega = \sqrt{\frac{g}{r}}$ である単振動となる。以下は，大振幅での場合を考える。
+
+$E = \frac{1}{2} m r^2 \dot{\theta}^2 + mgr (1 - \cos \theta)$ は一定である。
+運動が可能な領域は $\frac{1}{2} m r^2 \dot{\theta}^2 = E - mgr (1 - \cos \theta) \geq 0$ であり，
+最大振幅 $\theta_A$ とすると，$E = mgr (1 - \cos \theta_A)$ である。
+( $E > 2mgr$ の時は回転運動となり，円周上で回転運動をする時は $ E > \frac{5}{2} mgr$ である)
+
+そこで，計算を行うと，  
+$t = \pm \int \frac{dx}{\sqrt{\frac{2}{m}(E - U(x))}} = 
+\pm \int_0^\theta \frac{r d\theta}{\sqrt{\frac{2}{m}(mgr(1 - \cos \theta_A) - mgr(1 - \cos \theta))}} = 
+\pm \int_0^\theta \frac{d\theta}{2\omega_0 \sqrt{\sin^2 \frac{\theta_A}{2} - \sin^2 \frac{\theta}{2}}} = 
+\pm \frac{1}{\omega_0} \int_0^\phi \frac{d\phi}{\sqrt{1 - k^2 \sin^2 \phi}}$ となる。  
+(ただし，$\omega_0 = \sqrt{\frac{g}{r}},~k = \sin \frac{\theta_A}{2}$)
+
+ここから，周期 $T = \frac{4}{\omega_0}  \int_0^{\frac{\pi}{2}} \frac{d\phi}{\sqrt{1 - k^2 \sin^2 \phi}}$（完全楕円積分）となることがわかり，また，
+$T = \frac{2\pi}{\omega_0}(1 + \frac{1}{4}\sin^2 \frac{\theta_A}{2} + \cdots)$ となる。
+
+---
+## 逆円錐面での運動
+<img src="/img/physics/cone.png" style={{ width: '20%'}} alt="逆円錐面での運動"/>
+図のように (図は[このサイト](http://www.wakariyasui.sakura.ne.jp/q/mech/enn/qi3g9.html)より引用)，
+頂点の角度が $2\theta$ の円錐を逆さにして置き、その内側を質量 $m$ の質点がなめらかに運動できるとする。円筒座標系で考えと，運動方程式は以下のようになる。
+
+$\begin{cases} m a_z = m \ddot{z} = -mg + N \sin \theta \\ m a_r = m (\ddot{r} - r \dot{\theta}^2) = - N \cos \theta \\ 
+m a_\theta = m (r \ddot{\theta} + 2 \dot{r} \dot{\theta}) = 0 \end{cases}$
+
+ここで，三つ目の式は角運動量保存則と同値であり，$\dot{\theta} = \frac{L}{m r^2}$ で一定である。また，拘束条件より $r = z \tan \theta$ である。  
+この二つを用いて整理すると，$\frac{m}{\sin\theta} \ddot{r} = -mg \cos \theta + \frac{L^2}{m r^3} \sin \theta$ となり，$r$ のみの微分方程式となる。
+
+また，エネルギー保存則を考えると，$E = \frac{1}{2} m (\dot{r}^2 + r^2 \dot{\theta}^2 + \dot{z}^2) + mgz$ が一定であり，これを整理して，
+
+$E = \frac{1}{2} \frac{m}{\cos^2 \theta} \dot{z}^2 + \frac{L^2}{2m\tan^2 \theta}\frac{1}{z^2} + mgz = 
+\frac{1}{2} \frac{m}{\cos^2 \theta} \dot{z}^2 + U_{\text{eff}}(z)$ となる。
+
+---
+## ガリレイ変換
+二つの座標系 $O_{x, y, z}$ と $O_{x^{\prime}, y^{\prime}, z^{\prime}}$ の座標系について，
+それぞれの座標系の位置 $\bm{r},~\bm{r}^{\prime}$ の関係性が，$\bm{r} = \bm{r}^{\prime} + \bm{v_0}t + \bm{r_0}$ で表される時，**ガリレイ変換** と呼ばれる。
+運動方程式はガリレイ変換に対して不変である。すなわち，$O_{x, y, z}$ が慣性系であれば，$O_{x^{\prime}, y^{\prime}, z^{\prime}}$ も慣性系である。
+- 相対論は，そもそも二つの座標系で同じ $t$ を使うのはおかしくないか？というところから始まり，光速不変の原理を導入することで，ローレンツ変換を導入する
+- この変換では，速度は変化する。一定の速度で走る電車を考えればよい
+- 力積と運動量は座標系によらないが，仕事と運動エネルギーは座標系によって異なる（$F v_0 t$ だけ違う）
+    - 動いている時に力を加えた方がする仕事が大きくなる。例としては，相手が動いている時にそれと同じ方向に力を加えてこかす，
+    リフトする時（ジャンプの補助をする時），速度が一番大きい飛び上がりの瞬間に力を加えると一番高く飛ぶ，などがある。
+
+---
+## 回転座標系
+慣性系 $O_{x, y, z}$ に対して，座標系 $O^{\prime}_{x^{\prime}, y^{\prime}, z^{\prime}}$ を考える。それぞれの座標系の量は，次のように表せる。
+
+- 慣性系 $O_{x, y, z}$ ( 基底：$\bm{e_x}, \bm{e_y}, \bm{e_z}$ )
+    - 位置：$\bm{r} = x \bm{e_x} + y \bm{e_y} + z \bm{e_z}$，
+    速度：$\bm{v} = \dot{x} \bm{e_x} + \dot{y} \bm{e_y} + \dot{z} \bm{e_z}$，
+    加速度：$\bm{a} = \ddot{x} \bm{e_x} + \ddot{y} \bm{e_y} + \ddot{z} \bm{e_z}$
+- 座標系 $O^{\prime}_{x^{\prime}, y^{\prime}, z^{\prime}}$ ( 基底：$\bm{e_{x^{\prime}}}, \bm{e_{y^{\prime}}}, \bm{e_{z^{\prime}}}$ )
+    - 位置：$\bm{r}^{\prime} = x^{\prime} \bm{e_{x^{\prime}}} + y^{\prime} \bm{e_{y^{\prime}}} + z^{\prime} \bm{e_{z^{\prime}}}$，
+    速度：$\bm{v}^{\prime} = \dot{x}^{\prime} \bm{e_{x^{\prime}}} + \dot{y}^{\prime} \bm{e_{y^{\prime}}} + \dot{z}^{\prime} \bm{e_{z^{\prime}}}$，
+    加速度：$\bm{a}^{\prime} = \ddot{x}^{\prime} \bm{e_{x^{\prime}}} + \ddot{y}^{\prime} \bm{e_{y^{\prime}}} + \ddot{z}^{\prime} \bm{e_{z^{\prime}}}$
+
+ここで，原点が一致していて，慣性系 $O_{x, y, z}$ に対して $O^{\prime}_{x^{\prime}, y^{\prime}, z^{\prime}}$ が
+角速度 $\bm{\omega}$ で回転している回転座標系を考える。  
+この時，$\frac{d\bm{e_{x^{\prime}}}}{dt} = \lim_{\Delta t \to 0} \frac{\bm{e_{x^{\prime}}}(t + \Delta t) - \bm{e_{x^{\prime}}}(t)}{\Delta t} = 
+\bm{\omega} \times \bm{e_{x^{\prime}}}$ となる。
+
+よって，$x \bm{e_x} + y \bm{e_y} + z \bm{e_z} = 
+x^{\prime} \bm{e_{x^{\prime}}} + y^{\prime} \bm{e_{y^{\prime}}} + z^{\prime} \bm{e_{z^{\prime}}}$ の両辺を微分すると，  
+$\dot{x} \bm{e_x} + \dot{y} \bm{e_y} + \dot{z} \bm{e_z} =
+\dot{x}^{\prime} \bm{e_{x^{\prime}}} + \dot{y}^{\prime} \bm{e_{y^{\prime}}} + \dot{z}^{\prime} \bm{e_{z^{\prime}}} +
+\bm{\omega} \times (x^{\prime} \bm{e_{x^{\prime}}} + y^{\prime} \bm{e_{y^{\prime}}} + z^{\prime} \bm{e_{z^{\prime}}})$ となる。
+
+従って，$\bm{v} = \bm{v}^{\prime} + \bm{\omega} \times \bm{r}^{\prime}$ となる。
+また，加速度も同様にして，$\bm{a} = \bm{a}^{\prime} + 2\bm{\omega} \times \bm{v}^{\prime} + 
+\bm{\omega} \times (\bm{\omega} \times \bm{r}^{\prime})$ となる。
+
+:::tip[回転座標系での運動方程式]
+慣性系 $O_{x, y, z}$ に対して，原点が一致していて角速度 $\bm{\omega}$ で回転する回転座標系 $O^{\prime}_{x^{\prime}, y^{\prime}, z^{\prime}}$ について，
+以下が成り立つ。
+- 運動方程式：$m\ddot{\bm{r}}^{\prime} = 
+\bm{F}^{\prime} - 2m\bm{\omega} \times \dot{\bm{r}}^{\prime} - m\bm{\omega} \times (\bm{\omega} \times \bm{r}^{\prime})$
+    - 右辺第 2 項はコリオリ力，第 3 項は遠心力と呼ばれる
+- 二つの座標系の微分：$\dot{\bm{f}} = \dot{\bm{f}}^{\prime} + \bm{\omega} \times \bm{f}^{\prime}$（ $\bm{f}$ はどのような物理量でもよい）
+:::
+- 遠心力とコリオリ力は慣性力であり，非慣性系においてのみ現れる力である。実際に存在する力ではない，と言われることがある
+- 慣性系から見ると，回転座標系はある回転軸を持って角速度 $\bm{\omega}$ で回転している。しかし，回転座標系ではその $\bm{\omega}$ はわからず，
+単にその影響として遠心力とコリオリ力が現れる。ただし，慣性系から見ても回転座標系から見ても回転軸の位置は変化しない（宇宙から見た地球と地球上から見た地球とを想像すると良い）
+- 遠心力 $\bm{F}_{\text{cen}} = -m\bm{\omega} \times (\bm{\omega} \times \bm{r}^{\prime})$ であり，
+回転軸からの距離 $\xi$ とすると，回転軸から遠ざかる方向に大きさ $m \omega^2 \xi$ の力となる。
+- コリオリ力 $\bm{F}_{\text{corr}} = -2m\bm{\omega} \times \dot{\bm{r}}^{\prime}$ であり，
+回転座標系で見て速度を持つ時に，その速度と回転軸の両方に垂直な方向に $2m \bm{\omega} \times \bm{v}^{\prime}$ の力が働く。
+    - 北半球で南から北に向かう物体は東に，西から東に向かう物体は南に，それぞれコリオリ力を受ける。低気圧や高気圧では，コリオリ力と気圧傾度力のバランスによって風が吹く
+    - 角運動量保存則を考えればコリオリ力の向きが想像しやすい
