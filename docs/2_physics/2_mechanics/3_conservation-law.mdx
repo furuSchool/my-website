@@ -1,0 +1,125 @@
+---
+title: 3. 保存則
+---
+
+次は，特に二つ以上の物体を扱う上で重要となってくる保存則について述べる。
+
+## 運動量保存則
+:::tip[運動量保存則]
+**物体の運動量：$\vec{p} = m\vec{v}$**，物体に力 $\vec{F}(\vec{r}, \vec{v}, t)$ が働くとき，**力積：$\vec{I} = \int \vec{F} dt$** と定義する。
+この時，運動方程式から以下の法則が導かれる。
+
+物体に働く力が $\vec{F} = 0$ のとき，運動量保存則が成り立つ：$\vec{p}(t_{\text{fin}}) = \vec{p}(t_{\text{ini}})$  
+
+一般には，$\vec{I} = \vec{p}(t_{\text{fin}}) - \vec{p}(t_{\text{ini}})$ が成り立つ。
+:::
+$m\frac{d\vec{v}}{dt} = \vec{F}$ を時間積分すれば， 
+$\vec{p}(t_{\text{fin}}) - \vec{p}(t_{\text{ini}}) = \int_{t_{\text{ini}}}^{t_{\text{fin}}} \vec{F} dt$ がわかる。
+ただしここまでは，1 つの物体のみについてしか考えていない。
+
+運動量を用いると，運動方程式は $\frac{d\vec{p}}{dt} = \vec{F}$ と書き直せる。
+
+---
+## エネルギー保存則
+### 仕事
+:::tip[仕事]
+物体に $\vec{F}$ が働いている状態で $\vec{\Delta r}$ だけ移動するとき，$\vec{F}\cdot\vec{\Delta r}$ を **力が物体にした仕事** と呼ぶ。
+また，力 $\vec{F}$ が点 $A$ から点 $B$ まで物体を移動させるとき，
+点 $A$ から点 $B$ までの仕事 $W_{AB} =  \int_{t_{A}}^{t_{B}} \vec{F}\cdot\vec{v}dt$ と定義される。
+- $\vec{F}$ が $\vec{r}$ のみに依存する場合，$W_{AB} = \int_C \vec{F} \cdot d\vec{r}$ と書ける( $C$ は物体の経路)
+:::
+- 線積分やベクトルの微分・偏微分の知識が必要
+- 仕事の大きさは経路に依存する
+- $\vec{F}$ は $\vec{r}$ の他，$\vec{v}$ や $t$ にも依存する可能性がある。
+
+また，仕事率 $P = \frac{dW}{dt} = \vec{F}\cdot\vec{v}$ と定義される。
+
+### 保存力
+:::tip[保存力]
+位置のみによる物理量：ポテンシャル(位置エネルギー) $U(\vec{r})$ を定義し，
+$\vec{F}(\vec{r}, \vec{v}, t) = -\mathrm{grad} U(\vec{r}) = - \nabla U(\vec{r})$ と表せる力を **保存力** と呼ぶ。  
+この時，$U_{\text{fin}} - U_{\text{ini}} = -\int_{\vec{r}_{\text{ini}}}^{\vec{r}_{\text{fin}}} \vec{F} \cdot d\vec{r} 
+= - W_{\vec{r}_{\text{ini}} \to \vec{r}_{\text{fin}}}$ である。
+すなわち，保存力による仕事は経路に依存しない。
+- 基準点 $\vec{r}_0$ とすれば，$U(\vec{r}) = -\int_{\vec{r}_0}^{\vec{r}} \vec{F} \cdot d\vec{r}$ となる
+
+なお，このようなポテンシャルが存在するための力の条件は，$\mathrm{rot} \vec{F} = \nabla \times \vec{F} = 0$ である。
+- 一次元の場合は $\vec{F} = -\frac{dU}{dx}$ であり，$\vec{F}$ が位置 $x$ のみに依存すれば保存力となる
+:::
+- $U_{\text{fin}} - U_{\text{ini}} = - W_{\vec{r}_{\text{ini}} \to \vec{r}_{\text{fin}}}$ は，
+保存力の仕事分だけポテンシャルエネルギーが減っているイメージ
+- 保存力は少なくとも位置のみに依存する
+
+### (力学的)エネルギー保存則
+:::tip[(力学的)エネルギー保存則]
+物体の運動エネルギー：$K = \frac{1}{2}m|\vec{v}|^2$ と定義する。  
+
+まず，任意の物体にかかる合力 $\vec{F}$ について，次の法則が成り立つ。
+$K(t_{\text{fin}}) - K(t_{\text{ini}}) = \int_{t_{\text{ini}}}^{t_{\text{fin}}} \vec{F} \cdot \vec{v} dt = 
+W_{t_{\text{ini}} \to t_{\text{fin}}}$  
+次に，物体にかかる合力 $\vec{F}$ が保存力の場合，エネルギー保存則が成り立つ：$K_{\text{fin}} + U_{\text{fin}} = K_{\text{ini}} + U_{\text{ini}}$
+:::
+$m\frac{d\vec{v}}{dt}\cdot\vec{v} = \vec{F}\cdot\vec{v}$ を時間積分すれば，
+$\frac{1}{2}m|\vec{v}_{\text{fin}}|^2 - \frac{1}{2}m|\vec{v}_{\text{ini}}|^2 = 
+\int_{t_{\text{ini}}}^{t_{\text{fin}}} \vec{F} \cdot \vec{v} dt = W_{t_{\text{ini}} \to t_{\text{fin}}}$ がわかる。
+
+また，$\vec{F} = -\nabla U$：保存力のとき，
+$\int_{t_{\text{ini}}}^{t_{\text{fin}}} \vec{F} \cdot \vec{v} dt = 
+\int_{\vec{r}_{\text{ini}}}^{\vec{r}_{\text{fin}}} \vec{F} \cdot d\vec{r} = U_{\text{ini}} - U_{\text{fin}}$ である。
+
+---
+## エネルギー保存則の分析
+### 微少振動
+エネルギー保存則が成り立つ，一次元の系を考える。$E = \frac{1}{2}mv^2 + U(x)$ であり，エネルギー $E$ が十分小さいとする。
+この時，物体はポテンシャルの極小点周りにいると考えられ，その極小点を $x = 0$ とする。
+
+$U(x) = U(0) + U'(0)x + \frac{1}{2}U''(0)x^2 + \cdots$ と展開でき，$U''(0) = k$ とすると，
+$U(x) = U(0) + \frac{1}{2}kx^2 + O(x^3)$ となる。  
+これを運動方程式に戻すと，$m\ddot{x} = -kx + O(x^2)$ 。
+
+ここから，**どんなポテンシャルの下での振動でも、変位が微小であれば単振動になる** ことがわかる。
+
+次に，微小でない振動について考える。  
+エネルギー保存則 $E = \frac{1}{2}mv^2 + U(x)$ を変形すると，$\dot{x} ^2 = \frac{2}{m}(E - U(x))$ となり，これは運動方程式と等価である。
+
+$\dot{x} = \pm \sqrt{\frac{2}{m}(E - U(x))}$ となり，整理して積分すると，$t = \pm \int \frac{dx}{\sqrt{\frac{2}{m}(E - U(x))}}$ となる。  
+ここから，振動における最大値 $x_+$，最小値 $x_-$ とすると，振動周期：$T = \sqrt{2m}\int_{x_-}^{x_+} \frac{dx}{\sqrt{E - U(x)}}$ となることがわかる。
+
+### 保存力と非保存力
+保存力 $\vec{F}_c$ と非保存力 $\vec{F}_{nc}$ が働く運動について考える。すなわち，運動方程式は，$m\frac{d^2}{dt^2}\vec{r} = \vec{F}_c + \vec{F}_{nc}$ である。
+
+この時，エネルギー $E$ に関して，$\frac{dE}{dt} = \vec{F}_{nc} \cdot \vec{v}$ であるので，$\vec{F}_{nc} \perp \vec{v}$ ならば，エネルギー保存則が成り立つ。  
+ここで，なめらかな拘束の場合，拘束条件を満たした運動は必ず拘束力と直交する $\vec{F} \perp \vec{v}$ と考えられるので，この場合もエネルギー保存則が成り立つ。
+- 例：張力，垂直抗力，など
+
+---
+## 角運動量保存則
+### 中心力
+:::tip[中心力]
+$\vec{e_r} = \frac{\vec{r}}{|\vec{r}|} = \frac{x}{r}\vec{e_x} + \frac{y}{r}\vec{e_y} + \frac{z}{r}\vec{e_z}~(r = \sqrt{x^2 + y^2 + z^2})$ とおく。
+この時，$\vec{F}(\vec{r}) = f(r)\vec{e_r}$ と表される力を **中心力** と呼ぶ。
+:::
+$\nabla \times \vec{F}(\vec{r}) = 0$ であるので，中心力は保存力である。  
+そこで，無限遠点を基準としてポテンシャル $U(r)$ を定義すると，$U(r) = \int_{r}^{\infty} f(s)ds$ となる。
+- 万有引力 $f(r) = -\frac{GmM}{r^2}$，$U(r) = -\frac{GmM}{r}$ などは中心力である
+
+### 角運動量とトルク
+:::tip[角運動量とトルク]
+質量 $m$，位置 $\vec{r}$，運動量 $\vec{p}$ の物体について，角運動量 $\vec{L} = \vec{r} \times \vec{p} = m\vec{r} \times \vec{v}$ と定義する。  
+また，位置 $\vec{r}$ の物体に作用する力 $\vec{F}$ によるトルク $\vec{N} = \vec{r} \times \vec{F}$ と定義する。  
+この時，$\frac{d\vec{L}}{dt} = \vec{N}$ が成り立つ。
+- 厳密には，これは原点周りの角運動量とトルクである。点 $\vec{r_0}$ 周りでは，  
+角運動量 $\vec{L} = m(\vec{r} - \vec{r_0}) \times \vec{v}$，トルク $\vec{N} = (\vec{r} - \vec{r_0}) \times \vec{F}$
+:::
+$\frac{d\vec{L}}{dt} = \frac{d}{dt}(m\vec{r} \times \vec{v}) = 
+m\frac{d\vec{r}}{dt} \times \vec{v} + m\vec{r} \times \frac{d\vec{v}}{dt} = \vec{r} \times \vec{F} = \vec{N}$ である。
+- 角運動量の大きさは面積速度に近い。
+時間 $\Delta t$ でベクトル $\Delta \vec{r}$ が掃く面積 $\Delta S = \frac{1}{2}|\vec{r} \times \Delta \vec{r}| + O(\Delta t^2)$ である。  
+ここから，面積速度 $\frac{dS}{dt} = \frac{1}{2}|\vec{r} \times \vec{v}| = \frac{|\vec{L}|}{2m}$ となる。
+
+### 角運動量保存則
+:::tip[角運動量保存則]
+中心力の場合，$\vec{N} = 0$ であるので，角運動量 $\vec{L}$ は保存される。すなわち，$\frac{d\vec{L}}{dt} = 0$ である。
+:::
+角運動量保存則を変形すると，$m\vec{r} \times \frac{d\vec{r}}{dt} = \vec{L}$ ($\vec{L}$：任意の定ベクトル) であり，
+これは $\dot{x} = \pm \sqrt{\frac{2}{m}(E - U(x))}$ と同様に，運動方程式を積分した形である。

@@ -1,0 +1,113 @@
+---
+title: 2. 典型的な運動
+---
+
+:::warning[運動方程式]
+運動方程式は力学の基礎方程式である。 $m\ddot{\bm{r}} = \bm{F}$ と書ける。（基底は慣性系である）
+:::
+
+運動方程式は，基本的に常微分方程式であり，様々な解法が存在する。  
+一般に，$n$ 階の常微分方程式の一般解は，$n$ 個の任意定数を含み，初期条件を $n$ 個与えることで特解を求めることができる。
+
+---
+## 典型的な例
+### 力がかかっていない場合
+$m\ddot{\bm{x}} = 0$ より，$\bm{v}(t) = \bm{v}_0,~ \bm{x}(t) = \bm{x}_0 + \bm{v}_0t$ と解ける。
+
+### 粘性抵抗力のみがかかる場合
+$m\ddot{\bm{x}} = -\gamma \dot{\bm{x}}$ より，
+$\bm{v}(t) = \bm{v}_0e^{-\frac{\gamma}{m}t},~ \bm{x}(t) = \bm{x}_0 + \frac{m\bm{v}_0}{\gamma}(1 - e^{-\frac{\gamma}{m}t})$ と解ける。
+- 速度が指数関数的に減少する
+- 粘性ダンピング（粘性抵抗により速度が減衰すること）の時間スケール：$t_{\text{damp}} = \frac{m}{\gamma}$
+    - 速度が $1/e \approx 0.34$ 倍になる時間
+
+### 慣性抵抗力のみがかかる場合
+一次元で考えると，$m\ddot{x} = -m\alpha \dot{x}^2$ より，
+$v(t) = \frac{v_0}{1 + \alpha v_0 t},~ x(t) = x_0 + \frac{1}{\alpha}\log(1 + \alpha v_0 t)$ と解ける。
+
+### 自由落下
+一次元で考え鉛直下向きを正とすると，$m\ddot{y} = mg$ より，$v(t) = v_0 + gt,~ y(t) = y_0 + v_0t + \frac{1}{2}gt^2$ と解ける。
+
+### 粘性抵抗力のかかる自由落下
+一次元で考え鉛直下向きを正とすると，$m\ddot{y} = mg - \gamma \dot{y}$ より，  
+$v(t) = \frac{mg}{\gamma} + (v_0 - \frac{mg}{\gamma})e^{-\frac{\gamma}{m}t},~
+y(t) = y_0 + \frac{mg}{\gamma}t + \frac{m(v_0 - \frac{mg}{\gamma})}{\gamma}(1 - e^{-\frac{\gamma}{m}t})$ と解ける。
+- 終端速度 $v_{\infty} = \frac{mg}{\gamma}$ に収束する
+
+### 慣性抵抗力のかかる自由落下
+一次元で考え鉛直下向きを正とすると，$m\ddot{y} = mg - m\alpha \dot{y}^2$ より，
+$v(t) = \sqrt{\frac{g}{\alpha}}\left(\frac{1-C e^{-2\sqrt{\alpha g}t}}{1+C e^{-2\sqrt{\alpha g}t}}\right)~\left(C = \frac{-v_0 + \sqrt{\frac{g}{\alpha}}}{v_0 + \sqrt{\frac{g}{\alpha}}} \right)$
+- 終端速度 $v_{\infty} = \sqrt{\frac{g}{\alpha}}$ に収束する
+- $v_0 = 0$ の時，$v(t) = v_{\infty}\tanh(\alpha v_{\infty}t)$ となる
+
+### 斜方投射
+二次元で考える。$x_0 = y_0 = 0$ とする。
+1. 粘性抵抗がない場合：$m\ddot{\bm{x}} = \begin{pmatrix} 0 \\ -mg \end{pmatrix}$ より，
+$\bm{v}(t) = \begin{pmatrix} v_0\cos\theta \\ v_0\sin\theta - gt \end{pmatrix},~ 
+\bm{x}(t) = \begin{pmatrix} v_0\cos\theta~t \\ v_0\sin\theta~t - \frac{1}{2}gt^2 \end{pmatrix}$ と解ける。
+2. 粘性抵抗がある場合：$m\ddot{\bm{x}} = \begin{pmatrix} -\gamma v_x \\ -mg - \gamma v_y \end{pmatrix}$ より，  
+$\bm{v}(t) = \begin{pmatrix} v_0\cos\theta~e^{-\frac{\gamma}{m}t} \\ -\frac{mg}{\gamma} + (v_0\sin\theta + \frac{mg}{\gamma})e^{-\frac{\gamma}{m}t} \end{pmatrix},~
+\bm{x}(t) = \begin{pmatrix} \frac{m}{\gamma}v_0\cos\theta(1 - e^{-\frac{\gamma}{m}t}) \\ 
+-\frac{mg}{\gamma}t + \frac{m}{\gamma}(v_0\sin\theta + \frac{mg}{\gamma})(1 - e^{-\frac{\gamma}{m}t}) \end{pmatrix}$ と解ける。
+    - 高さの制限を考慮しなければ，$x_{\infty} = \frac{m}{\gamma}v_0\cos\theta$ に収束する
+    - $y = \frac{x}{v_0 \cos\theta}\left(v_0\sin\theta + \frac{mg}{\gamma}\right) + \frac{m^2g}{\gamma^2}\log \left(1 - \frac{\gamma x}{mv_0\cos\theta}\right)$ となる
+    
+---
+## 振動運動
+### 単振動
+$m\ddot{x} = -kx$($k$：ばね定数) と書ける運動。バネによる復元力が働く場合などが典型例。
+- 一般解：$x(t) = A\cos(\omega t) + B\sin(\omega t)$ ($\omega = \sqrt{\frac{k}{m}}$ であり，角振動数と呼ばれる)
+- 周期：$T = \frac{2\pi}{\omega} = 2\pi\sqrt{\frac{m}{k}}$
+- 時間スケールとして，$t_{\text{vib}} = \sqrt{\frac{m}{k}}$ が用いられる
+
+### 粘性抵抗力がある場合の単振動
+:::tip[粘性抵抗力がある場合の単振動]
+$m\ddot{x} = -kx - \gamma \dot{x}$ と書ける運動。  
+$x(t) = e^{-\frac{\gamma}{2m}t} f(t)$ とおくと，$\ddot{f}(t) = \left(-\frac{k}{m} + \frac{\gamma^2}{4m^2}\right)f(t)$ となる。
+条件によって運動が異なる。
+:::
+
+####  減衰振動( $\frac{\gamma^2}{4m^2} < \frac{k}{m}$ )
+$\Omega = \sqrt{\frac{k}{m} - \frac{\gamma^2}{4m^2}},~\Gamma = \frac{\gamma}{2m}$ とすると，
+$x(t) = e^{-\Gamma t}(A\cos(\Omega t) + B\sin(\Omega t)) = Ce^{-\Gamma t}\cos(\Omega t + \delta)$ となる。
+- $\Omega$：減衰振動の角振動数
+- $t_{\text{damp}} = \frac{m}{\gamma},~ t_{\text{vib}} = \sqrt{\frac{m}{k}}$ であり，$2t_{\text{damp}} > t_{\text{vib}}$ である
+= 振動の方が速いけど，減衰によって振動が少し遅くなってるイメージ
+
+#### 臨界減衰振動( $\frac{\gamma^2}{4m^2} = \frac{k}{m}$ )
+$x(t) = e^{-\frac{\gamma}{2m}t}(At + B)~\left(\Gamma = \frac{\gamma}{2m} \right)$ となる。最も速く減衰する。
+
+#### 過減衰( $\frac{\gamma^2}{4m^2} > \frac{k}{m}$ )
+$\Omega = \sqrt{\frac{\gamma^2}{4m^2} - \frac{k}{m}} > 0,~\Gamma = \frac{\gamma}{2m}$ とすると，
+$x(t) = e^{-\Gamma t}(Ae^{\Omega t} + Be^{-\Omega t}) = Ae^{-\left(\frac{\gamma}{2m} + \sqrt{\frac{\gamma^2}{4m^2} - \frac{k}{m}}\right)t} + 
+Be^{-\left(\frac{\gamma}{2m} - \sqrt{\frac{\gamma^2}{4m^2} - \frac{k}{m}}\right)t}$ となる。
+- 減衰が支配的な運動。振動は見られない
+- $\frac{\gamma^2}{4m^2} \gg \frac{k}{m}$ の時，$x(t) \approx Ae^{-\frac{k}{\gamma}t} + Be^{-\frac{\gamma}{m}t}$ となる
+    - 2 項目が支配的で粘性ダンピングを示す。1 項目は粘性緩和(抵抗力と復元力が釣り合って減衰する運動)を示す
+    - 粘性緩和の時間スケール：$t_{\text{relax}} = \frac{\gamma}{k}$
+
+### 強制振動
+:::tip[強制振動]
+外力が振動する場合の運動。
+$m\ddot{x} = -kx - \gamma \dot{x} + F\sin(\Omega t)$。または，$m\ddot{x} + \gamma \dot{x} + kx = F\sin(\Omega t)$ と書ける。
+:::
+#### 粘性抵抗を無視できる場合：$m\ddot{x} + kx = F\sin(\Omega t)$
+$x(t) = \frac{F}{m(\omega^2 - \Omega^2)}\sin(\Omega t) + A\cos(\omega t) + B\sin(\omega t)~\left(\omega = \sqrt{\frac{k}{m}} \right)$ となる。
+- 特解を求めて，一般解 = 特解 + 単振動の一般解 となる
+- 準静的 $\Omega \ll \omega$ の時，外力の振動が遅いので外力とバネの復元力が釣り合っている：$x(t) = \frac{F}{k}\sin(\Omega t) + O(\frac{\Omega}{\omega})$
+- 共鳴 $\Omega \approx \omega$ の時，外力の振動がバネの振動がほぼ一致している。$\Omega = (1 + \epsilon)\omega$ とすると，  
+$x(t) = \frac{F}{2m\omega^2}\left(\sin(\omega t) - \omega t\cos(\omega t)\right) + O(\epsilon)$ となる：振動しながら増幅する
+    - 速度 $v(t) \approx \frac{F}{2m}t\sin(\omega t)$ となる
+    - 例えば，建物の固有振動数と地震波の振動数が一致して共振しないように設計する
+- また，初期条件 $x_0 = 0,~ \dot{x}_0 = 0$ とすると，$x(t) = \frac{F}{m(\omega^2 - \Omega^2)}(\sin(\Omega t) - \frac{\Omega}{\omega}\sin(\omega t))$ となる。
+$\omega \approx \Omega$ の時，$x(t) = \frac{2F}{m(\omega^2 - \Omega^2)}\cos\left(\frac{\Omega + \omega}{2}t\right)\sin\left(\frac{\Omega - \omega}{2}t\right)$
+とも書け，うなりが見られる
+
+#### 粘性抵抗を考慮する場合：$m\ddot{x} + \gamma \dot{x} + kx = F\sin(\Omega t)$
+複素数の範囲で考えてみると，$m\ddot{x} + \gamma \dot{x} + kx = F e^{i\Omega t}$ であり，これを解いて実数部分を取ると，特解は，  
+$x(t) = \frac{F}{m\sqrt{(\omega^2 - \Omega^2)^2 + 4\Gamma^2\Omega^2}}\sin(\Omega t + \delta)~
+\left(\Gamma = \frac{\gamma}{2m},~\omega = \sqrt{\frac{k}{m}},~\delta = \arctan\left(-\frac{2\Gamma\Omega}{\omega^2 - \Omega^2}\right) \right)$ となる。
+- 共振：$\Omega = \sqrt{\omega^2 - 2\Gamma^2}$ の時，$x(t) = \frac{F}{2m\Gamma\Omega}\sin(\Omega t + \delta)$ となる
+    - 共振の鋭さは，$\frac{\Gamma}{\omega}$ で決まる。これが小さいほど鋭い共振となる
+    - $\frac{\Gamma}{\omega} \ge \frac{1}{\sqrt 2}$ の時，振幅は $\Omega$ について単調減少する
+- 交流回路などで頻出。交流回路なら，例えば $\ddot{q} + \frac{R}{L}\dot{q} + \frac{1}{LC}q = \frac{V_0}{L}\sin(\Omega t)$ となる

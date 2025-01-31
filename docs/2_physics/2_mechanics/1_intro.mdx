@@ -1,0 +1,91 @@
+---
+title: 1. ニュートンの運動の法則
+---
+
+:::warning[古典力学]
+古典力学は，極微小な物体の運動と，光速に近い物体の運動には適用できない。(それぞれ，量子力学と相対性理論が対応)  
+しかし，その例外範囲を除けば，とても広い範囲を説明できる理論である。
+:::
+
+---
+## 基礎的な数学まとめ
+### 微積
+- 微分と積分の関係：$f(y) = f(x_0) + \int_{x_0}^{y} f'(x)dx$
+- テイラー展開：$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$
+- ランダウの記号：$\lim_{x \to a} f(x) = 0, \lim_{x \to a} g(x) = 0$ の時，$\lim_{x \to a} \frac{f(x)}{g(x)} < \infty$ ならば，$f(x) = O(g(x))$  
+一方で，$\lim_{x \to a} \frac{f(x)}{g(x)} = 0$ ならば，$f(x) = o(g(x))$
+    - テイラー展開は，$f(x) = f(x_0) + f'(x_0)(x-x_0) + O((x-x_0)^2)$ と表現できる
+
+### ベクトル
+- ここでは，以下の様に区別する
+    - $\vec{a} = a_x\vec{e}_x + a_y\vec{e}_y + a_z\vec{e}_z$：三次元のユークリッド空間のベクトル。座標平面のベクトルというイメージ
+    - $\bm{a} = \begin{pmatrix} a_1 \\ a_2 \\ a_3 \end{pmatrix}$：実数を並べたもの。**基底に依存する**。
+    $\vec{a}$ は $\bm{a}$ のうち，基底が $\vec{e}_x, \vec{e}_y, \vec{e}_z$ の場合
+- 内積：$\vec{a} \cdot \vec{b} = |\vec{a}||\vec{b}|\cos\theta$
+    - 数学的には，以下を満たすものを内積とし，ノルムは $|\vec{a}| = \sqrt{\vec{a} \cdot \vec{a}}$ と定義する
+        1. 線形性：$(\lambda\vec{a} + \vec{b}) \cdot \vec{c} = \lambda(\vec{a} \cdot \vec{c}) + \vec{b} \cdot \vec{c},~ 
+        \vec{a} \cdot (\lambda\vec{b} + \vec{c}) = \lambda^*(\vec{a} \cdot \vec{b}) + \vec{a} \cdot \vec{c}$
+        2. エルミート対称性：$\vec{a} \cdot \vec{b} = (\vec{b} \cdot \vec{a})^*$
+        3. 非退化性：$ \vec{a} \cdot \vec{a} = 0 \Leftrightarrow \vec{a} = \vec{0}$
+        4. 半正定値性：$\vec{a} \cdot \vec{a} \geq 0$
+- 正規直交基底 $\{\vec{a}_1, …, \vec{a}_n\}$：$\vec{a}_i \cdot \vec{a}_j = \delta_{ij}$。基本的に基底は正規直交のものを用いる
+- 外積：$\vec{a} \times \vec{b} = \begin{pmatrix} a_2b_3 - a_3b_2 \\ a_3b_1 - a_1b_3 \\ a_1b_2 - a_2b_1 \end{pmatrix}$
+    - 交代性：$\vec{a} \times \vec{b} = -\vec{b} \times \vec{a}$
+    - 双線型性：$(\lambda\vec{a} + \vec{b}) \times \vec{c} = \lambda(\vec{a} \times \vec{c}) + \vec{b} \times \vec{c},~
+    \vec{a} \times (\lambda\vec{b} + \vec{c}) = \lambda(\vec{a} \times \vec{b}) + \vec{a} \times \vec{c}$
+    - 外積：$\vec{a} \times \vec{b} = \epsilon_{ijk}a_jb_k\vec{e}_i$ とも書ける
+        - レビ・チビタ記号：$\epsilon_{ijk} = \begin{cases} 1 & (i, j, k) = (1, 2, 3), (2, 3, 1), (3, 1, 2) \\ 
+        -1 & (i, j, k) = (3, 2, 1), (1, 3, 2), (2, 1, 3) \\ 0 & \text{otherwise} \end{cases}$
+    - $\vec{a}$ と $\vec{b}$ が張る平行四辺形の面積：$S = |\vec{a} \times \vec{b}| = |\vec{a}||\vec{b}|\sin\theta$
+- スカラー三重積：$\vec{a} \cdot (\vec{b} \times \vec{c}) = \vec{b} \cdot (\vec{c} \times \vec{a}) = \vec{c} \cdot (\vec{a} \times \vec{b})$
+    - これは，$\vec{a},~\vec{b},~\vec{c}$ が張る平行六面体の体積を表す
+- ベクトル三重積：$\vec{a} \times (\vec{b} \times \vec{c}) = (\vec{a} \cdot \vec{c})\vec{b} - (\vec{a} \cdot \vec{b})\vec{c}$
+    - $\vec{a} \times (\vec{b} \times \vec{c})$ は $\vec{a}$ に垂直で，$\vec{b}, \vec{c}$ が張る平面上のベクトルとなる
+
+### ベクトル値関数
+- ベクトル値関数：$\vec{a}(t) = a_x(t)\vec{e}_x + a_y(t)\vec{e}_y + a_z(t)\vec{e}_z$
+- ベクトル値関数の微分：$\frac{d\vec{a}}{dt} = \dot{a}_x\vec{e}_x + \dot{a}_y\vec{e}_y + \dot{a}_z\vec{e}_z$
+    - $\vec{e}_x, \vec{e}_y, \vec{e}_z$ は時間によらない。が，時間による基底を取る場合もある（特に，非慣性系で重要）
+- ベクトル値関数の微分と積分の関係：$\vec{a}(t) = \vec{a}(t_0) + \int_{t_0}^{t} \frac{d\vec{a}}{dt}dt$
+- 内積の微分：$\frac{d}{dt}(\vec{a} \cdot \vec{b}) = \frac{d\vec{a}}{dt} \cdot \vec{b} + \vec{a} \cdot \frac{d\vec{b}}{dt}$
+- 外積の微分：$\frac{d}{dt}(\vec{a} \times \vec{b}) = \frac{d\vec{a}}{dt} \times \vec{b} + \vec{a} \times \frac{d\vec{b}}{dt}$
+
+---
+## ニュートンの運動の法則
+まず，三次元空間において以下の様に定義する。
+- 時刻 $t$ における物体の位置：$\vec{r}(t) = x(t)\vec{e}_x + y(t)\vec{e}_y + z(t)\vec{e}_z$
+- 時刻 $t$ における物体の速度：$\vec{v}(t) = \frac{d\vec{r}}{dt} = \dot{x}\vec{e}_x + \dot{y}\vec{e}_y + \dot{z}\vec{e}_z (= v_x(t)\vec{e}_x + v_y(t)\vec{e}_y + v_z(t)\vec{e}_z )$
+- 時刻 $t$ における物体の加速度：$\vec{a}(t) = \frac{d\vec{v}}{dt} = \ddot{x}\vec{e}_x + \ddot{y}\vec{e}_y + \ddot{z}\vec{e}_z (= a_x(t)\vec{e}_x + a_y(t)\vec{e}_y + a_z(t)\vec{e}_z )$
+- 質点：質量のみを持ち，体積が無視できる物体。以下はとりあえず，物体を質点として扱う
+- 物理には単位が必須である。ここでは，SI単位系によって，適切に定義出来ているとする
+- 位置 $\vec{r}$：$\mathrm{m}$，速度 $\vec{v}$：$\mathrm{m/s}$，加速度 $\vec{a}$：$\mathrm{m/s^2}$，質量 $m$：$\mathrm{kg}$
+
+:::warning[(質点についての)運動の法則]
+1. **慣性の法則：質点は，力が作用しない限り，静止または等速直線運動する**
+2. **運動の法則：質点の加速度 $\vec{a}$ は，質点に作用する力 $\vec{F}$ に比例し，質点の質量 $m$ に反比例する**：$\vec{F} = m\vec{a}$
+3. **作用反作用の法則：二つの質点 $1, 2$ が互いに作用する力は，同じ大きさで逆方向である**。
+**質点 $1$ が質点 $2$ に及ぼす力を $\vec{F}_{12}$，質点 $2$ が質点 $1$ に及ぼす力を $\vec{F}_{21}$ とすると，$\vec{F}_{12} = -\vec{F}_{21}$**
+:::
+- 慣性の法則は，慣性系の存在を明言しているとされている。慣性系とは慣性の法則が成り立つ座標系のことであり，以下は慣性系での話ですよ，ということ言ってるらしい。
+なので，基底は慣性系であれば何でも良い
+- 力 $\vec{F}$：$\mathrm{N} = \mathrm{kg \cdot m/s^2}$
+
+### その他の諸々の定義や条件
+- 重力 $mg$：地球上における，物体にかかる鉛直下向きの力。重力加速度 $g = 9.8~\mathrm{m/s^2}$ （場所によって異なる）
+- 慣性質量：運動方程式 $\vec{F} = m\vec{a}$ における $m$
+- 重力質量：重力 $\vec{F} = m\vec{g}$ における $m$。慣性質量と等しいとされる（[等価原理](https://ja.wikipedia.org/wiki/%E7%AD%89%E4%BE%A1%E5%8E%9F%E7%90%86)）
+- 拘束条件：物体の運動を制限する条件。拘束力(束縛力)によって生じる。古典力学なら，垂直抗力や張力くらい。拘束条件を扱うなら解析力学の方が適している
+- 摩擦力：物体が他の物体と接触している際に生じる力。摩擦係数 $\mu$ に比例し，速度とは逆方向に生じる
+    - 動摩擦力：物体が動いている際に生じる摩擦力。動摩擦係数 $\mu_k$ として，大きさ $F = \mu_k N$ で表される（$N$：垂直抗力）
+    - 静止摩擦力：物体が静止している際に生じる摩擦力。静摩擦係数 $\mu_s$ として，大きさ $F \leq \mu_s N$ で表される。($\mu_s > \mu_k$)
+- 弾性：外力によって生じた変形が取り除かれた際に，元の形状に戻る性質。フックの法則 $F = -kx$（$k$：ばね定数，$x$：変位）が成り立つことが多い
+    - 詳細は材料力学や弾性体力学において扱われる
+- 粘性抵抗力：物体が流体中を移動する際に生じる抵抗。典型的には，速度に比例するとされる：$\vec{F} = -\gamma\vec{v}$($\gamma$：粘性抵抗係数)
+    - 球体粒子の場合は，粘性抵抗係数 $\gamma = 6\pi\eta a$ と表される（$\eta$：流体の粘度，$a$：球体粒子の半径）。
+    これは，ストークスの抵抗法則と呼ばれ，流体力学により導出される
+- 慣性抵抗力：物体の速度が速い場合や物体が大きい場合で，物体が流体中を移動する際に生じる力。速度と逆方向に生じ，大きさは速度の二乗に比例するとされる：$F = m\alpha v^2$ （$\alpha$：慣性抵抗係数）
+- 万有引力：2つの物体間に生じる引力。  
+位置 $\vec{r_1}$，質量 $m_1$ の物体にはたらく，位置 $\vec{r_2}$，質量 $m_2$ による万有引力は，
+$\vec{F} = -\frac{Gm_1m_2}{|\vec{r_2} - \vec{r_1}|^2}\frac{\vec{r_2} - \vec{r_1}}{|\vec{r_2} - \vec{r_1}|}$ 
+    - 万有引力定数 $G = 6.67430 \times 10^{-11}~\mathrm{m^3/kg/s^2}$
+- 撃力：物体が他の物体に衝突した際など，短時間のみ継続する力。撃力の大きさは短時間で大きく変化する
