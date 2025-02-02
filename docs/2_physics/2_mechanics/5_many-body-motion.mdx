@@ -1,0 +1,62 @@
+---
+title: 5. 多体系の運動
+---
+
+ここからは，二つ以上の質点の運動（特に 2 体系）について考える。
+
+## 基本
+### 運動方程式
+:::tip[多体系の運動方程式]
+$i$ 番目の質点の位置を $\bm{r}_i$，質点の質量を $m_i$ とする。  
+質点 $i$ に系外から働く力( = **外力** )を $\bm{F}_i$，質点 $i$ と $j$ の間に働く力( = **内力** )を $\bm{F}_{j \to i}$ とする。
+
+**運動方程式：$\displaystyle m_i \frac{d^2 \bm{r}_i}{{dt^2}} = \bm{F}_i + \sum_{j \neq i} \bm{F}_{j \to i}$**
+:::
+
+### 保存則
+ここで，運動方程式を全ての質点について足し合わせると，
+$\sum_i m_i \frac{d^2 \bm{r}_i}{{dt^2}} = \sum_i \bm{F}_i + \sum_{i,j \neq i} \bm{F}_{j \to i} = \sum_i \bm{F}_i$ となる。  
+したがって，全質点の質量の和を $M = \sum_i m_i$，全質点の運動量の和 $\bm{P} = \sum_i m_i \frac{d \bm{r}_i}{{dt}}$ として， 
+**質量中心**(重心) $\bm{R}$ を $\bm{R} = \frac{1}{M} \sum_i m_i \bm{r}_i$ と定義する。  
+この時，$\displaystyle \dot{\bm{P}} = M \ddot{\bm{R}} = \sum_i \bm{F}_i$ であり，特に外力が無い時，$\bm{P} = \text{const.}$ である。
+
+また，質量中心を原点としたベクトルを考え，質点 $i$ の位置を新たに $\bm{r}_{ci} = \bm{r}_i - \bm{R}$ と置き( $\sum_i m_i \bm{r}_{ci} = 0$ )，
+質量中心に対する相対的な運動量 $\bm{p}_{ci} = m_i \dot{\bm{r}}_{ci}$ と定義する。  
+この時，全質点の運動エネルギーの和は，
+$\displaystyle K = \frac{1}{2} \sum_i m_i \dot{\bm{r}}_i^2 = \frac{1}{2} M \dot{\bm{R}}^2 + \frac{1}{2} \sum_i m_i \dot{\bm{r}}_{ci}^2$ 
+となり，質量中心の運動エネルギーと質量中心に対する相対的な運動エネルギーの和となる。
+
+全質点の角運動量の和も同様に考えると，
+$\displaystyle \bm{L} = \sum_i \bm{r}_i \times p_i = \cdots = \bm{R} \times M \dot{\bm{R}} + \sum_i m_i\bm{r}_{ci} \times \dot{\bm{r}}_{ci}$ 
+となり，原点周りの質量中心の角運動量と質量中心周りの相対的な角運動量の和となる。
+
+さらに，$\frac{d \bm{L}}{dt} = \sum_i \bm{r}_i \times (\bm{F}_i + \sum_{j \neq i} \bm{F}_{j \to i})$ であるが，
+$\bm{F}_{j \to i}~||~\bm{r}_{j} - \bm{r}_{i}$ であるため，
+$\displaystyle \frac{d \bm{L}}{dt} = \sum_i \bm{r}_i \times \bm{F}_i$ となる。
+
+:::tip[多体系の運動の保存則]
+質量中心 $\bm{R} = \frac{1}{M} \sum_i m_i \bm{r}_i$，質量中心を原点とした相対ベクトル $\bm{r}_{ci} = \bm{r}_i - \bm{R}$とする。この時，以下が成り立つ。
+- 全質点の運動量の和$\bm{P} = \sum_i m_i \dot{\bm{r}}_i$ について，$\dot{\bm{P}} = \sum_i \bm{F}_i$ であり，特に外力が無い時，$\bm{P} = \text{const.}$
+- 全質点の運動エネルギーの和 $K = \frac{1}{2} \sum_i m_i \dot{\bm{r}}_i^2$ について，$K = \frac{1}{2} M \dot{\bm{R}}^2 + \frac{1}{2} \sum_i m_i \dot{\bm{r}}_{ci}^2$
+    - 物体の衝突などで運動量が保存する場合，第 2 項の相対運動による運動エネルギーのみが変化する。
+- 全質点の角運動量の和 $\bm{L} = \sum_i \bm{r}_i \times p_i$ について，$\bm{L} = \bm{R} \times M \dot{\bm{R}} + \sum_i m_i\bm{r}_{ci} \times \dot{\bm{r}}_{ci}$
+- 角運動量についての運動方程式：$\frac{d \bm{L}}{dt} = \sum_i \bm{r}_i \times \bm{F}_i$
+:::
+
+---
+## 2 体系の運動
+まず，2 体系の運動方程式は以下のようになる。
+
+$\begin{cases} m_1 \ddot{\bm{r}}_1 = \bm{F}_1 + \bm{F}_{2 \to 1} \\ m_2 \ddot{\bm{r}}_2 = \bm{F}_2 + \bm{F}_{1 \to 2} \end{cases}$
+
+全質量 $M = m_1 + m_2$，換算質量 $\mu = \frac{m_1 m_2}{m_1 + m_2}$，
+質量中心 $\bm{R} = \frac{1}{M} (m_1 \bm{r}_1 + m_2 \bm{r}_2)$，相対位置 $\bm{r} = \bm{r}_1 - \bm{r}_2$ として整理すると，
+
+$\begin{cases} M \ddot{\bm{R}} = \bm{F}_1 + \bm{F}_2 \\ 
+\ddot{\bm{r}} = \frac{1}{\mu} \bm{F}_{2 \to 1} + \frac{1}{m_1} \bm{F}_1 - \frac{1}{m_2} \bm{F}_2 \end{cases}$
+
+となる。特に外力が無い時，2 本目の式は $\mu\ddot{\bm{r}} = \bm{F}_{2 \to 1}$ となる。また，下記のような関係が成り立つ。
+- 運動エネルギー $K = \frac{1}{2} M \dot{\bm{R}}^2 + \frac{1}{2} \mu \dot{\bm{r}}^2$
+- 角運動量 $\bm{L} = \bm{R} \times M \dot{\bm{R}} + \mu \bm{r} \times \dot{\bm{r}}$
+- $\bm{r}_{c1} = \bm{r}_1 - \bm{R} = \frac{m_2}{M} \bm{r}$，$\bm{r}_{c2} = \bm{r}_2 - \bm{R} = -\frac{m_1}{M} \bm{r}$ であり，
+$\bm{r} = \bm{r}_{c1} - \bm{r}_{c2}$ である。
