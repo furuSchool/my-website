@@ -60,3 +60,81 @@ $\begin{cases} M \ddot{\bm{R}} = \bm{F}_1 + \bm{F}_2 \\
 - 角運動量 $\bm{L} = \bm{R} \times M \dot{\bm{R}} + \mu \bm{r} \times \dot{\bm{r}}$
 - $\bm{r}_{c1} = \bm{r}_1 - \bm{R} = \frac{m_2}{M} \bm{r}$，$\bm{r}_{c2} = \bm{r}_2 - \bm{R} = -\frac{m_1}{M} \bm{r}$ であり，
 $\bm{r} = \bm{r}_{c1} - \bm{r}_{c2}$ である。
+
+---
+## 衝突
+一次元で考える。質量 $m_1$，速度 $v_1$ の物体 1 と，質量 $m_2$，速度 $v_2$ の物体 2 が衝突し ( $v_1 > v_2$ )，
+速度 $v_1'$，$v_2'$ ( $ v_1' < v_2'$ ) になるとする。
+衝突が十分に短時間で生じ，外力による力積は小さく無視できるとすると，運動量保存則より $m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2'$ 。
+
+ここで，運動エネルギーの変化 $\Delta K$ は，質量中心の運動エネルギーが変化しないことを考えると，  
+$\Delta K = \frac{1}{2} \left(\mu (v_1' - v_2')^2 - \mu (v_1 - v_2)^2\right) = -\frac{1}{2} \mu (v_1 - v_2)^2 (1 - e^2)$ となる。
+ここで，**反発係数** $\displaystyle e = \frac{v_2' - v_1'}{v_1 - v_2}$ とする。
+
+1. 弾性衝突：$e = 1$ の時。$\Delta K = 0$ であり，運動エネルギーは保存する。
+この時，重心系（質量中心が静止している系）で考えると，衝突前後でそれぞれの物体の速さは変わらず，逆方向になる
+2. 非弾性衝突：$0 < e < 1$ の時。運動エネルギーが減少し，相対運動の一部が内部エネルギーに転嫁される
+3. 完全非弾性衝突：$e = 0$ の時。二つの物体がくっついて動く。相対運動の運動エネルギーが全て内部エネルギーに転嫁される
+
+---
+## 連成振動
+### 正規モード
+質量 $m$ の 2 質点がバネではさまれて連結している。つりあいの位置からのずれを $x_1$，$x_2$ とする。
+両端のバネのバネ定数を $k$，中央のバネのバネ定数を $k'$ とすると，運動方程式は以下のようになる。
+
+$\begin{cases} m \ddot{x}_1 = -kx_1 + k'(x_2 - x_1) \\ m \ddot{x}_2 = -kx_2 - k'(x_2 - x_1) \end{cases}$
+
+二つの方程式の和と差を考えて，これを計算すると，$\omega_1 = \sqrt{\frac{k}{m}},~\omega_2 = \sqrt{\frac{k + 2k^{\prime}}{m}}$ とおいて，  
+$x_1 = A \cos(\omega_1 t + \alpha) + B \cos(\omega_2 t + \beta),~x_2 = A \cos(\omega_1 t + \alpha) - B \cos(\omega_2 t + \beta)$ となる。
+
+このように，線型結合で表される振動を正規モードという。他にも，二重振り子の小振幅なども正規モードで表される。
+
+---
+## 惑星の運動
+ここでは，万有引力のみで相互作用しながら運動する 2 体系を考える。  
+位置 $\vec{r_2}$，質量 $m_2$ の物体にはたらく，位置 $\vec{r_1}$，質量 $m_1$ による万有引力は，
+$\vec{F} = -\frac{Gm_1m_2}{|\vec{r_2} - \vec{r_1}|^2}\frac{\vec{r_2} - \vec{r_1}}{|\vec{r_2} - \vec{r_1}|}$ であり，  
+位置エネルギーは $U = -\frac{Gm_1m_2}{|\vec{r_2} - \vec{r_1}|}$ となる。
+
+### 一様球形物体のつくる万有引力ポテンシャル
+地表近くの物体は，地球の微小部分による万有引力の合力（重ね合わせ）を受けていると考えられる。
+そこで，質量 $M$，半径 $R$ の一様球形物体の中心から距離 $z$ の位置にある物体に働く万有引力を考える。
+
+1. $z > R$ の時，$U = -\int\frac{Gm \rho \times r^2 \sin\theta dr d\theta d\phi}{\sqrt{(z - r\cos\theta)^2 + r^2\sin^2\theta}} 
+= -\frac{GmM}{z}$，$F = -\frac{GMm}{z^2}$
+2. $z < R$ の時，$U = -\int\frac{Gm \rho \times r^2 \sin\theta dr d\theta d\phi}{\sqrt{(r\cos\theta - z)^2 + r^2\sin^2\theta}}
+= -\frac{GmM}{2R} \left(3 - \frac{z^2}{R^2}\right)$，$F = -\frac{GMm}{R^3}z$
+
+### ケプラーの法則
+:::tip[ケプラーの法則]
+1. すべての惑星の軌道は，太陽を焦点の一つとする楕円軌道の上を運動する
+2. 惑星の軌道運動の面積速度は常に一定である
+3. 惑星の公転周期の 2 乗は，その軌道の長軸の長さの 3 乗に比例する
+:::
+
+これらは，惑星の運動を記述するものであるが，これは万有引力の法則によって導かれる。
+質量 $M$ の太陽を基準とする 質量 $m$ の惑星の位置ベクトル $\bm{r}$ とおくと，運動方程式は $\mu = \frac{mM}{m + M}$ として，
+$\displaystyle \mu\frac{d^2\bm{r}}{dt^2} = -\frac{GMm\bm{r}}{|\bm{r}|^3}$ となる。さらに，極座標を考えると，  
+$\displaystyle \begin{cases} \mu(\ddot{r} - r\dot{\theta}^2) = -\frac{GMm}{r^2} \\ 
+\mu \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = 0 \end{cases}$
+
+二本目の式より，$r^2\dot{\theta} = h$ とおくと，$\frac{dS}{dt} = \frac{1}{2}r v_{\theta} = \frac{1}{2}h$ となり，第二法則がわかる。
+
+さらに，一本目の式に代入すると，$\mu\ddot{r} = -\frac{GMm}{r^2} + \mu r\dot{\theta}^2 = -\frac{GMm}{r^2} + \mu\frac{h^2}{r^3}$ であり，  
+$\dot{r} = \frac{dr}{d\theta}\dot{\theta} = \frac{h}{r^2}\frac{dr}{d\theta},~
+\ddot{r} = \frac{d\dot{r}}{d\theta}\dot{\theta} = \frac{h}{r^2}\frac{d}{d\theta}\left(\frac{h}{r^2}\frac{dr}{d\theta}\right)$ であるので，
+これを整理して，
+
+$\displaystyle\frac{d}{d\theta}\left(\frac{1}{r^2}\frac{dr}{d\theta}\right) - \frac{1}{r} = -\frac{GMm}{\mu h^2}$ となる。
+
+そして，この微分方程式を解くと，$\displaystyle r = \frac{l}{1 + \epsilon\cos(\theta - \theta_0)}$ となる。
+ここで，$l = \frac{\mu h^2}{GMm}$，$\epsilon = Al$ であり，第一法則がわかる。
+
+$\epsilon$ は離心率であり，$\epsilon = 0$ の時，円軌道，$0 \leq \epsilon < 1$ の時，楕円軌道，
+$\epsilon = 1$ の時，放物線軌道，$\epsilon > 1$ の時，双曲線軌道となる。  
+また，楕円軌道である時，長軸 $a = \frac{l}{1 - \epsilon^2}$，短軸 $b = \frac{l}{\sqrt{1 - \epsilon^2}}$ であり，
+$\frac{(x + \epsilon a)^2}{a^2} + \frac{y^2}{b^2} = 1$ となる。（ただし，$\theta_0 = 0$ としている）
+
+さらに，楕円軌道の場合，公転周期 $T$ とすると，面積速度を考えて，$T \frac{h}{2} = \pi ab$ であり，これを整理すると，
+$\displaystyle T^2 = \frac{4\pi^2}{GM}a^3$ となる。（ただし，$M \gg m$ としている）
+ここから，惑星によらない共通な比例定数によって，公転周期の 2 乗が長軸の 3 乗に比例することがわかる。
