@@ -1,0 +1,220 @@
+---
+title: 背景となる基礎理論
+---
+
+## 基本
+### 座標系
+1. $z$ 座標系：普通の直交座標系（ $xyz$ ）
+    - それぞれの単位ベクトルを $\bm{i}, \bm{j}, \bm{k}$ と表す。また，それぞれの速度を $u,~v,~w$ とする
+2. $p$ 座標系：$z$ 軸の代わりに下向きに気圧 $p$ を取った，等圧面に平行な座標系。すなわち，下降流が正
+    - $w$ の代わりに鉛直速度 $\omega$ を用いる：**鉛直p速度** [hPa/hour]
+    - 静水圧近似を用いれば密度を考えなくて良くなるため，総観規模現象でよく使う。
+        - 静水圧近似を用いると，$\omega = \frac{dp}{dt} = \frac{\partial p}{\partial z}\frac{\partial z}{\partial t} = -\rho g w$
+
+### 用語の定義
+#### ジオポテンシャル $\Phi (z)$：ジオイド面（ほぼ平均海面）を基準とした重力ポテンシャル。
+- $\Phi (z) = \int_0^z g~dz$ （ $g$ は $z$ により変化する）
+- 静水圧近似が成り立つ時， $d\Phi = g dz = -\frac{1}{\rho}dp$
+
+#### ジオポテンシャル高度 $Z$：ジオポテンシャルをジオイド面での標準重力加速度 $g_0 = 9.81~m/s^2$ で割った値。等圧面などの高度を表す際に用いる。
+- $Z = \frac{\Phi (z)}{g_0} = \frac{1}{g_0}\int_0^z g~dz$：ほぼ高度と同じ
+
+#### 温位 $\theta$：大気を断熱的に基準気圧 $p_0$ (多くは1000hPa) に圧縮(又は膨張)したときの気温
+- $\theta = T\left(\frac{p_0}{p} \right)^{\frac{R_d}{C_p}}$
+- $R_d$：乾燥空気の気体定数，$C_p$：乾燥空気の定圧比熱
+- 熱力学方程式に $\Delta Q = 0$ として変形すればすぐわかる
+- 鉛直プロファイルで静的安定度が表される！
+
+### 微分
+:::tip[重要]
+気象学では，基本的に時刻 $t$ で位置 $(x,y,z)$ での (空気塊の) 物理量について考える！
+- $\frac{\partial}{\partial t}$：**ある固定した場所における時間変化**
+- $\frac{d}{dt}$：**ある空気塊に固定した時間変化**
+:::
+
+#### 微分の変換：ただの全微分と偏微分の関係
+- z座標系： $\frac{d}{dt} = \frac{\partial}{\partial t} + \bm{v}\cdot\nabla_z+w\frac{\partial}{\partial z}$
+- p座標系： $\frac{d}{dt} = \frac{\partial}{\partial t} + \bm{v}\cdot\nabla_p+\omega\frac{\partial}{\partial p}$
+    - $\nabla_z = \bm{i}\frac{\partial}{\partial x} + \bm{j}\frac{\partial}{\partial y},~ \nabla_p = \bm{i}\frac{\partial}{\partial x} + \bm{j}\frac{\partial}{\partial y}$
+    - $u = \frac{dx}{dt},~v = \frac{dy}{dt},~w = \frac{dz}{dt},~\omega = \frac{dp}{dt},~\bm{v} = u\bm{i} + v\bm{j}$
+- イメージは，**空気塊の物理量の変化 = ある場所での物理量の変化 + 水平移流項 + 鉛直移流項**
+
+---
+## 基礎方程式
+### 運動方程式
+:::tip[運動方程式]
+運動方程式は，水平面で成り立つ式。
+
+$z$ 座標系：$\displaystyle \frac{d\bm{v}}{dt} = -\frac{1}{\rho}\nabla_z p - f\bm{k}\times\bm{v}+\bm{F_r}$ （気圧傾度力 + コリオリ力 + 摩擦力）
+
+$p$ 座標系：$\displaystyle \frac{d\bm{v}}{dt} = -\nabla_p \Phi - f\bm{k}\times\bm{v}+\bm{F_r}$ 
+$\left(\frac{\partial \Phi}{\partial p} = -\frac{1}{\rho},~\nabla_p = \frac{\partial}{\partial x}\bm{i} + \frac{\partial}{\partial y}\bm{j}\right)$
+- $\frac{du}{dt} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + fv+F_x$
+- $\frac{dv}{dt} = -\frac{1}{\rho}\frac{\partial p}{\partial y} - fu+F_y$
+:::
+- $\rho$：大気密度， $f$：コリオリパラメータ， $\nabla_z = \frac{\partial}{\partial x}\bm{i} + \frac{\partial}{\partial y}\bm{j}$
+- 左辺 = 0 かつ 摩擦力 = 0 で地衡風となる（気圧傾度力とコリオリ力が釣り合う）
+
+### 静水圧の式（静力学平衡）
+:::tip[静水圧の式]
+静水圧の式は，鉛直方向で成り立つ式。
+
+$z$ 座標系：$\displaystyle \frac{dp}{dz} = -\rho g = \frac{pg}{R_dT_v}$ $\left(p = \rho R_dT_v\right)$
+- $R_d = 287~J/kgK$：乾燥空気の気体定数， $T_v = T\left(1+\frac{R_v}{R_d}q\right) \approx T(1+0.61q)$：仮温度， $q$：比湿
+:::
+
+### 連続の式
+:::tip[連続の式]
+収束・発散と密度変化の関係を表す式。質量保存の式でもある。**等圧面上で水平収束・発散 $\rightarrow$ 鉛直運動の発生**
+
+$z$ 座標系：$\displaystyle \frac{d\rho}{dt} = -\rho\nabla_3\cdot\bm{v}~
+\left(\nabla_3 = \bm{i}\frac{\partial}{\partial x} + \bm{j}\frac{\partial}{\partial y} + \bm{k}\frac{\partial}{\partial z}\right)$
+
+$p$ 座標系：$\left( \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y}\right)_p + \frac{\partial \omega}{\partial p} = 0$
+:::
+
+### 熱力学方程式
+:::tip[熱力学方程式]
+$p$ 座標系：$\displaystyle \frac{\partial T}{\partial t} = -\bm{v}\cdot\nabla_pT + \left( \frac{R_dT_v}{C_p p} - \frac{\partial T}{\partial p}  \right)\omega + \frac{J}{C_p}$
+
+- その地点での温度変化 = 水平移流項 + 鉛直移流項 + 加熱率
+- 暖気移流（暖気 $\rightarrow$ 寒気の水平移流）： $\bm{v}\cdot\nabla_p T < 0$ であり，その地点での温度は上昇する
+    - = 温度傾度ベクトル $\nabla_p T$ と風ベクトルは逆向きの時
+:::
+
+
+単位質量で熱力学第一法則を考えると，
+$\Delta Q = \Delta U + \Delta W = C_p\Delta T + g \Delta z = C_p\Delta T - \alpha \Delta p = C_v\Delta T + p\Delta \alpha$ 
+- 大気に与えられた熱 $\rightarrow$ 内部エネルギーの変化 + 仕事
+- 定圧下：仕事 = 空気塊の鉛直方向の移動 ( $g\Delta z$ )
+- 定積下：仕事 = 空気塊の体積の変化 ( $p\Delta \alpha$ )
+- $\alpha = \frac{1}{\rho}$：比容 = 単位質量あたりの体積。密度の逆数。 $V$ と思えばまあいいか
+
+さらに，(非断熱加熱の) 加熱率を $J = \frac{dQ}{dt}$ とすると，
+$\frac{dT}{dt} = \frac{J}{C_p}-\frac{g}{C_p}\frac{dz}{dt}=\frac{J}{C_p}+\frac{1}{C_p\rho}\frac{dp}{dt}$ 
+
+これと，$\frac{d}{dt} = \frac{\partial}{\partial t} + \bm{v}\cdot\nabla_p+\omega\frac{\partial}{\partial p}$　
+を組み合わせると，熱力学方程式が導かれる。
+
+- 断熱変化だと， $-\frac{dT}{dz} = \frac{g}{C_p}=\Gamma_d$（ $\Gamma_d \approx10~℃/km$：乾燥断熱減率）
+- 温位を用いると，熱力学方程式は $\frac{\partial \theta}{\partial t} = -\bm{v}\cdot\nabla_p \theta - \omega \frac{\partial \theta}{\partial p}+ \frac{J}{C_p}\frac{\theta}{T}$ 
+であり， $\frac{d\theta}{dt} = \frac{1}{C_p}\frac{\theta}{T}J$ より，$J=0$ （断熱変化）では温位は変化しない
+
+---
+## 現象のスケール
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+  <img src="/img/weather/scale2.png" style={{ width: '50%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="/img/weather/scale3.png" style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginTop: '20px' }}>
+  <img src="/img/weather/scale1.png" style={{ width: '50%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <ul>
+    <li>鉛直スケールは対流圏の深さ</li>
+    <li>鉛直速度のスケールが $1~cm/s$ ほど！</li>
+    <li>鉛直p速度だと， $3.6~hPa/H$</li>
+    <li>前線の傾斜した上昇流（100kmスケール）だと 〜10 cm/s</li>
+    <li>鉛直対流（1kmスケール）だと 〜数m/s</li>
+  </ul>
+</div>
+
+### 総観規模での水平運動のスケール
+運動方程式：$\frac{d\bm{v}}{dt} = -\frac{1}{\rho}\nabla_z p - f\bm{k}\times\bm{v}+\bm{F_r}$ （気圧傾度力 + コリオリ力 + 摩擦力）
+- 加速度：$\frac{U^2}{L} = 10^{-4}~m/s^2$，コリオリ力： $fU$
+→ ロズビー数 $R_0 = \frac{\text{加速度項}}{\text{コリオリ力}} = \frac{U}{fL} \approx 0.1$
+- すなわち，総観規模では地衡風近似が成り立つ。前線を横切る方向や台風では成り立たない
+- 地衡風：$\bm{v}_g = \frac{1}{f\rho}\bm{k}\times\nabla_z p$ （コリオリ力と気圧傾度力が釣り合う）
+
+### 総観規模での鉛直運動のスケール
+静水圧の式： $\frac{\partial p}{\partial z} = -\rho g$，
+ちゃんと書くと， $\frac{dw}{dt} = -\frac{1}{\rho}\frac{\partial p}{\partial z} - fu\cot(\phi) - g + F_z$
+- 鉛直加速度 = 鉛直気圧傾度力 + コリオリ力 + 重力加速度 + 摩擦力
+- オーダー的には， $10^{-7} = 10 - 10^{-3} - 10 + 10^{-4}$
+- 近似を使っても，対流でなければ小さい鉛直運動は生じうる
+
+---
+## 大気の鉛直安定性 -エマグラムを添えて-
+:::warning[目標]
+大気について鉛直安定性を考える。すなわち，大気の状態を理解する。
+:::
+### 基本
+以下のように記号を定義する。
+- 乾燥断熱減率：$\Gamma_d \approx10~℃/km$
+- 湿潤断熱減率：$\Gamma_m \approx5~℃/km$ ほど。下層暖気だと $4~℃/km$，中層だと $6\text{ 〜 }7 ~℃/km$ ほど
+- 観測された気温減率：$\gamma$
+
+この時，以下のように分類できる。すなわち，$\gamma$ によってその地点の鉛直安定性がわかる。
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div　style={{ width: '55%' }}>
+        <ol>
+            <li>絶対安定：$\gamma < \Gamma_m \approx 5$</li>
+            <li>湿潤(飽和)中立：$\gamma = \Gamma_m \approx 5$</li>
+            <ol>
+                <li>湿潤対流の後とか。湿潤空気がよく鉛直混合している状態</li>
+            </ol>
+            <li>条件付き不安定：$5 \approx \Gamma_m < \gamma < \Gamma_d \approx 10$</li>
+            <li>乾燥中立：$\gamma = \Gamma_d \approx 10$</li>
+        <ol>
+            <li>未飽和で対流混合の後とか。乾燥空気がよく鉛直混合している状態</li>
+        </ol>
+            <li>絶対不安定：$\gamma > \Gamma_d \approx 10$</li>
+            <ol>
+                <li>すぐに対流混合が起きるはず</li>
+                <li>夏の晴天とか，冬の暖かい日本海上に寒気が吹き出したときとか</li>
+            </ol>
+        </ol>
+        <ul>
+            <li>実際の気温減率が小さいほど安定 (= 上の空気が暖かい)</li>
+            <li>左に傾いてるほど不安定 (気温減率は大きい)</li>
+        </ul>
+    </div>
+    <img src="/img/weather/basic_emmagram.png" style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+
+### 様々な物理量をエマグラムで表現する
+<img src="/img/weather/emmagram.png" style={{ width: '90%', aspectRatio: 'auto', objectFit: 'contain', padding: '20px', border: '1px solid black', marginBottom: '20px' }} />
+
+1. **温位 $\theta$**：気圧 $p$，気温 $T$ の空気塊を断熱的に1000hPaまで移動させたときの気温
+2. 気圧 $p$，気温 $T$ の空気塊を持ち上げると，相対湿度が100% になり凝結が生じるまで**温位 $\theta$ 一定（=乾燥断熱線**）となるように気温が変化。
+凝結が起こるまで**混合比 $q$ は保存**
+3. 気圧 $p$ の空気塊の露点温度 $T_d$ における **混合比 $q$ 一定の線(= 等飽和混合比線)** と，**温位 $\theta$ 一定の線(乾燥断熱線)** とが
+交わった高度で凝結が生じる（= この高度が**持ち上げ凝結高度(LCL)**）
+- **乾燥断熱線：温位 $\theta$ 一定の線**
+- **湿潤断熱線：湿球温位 $\theta_w$一定の線**
+- LCLから飽和断熱線に沿って 1000hPa まで下降させた際の気温が湿球温位 $\theta_w$，気圧 $p$ まで下降させた際の気温が湿球温度 $T_w$
+- LCLから湿潤断熱線沿って高高度まで持ち上げ，水蒸気を全部凝結させたのちに，
+乾燥断熱線に沿って 1000hPa まで下降させた際の気温が**相当温位 $\theta_e$** (式は難しい)，気圧 $p$ まで下降させた際の気温が**相当温度 $T_e$** 
+- **飽和相当温位 $\theta_e^*$**：同じ気圧，気温で飽和していると仮定した時の相当温位
+    - 大気が飽和していれば， $\theta_e = \theta_e^*$
+- **仮温度 $T_v$：混合比 $q$** の湿潤空気と同じ気圧・密度を持った乾燥空気(**混合比 $0$**)が持つべき温度
+- **仮温位 $\theta_v$：仮温度 $T_v$** から **温位 $\theta$ 一定の線(乾燥断熱線)** に沿って1000hPaまで下降させた際の気温
+
+### 相当温位と鉛直安定性
+:::warning[目標]
+相当温位 $\theta_e$ から鉛直安定性を考える。
+:::
+- **対流不安定**：相当温位 $\theta_e$ が上層ほど低くなる状態 $(\frac{\partial \theta_e}{\partial z} < 0)$ 。空気層の上部の方が相対的に水蒸気が少ない！
+    - 対流不安定でも，静的に不安定でなければ何も起きないが，大規模な上昇運動で空気層が持ち上がると不安定が顕在化する
+    - 空気塊を持ち上げると，上層のほうが凝結が起こらず，気温差が大きくなる（ = 気温減率が大きくなる）
+- 飽和相当温位 $\theta_e^*$ 一定の成層 = **湿潤中立 $(\gamma = \Gamma_m)$**
+- 飽和相当温位が上層ほど低い $(\frac{\partial \theta_e^*}{\partial z} < 0)$ = **条件付き不安定 $(\gamma > \Gamma_m)$**。飽和すると不安定
+- 気温減率 $\gamma$ が左に傾いている程不安定 = 上層の温位や相当温位が小さいほど不安定
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div　style={{ width: '45%' }}>
+        比較
+        <ol>
+            <li>絶対安定：$\gamma < \Gamma_m \approx 5$</li>
+            <li>湿潤中立：$\gamma = \Gamma_m \approx 5$</li>
+            <li>条件付き不安定：$5 \approx \Gamma_m < \gamma < \Gamma_d \approx 10$</li>
+            <li>乾燥中立：$\gamma = \Gamma_d \approx 10$</li>
+            <li>絶対不安定：$\gamma > \Gamma_d \approx 10$</li>
+        </ol>
+    </div>
+    <img src="/img/weather/vertical-stability.png" style={{ width: '50%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+
+:::tip[まとめ]
+- **温位 $\theta$**：乾燥空気の静的安定度の判断に使う。乾燥中立 = 乾燥空気で対流が起きるかの境界
+- **相当温位 $\theta_e$**：対流安定度の判断に使う。対流中立 = 対流が起きると不安定が顕在化するかの境界
+- **飽和相当温位 $\theta_e^*$**：飽和した場合の安定度の判断に使う。湿潤中立 = どんな時（飽和になった時）でも安定かの境界
+:::
