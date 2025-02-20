@@ -1,0 +1,83 @@
+---
+title: 2. 弾性体の静力学
+---
+:::warning[目標]
+簡単な状況での弾性体の力のつり合いについて考える！
+:::
+
+## 棒のねじれ
+半径 $R$，長さ $L$ の弾性体の円柱の下端を固定し上端を角度 $\Phi$ だけねじることを考える。
+
+この時，半径 $r$ 〜 $r+dr$ の円殻を取り出し，そのうち角度 $d\phi$ の扇形に対応する部分を取り出すと，その部分は
+辺の長さが $dr,ds = rd\phi, L$ の直方体が角度 $\theta$ でひしゃげたものと考えられる。
+
+成り立つ関係式は，$L\theta = r\Phi$ （ねじれによる上端の変位），ずれ弾性率 $G$ としてねじるのに必要な **接線応力** $\sigma = G\theta$ 
+であり，直方体の上端全体が受ける接線方向の力 $dF = \sigma~dr ds = \frac{G\Phi r^2}{L} dr d\phi$ となる。
+
+そこで，この力が円柱に作り出す中心軸周りの力のモーメント $d\tau = r \times dF = \frac{G\Phi r^3}{L} dr d\phi$ となる。
+
+ここから，全体を積分することで，円柱をねじるのに必要な力のモーメントは，
+
+$\displaystyle \tau = \int_0^R \int_0^{2\pi} \frac{G\Phi r^3}{L} dr d\phi = \frac{\pi G\Phi R^4}{2L}$
+
+つまり，**棒をねじるのに必要なモーメントは，ねじる角度に比例し，半径の4乗に比例する。**
+
+- 半径が小さいと非常に小さな力のモーメントで棒をねじることができる。ねじれ秤りは，その性質により非常に小さい力のモーメントを測定するのに用いられる。
+（図は，[静電気の発見からクーロンの法則](http://www.osssme.com/doc/funto105-no20.html) より引用）
+<img src="/img/physics/torsion_balance.png" width="50%" alt="ねじれ秤り"/>
+
+### ねじれ振動
+<img src="/img/physics/torsional-vibration.png" width="50%" alt="ねじれ振動"/>
+
+図のように ([振動の基礎知識を徹底解説！初心者も重要ポイントがわかる](https://engineer-education.com/machine-design-33_mechanics1-vibration/) より引用) ，
+直径 $d$，長さ $L$ の弾性体の棒の先に慣性モーメント $I$ の剛体をとりつけ，剛体を回転させる。
+
+この時，$\displaystyle I \frac{d^2\phi}{dt^2} = N = - \frac{\pi G\phi (\frac{d}{2})^4}{2L}$ が成り立つ。
+
+よってこれを解くと，$\Omega = \sqrt{\frac{\pi G}{2LI} (\frac{d}{2})^4}$ となり，
+周期は，$\displaystyle T = \sqrt{\frac{8 \pi LI}{G (\frac{d}{2})^4}}$ となる。
+
+これは例えば，ずれ弾性率 $G$ を求める際に用いられる。
+
+---
+## 棒の曲げ
+まっすぐな長さ $l$ の棒の両端に力のモーメントを加えて棒を曲げる。（内側は縮め，外側は伸ばすように力を加える）  
+この時，棒に伸び縮みのない部分があるので，それを中立面とする。中立面の曲率半径を $R$，棒のその面を基準に外側に向けた距離を $y$ とする。
+（曲げが小さい場合は，円弧として近似できる）
+
+この時，伸びの割合 $\displaystyle \frac{\Delta l}{l} = \frac{y}{R}$ となるため，
+棒の断面に垂直にかかる応力は $\displaystyle \sigma = E \frac{y}{R}$ となる。（$E$ はヤング率）
+
+よって，中立面周りに生じているモーメントは，$\displaystyle M = \int \sigma \times y~dx dy = \int \frac{E}{R} y^2~dx dy = \frac{E}{R} I$ となる。
+（これは，棒の断面全体に対する積分）
+
+ここで，$I$ は **断面二次モーメント(幾何学的慣性モーメント)** であり，$\displaystyle I = \int y^2~dx dy$ と定義される。  
+**断面二次モーメントが大きく，ヤング率が大きいほど，曲げに対して強い断面となる。**
+
+- 幅 $a$，高さ(厚み) $b$ の長方形断面の場合，$I = \frac{ab^3}{12}$
+- 半径 $r$ の円形断面の場合，$I = \frac{\pi r^4}{4}$
+- $EI$ は **曲げ剛性** と呼ばれ，曲げに対する抵抗の大きさを表す。
+- 曲げにつよい断面は，中立面から遠い部分がより大きい断面である。そこで，例えば，中空円筒や I ビーム，H ビームなどが使われる
+（参照：[製品設計知識](https://seihin-sekkei.com/calculation-tool/section)）
+
+### 梁
+<img src="/img/physics/beam.jpeg" width="30%" alt="梁"/>
+（図は[こちら](https://jp.pinterest.com/pin/792070653212783240/)より引用）  
+長さ $L$ の薄い板の一端を固定し，他端に力 $F$ を板に垂直に加えると，板は曲がる。曲率半径を $R$ とする。
+梁の形を $z = u(x)$　とすると（ $z$ 軸は板の厚み方向，力を加えた向きが正），曲率半径の定義より
+$\frac{1}{R} = \frac{u^{\prime\prime}}{(1 + u^{\prime 2})^{3/2}} \approx u^{\prime\prime}$ となる。
+
+また，板の質量を無視すれば，$\displaystyle (L - x) F = E I u^{\prime\prime}$ が成り立つ。（$I$ は断面二次モーメント）
+
+これを解くと，$\displaystyle u(x) = \frac{F}{E I}\left(\frac{Lx^2}{2} - \frac{x^3}{6}\right)$ となる。
+特に，端の変位は $\displaystyle u(L) = \frac{F L^3}{3 E I}$ となる。
+
+梁の変形によって，例えばヤング率を求めることができる。
+
+- 板が単位長さあたりの密度 $\sigma_0$ の自重で曲がる場合，$\frac{L-x}{2} (L-x) \sigma_0 g = E I u^{\prime\prime}$ より，  
+$u(x) = \frac{\sigma_0 g}{E I}\frac{1}{24}\left(x^4 - 4 L x^3 + 6 L^2 x^2\right)$
+    - 板のより先にある部分について考えている
+    - どの力のモーメントを考えればいいのかがよくわからない。"中立面周りに生じているモーメント" だが，どう考えれば良いか
+- 板の両端が固定されて，単位長さあたりの密度 $\sigma_0$ の自重で曲がる場合，
+$u(x) = \frac{\sigma_0 g}{E I}\frac{1}{24}\left(x^4 - 2 L x^3 + L^3 x\right)$  
+変位の最大値は中央で，$\frac{5\sigma_0 g L^4}{384EI}$
