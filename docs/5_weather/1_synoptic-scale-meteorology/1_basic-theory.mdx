@@ -59,8 +59,9 @@ $\left(\frac{\partial \Phi}{\partial p} = -\frac{1}{\rho},~\nabla_p = \frac{\par
 :::tip[静水圧の式]
 静水圧の式は，鉛直方向で成り立つ式。
 
-$z$ 座標系：$\displaystyle \frac{dp}{dz} = -\rho g = \frac{pg}{R_dT_v}$ $\left(p = \rho R_dT_v\right)$
-- $R_d = 287~J/kgK$：乾燥空気の気体定数， $T_v = T\left(1+\frac{R_v}{R_d}q\right) \approx T(1+0.61q)$：仮温度， $q$：比湿
+$z$ 座標系：$\displaystyle \frac{dp}{dz} = -\rho g = -\frac{pg}{R_dT_v}$ $\left(p = \rho R_dT_v\right)$
+- $R_d = 287~J/kgK$：乾燥空気の気体定数， $T_v = T\left(1+\frac{R_v}{R_d}q\right) \approx T(1+0.61q)$：仮温度， $q$：混合比
+- **仮温度 $T_v$：混合比 $q$** の湿潤空気と同じ気圧・密度を持った乾燥空気(**混合比 $0$**)が持つべき温度
 :::
 
 ### 連続の式
@@ -120,7 +121,7 @@ $\frac{dT}{dt} = \frac{J}{C_p}-\frac{g}{C_p}\frac{dz}{dt}=\frac{J}{C_p}+\frac{1}
 ### 総観規模での水平運動のスケール
 運動方程式：$\frac{d\bm{v}}{dt} = -\frac{1}{\rho}\nabla_z p - f\bm{k}\times\bm{v}+\bm{F_r}$ （気圧傾度力 + コリオリ力 + 摩擦力）
 - 加速度：$\frac{U^2}{L} = 10^{-4}~m/s^2$，コリオリ力： $fU$
-→ ロズビー数 $R_0 = \frac{\text{加速度項}}{\text{コリオリ力}} = \frac{U}{fL} \approx 0.1$
+$\to$ ロズビー数 $R_0 = \frac{\text{加速度項}}{\text{コリオリ力}} = \frac{U}{fL} \approx 0.1$
 - すなわち，総観規模では地衡風近似が成り立つ。前線を横切る方向や台風では成り立たない
 - 地衡風：$\bm{v}_g = \frac{1}{f\rho}\bm{k}\times\nabla_z p$ （コリオリ力と気圧傾度力が釣り合う）
 
@@ -218,3 +219,145 @@ $\frac{dT}{dt} = \frac{J}{C_p}-\frac{g}{C_p}\frac{dz}{dt}=\frac{J}{C_p}+\frac{1}
 - **相当温位 $\theta_e$**：対流安定度の判断に使う。対流中立 = 対流が起きると不安定が顕在化するかの境界
 - **飽和相当温位 $\theta_e^*$**：飽和した場合の安定度の判断に使う。湿潤中立 = どんな時（飽和になった時）でも安定かの境界
 :::
+
+### 逆転層
+:::tip[逆転層]
+逆転層は，上層の方が気温が高く安定な成層。非常に安定度が高い！= 対流が起きにくい！
+:::
+
+#### 前線性逆転層（一般気象学だと移流逆転層）：暖湿気が乗り上げてきたイメージ
+- 上側が湿潤，湿潤断熱的 = 湿潤断熱線上
+- 異なる気団が接して，寒気側の気団の上に湿潤な暖気が乗り上げる
+- 温暖前線で発生しやすい
+<img src="/img/weather/frontal-inversion-layer.png" style={{ width: '30%'}} />
+
+#### 沈降性逆転層：上から空気が断熱的に降りてきたイメージ
+- 上側が高温乾燥，乾燥断熱的 = 乾燥断熱線上
+- 上側の露天温度は等混合比線に近い
+- 強い沈降に伴う断熱圧縮による昇温
+- 実際は沈降というよりか，斜めに下降してくるから綺麗には出ないことが多い
+<img src="/img/weather/sedimentary-inversion-layer.png" style={{ width: '30%'}} />
+
+#### 放射逆転層：放射冷却で地表面が冷却された時
+- 寒候期で湿度が低く，晴れて風のない夜など
+- 逆転層の高度は地表面付近
+- 地面の冷気の"ふた"になる
+<img src="/img/weather/radiative-inversion-layer.png" style={{ width: '30%'}} />
+
+#### 移流逆転層：低温な下層空気の上に暖かい海面水温の影響を受けた暖かい空気が流入（寒候期）or 暖かい陸上に冷たい海面水温の影響を受けた冷たい空気が流入（暖候期）
+- 沿岸前線を伴う場合も
+- 工場の汚染物質が沿岸に滞留する原因にもなる
+- 暖候期は関東〜北海道太平洋側でみられ，霧を伴うことも
+<img src="/img/weather/advection-reversal-layer.png" style={{ width: '30%'}} />
+
+#### 乱流逆転層：乾燥している層で乱流に伴う鉛直混合が断熱的に生じた時
+- 上層対流圏でCAT（晴天乱流）があるときなど
+- 温位と混合比が一様になる
+- 上側の逆転層は断熱膨張による冷却による
+- 下側の逆転層は断熱圧縮による昇温による
+<img src="/img/weather/turbulent-anticyclone.png" style={{ width: '40%'}} />
+
+#### 貿易風逆転層：低緯度で亜熱帯高気圧に覆われた海上の下層で生じる
+- 強い沈降を伴うと乾燥断熱的成層になる（沈降性逆転層）
+- 地表に近い混合層の成層が重要
+- 逆転層でキャップされた高度1kmほどまでに積雲が生じうる
+<img src="/img/weather/trade-wind-inversion-layer.png" style={{ width: '40%'}} />
+
+---
+## 中緯度の傾圧大気
+:::warning[目標]
+水平方向・鉛直方向の **気温分布** とそのバランスを考える。温度風バランスが崩れることが総観規模の擾乱が生じる主たる要因。
+:::
+
+### 地衡風（ $v_g$）
+$\frac{d\bm{v}}{dt} = -\frac{1}{\rho}\nabla_z p - f\bm{k}\times\bm{v}+\bm{F_r}$ より……
+
+- $\bm{v}_g = \frac{1}{f\rho}\bm{k}\times\nabla_z p$ （ $z$ 座標系）
+- $\bm{v}_g = \frac{g}{f}\bm{k}\times\nabla_p Z$ （ $p$ 座標系）$\to$ ジオポテンシャル高度の傾きに比例！
+    - $Z$ ：ジオポテンシャル高度(gpm)
+    - $\Phi = gZ$ ：ジオポテンシャル$(m^2s^{-2})$
+- 地衡風の大きさは等圧面(等高度線)の傾きに比例，方向は等圧面の大きい側(等高度線の高い側)を右とする
+
+### 層厚（ $\Delta Z$）
+静水圧の式 $\frac{\partial p}{\partial z} = -\rho g = -\frac{pg}{R_dT_v}$ より……
+
+層厚： $\Delta Z = \frac{R_d \bar{T_v}}{g}\ln\left(\frac{p_L}{p_U}\right)$ （$\bar{T_v}$：層の平均の仮温度）
+- **等圧面で挟まれた空気の厚さ（＝層厚）はその層の平均気温に比例**
+- **仮温度 $T_v \approx T(1+0.61q)$：混合比 $q$** の湿潤空気と同じ気圧・密度を持った乾燥空気(**混合比 $0$**)が持つべき温度
+
+<img src="/img/weather/layer-thickness.png" style={{ width: '30%'}} />
+
+### 温度風（$V_T$）の関係性
+:::tip[温度風]
+温度風ベクトル：上層と下層の地衡風ベクトルの差
+
+上層（U）と下層（L）の間の温度風： 
+$V_T = V_{gU}-V_{gL} = \frac{g}{f}\frac{\partial}{\partial n}(Z_U - Z_L) = \frac{g}{f}\frac{\partial}{\partial n}\Delta Z$
+:::
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div　style={{ width: '50%' }}>
+    <ul>
+        <li>$V_{gU},V_{gL}$ はそれぞれの層での地衡風，$n$ はジオポテンシャル高度の等値線に直交する方向</li>
+        <li>温度風は層厚に直接関係する</li>
+    </ul>
+    </div>
+    <img src="/img/weather/thermal-wind.png" style={{ width: '40%'}} />
+</div>
+
+また， $V_T = \frac{R_d}{f}\ln\left(\frac{p_L}{p_U}\right) \frac{\partial \bar{T_v}}{\partial n}$ 
+
+- $p$ 座標系：$\frac{\partial\bm{v}_g}{\partial p} = -\frac{R}{fp}\bm{k}\times\nabla_p T$ （$T$は仮温度を気温で近似）
+- $z$ 座標系：$\frac{\partial\bm{v}_g}{\partial z} = \frac{g}{f}\bm{k}\times\nabla_p \ln T$ （$T$は仮温度を気温で近似）
+- 温度風は仮温度の水平傾度に直接関係する
+- 温度風ベクトルに対して右側の気温，層厚が高い
+- **等圧面上で気温分布を見ることで温度風がわかる**
+
+:::note[まとめ]
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div　style={{ width: '50%' }}>
+    <ul>
+        <li>地衡風：等圧面の傾きに比例</li>
+        <li>層厚：平均気温に比例</li>
+        <li>温度風：地衡風の鉛直シアー。層厚や気温の水平傾度に関係する</li>
+        <li>上空に暖かい空気がある場合は低気圧，冷たい空気がある場合は高気圧になる（はず）</li>
+        <li>成層圏以上では低緯度側が低温，高緯度側が高温</li>
+    </ul>
+    </div>
+    <img src="/img/weather/baroclinic-atmosphere.png" style={{ width: '40%'}} />
+</div>
+:::
+
+### 前線帯とジェット気流の関係
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div　style={{ width: '50%' }}>
+    <ul>
+        <li>ジェット気流：中高緯度の狭い範囲で風速が特に大きくなっている緯度帯に対応する強風</li>
+        <li>前線帯：気温(層厚)の変化が大きい領域。等圧面が狭い領域で大きく傾斜することにより生じる</li>
+    </ul>
+    </div>
+    <img src="/img/weather/front-and-jet.png" style={{ width: '40%'}} />
+</div>
+
+### 風の鉛直プロファイルと水平温度移流
+:::tip[風の鉛直プロファイル]
+温度風ベクトルに対して右側の気温，層厚が高い  
+$\to$ 風向が下層から上層で，**時計回りに変化：暖気移流，反時計回りに変化：寒気移流**
+
+⚠️ 地表面摩擦の影響のある下層では，常に時計回りの移流成分を持つ
+
+<img src="/img/weather/thermal-wind2.png" style={{ width: '80%'}} />
+:::
+
+- 等高度線「密」$\to$ 風「強」
+- 層厚と温度風が直接関係： $V_T = \frac{g}{f}\frac{\partial}{\partial n}\Delta Z$
+    - 500hPa面高度等値線 $\parallel$ 1000hPa面高度等値線 $\to$ 水平温度傾度「小」，水平温度移流なし
+    - 500hPa面高度等値線と1000hPa面高度等値線が交わる $\to$ 水平温度移流あり
+- ジオポテンシャル高度 $Z$ と気温 $T$ の等値線が交わってできる領域の面積「小」$\to$ 水平温度移流「大」
+
+<div>
+<img src="/img/weather/thermal-wind3.png" style={{ width: '40%', marginRight: '20px'}} />
+<img src="/img/weather/thermal-wind4.png" style={{ width: '50%'}} />
+</div>
+
+---
