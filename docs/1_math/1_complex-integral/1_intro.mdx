@@ -1,0 +1,69 @@
+---
+title: 1. 複素数の基本
+---
+
+:::warning[目標]
+複素数の基本的な概念を定義する
+:::
+
+---
+## 基本
+複素数：$z = x + iy~(x,y \in \mathbb{R})$，実部：$\text{Re}z = x$，虚部：$\text{Im}z = y$，虚数単位：$i$，
+- 共役複素数：$\overline{z} = x - iy$
+- 絶対値：$|z| = \sqrt{x^2 + y^2} = \sqrt{z\overline{z}}$
+- 極形式：$z = re^{i\varphi} = r(\cos\varphi + i\sin\varphi)~(r = |z|$，偏角：$\varphi = \text{arg}~z)$
+- 主値：$\varphi = \text{Arg}~z~(-\pi < \varphi \leq \pi)$
+- 指数関数：$e^{i\varphi} = \cos\varphi + i\sin\varphi$ で定義する($\varphi \in \mathbb{R}$)
+    - $e^z = e^{x + iy} = e^x(\cos y + i\sin y)$
+    - 複素指数関数は $2\pi i$ の周期性を持つ：$e^{z + 2 k \pi i} = e^z~(k \in \mathbb{Z})$
+- 対数関数：$\log z = \ln |z| + i~\text{arg}~z$ (ただし，$\varphi_0 < \text{arg}~z \leq \varphi_0 + 2\pi$ の範囲で定義する)
+    - 上記は，$\varphi_0$ によって定まる対数の分枝。複素平面で虚部の値が切り替わる切れ目を決めているイメージ
+    - 主値：$\text{Log}~z = \ln |z| + i\text{Arg}~z~(-\pi < \text{Arg}~z \leq \pi)$
+    - **$\text{Log}~zw = \text{Log}~z + \text{Log}~w$ ではない！（虚部の値が切り替わることがある）**
+- 一般の指数：$a^z = e^{z \log a}$ で定義する
+    - **分枝を決めた時のみ一価である。** それ以外は，$a^z = e^{z(\ln |a| + (\text{arg}~a + 2k\pi)i)}~(k \in \mathbb{Z})$ と多価関数になる
+    - $n$ 乗根：$z = re^{i\varphi}~(\varphi_0 < \varphi \leq \varphi_0 + 2\pi)$ の $n$ 乗根は 
+    $z^{\frac{1}{n}} = r^{\frac{1}{n}} e^{i\frac{\varphi}{n}}$
+    - $n$ 乗根がとりうる範囲は複素平面を $n$ 等分したうちの一つ
+    - $f:z \to z^\frac{1}{n}$ や $f: z \to \log z$ は，分枝の切れ目 ($z \neq 0, \text{arg}~z = \varphi_0$) で不連続である
+- 三角関数
+    - $\sin z = \frac{e^{iz} - e^{-iz}}{2i}$，$\cos z = \frac{e^{iz} + e^{-iz}}{2}$，$\tan z = \frac{\sin z}{\cos z}$
+    - $\sin^2 z + \cos^2 z = 1$
+    - 加法定理：$\sin(z + w) = \sin z \cos w + \cos z \sin w$，$\cos(z + w) = \cos z \cos w - \sin z \sin w$
+    - $e^{iz} = \cos z + i\sin z = e^{-y}(\cos x + i\sin x)$：**$z$ は任意の複素数**
+    - $\sin z$，$\cos z$ は周期 $2\pi$ の周期関数
+    - 零点：$\sin z = 0 \to z = 0, \pm \pi, \pm 2\pi, \cdots$，$\cos z = 0 \to z = \pm \frac{\pi}{2}, \pm \frac{3\pi}{2}, \cdots$
+- 双曲線関数
+    - $\sinh z = \frac{e^z - e^{-z}}{2}$，$\cosh z = \frac{e^z + e^{-z}}{2}$，$\tanh z = \frac{\sinh z}{\cosh z}$
+    - $\cosh^2 z - \sinh^2 z = 1$
+    - 加法定理：$\sinh(z + w) = \sinh z \cosh w + \cosh z \sinh w$，$\cosh(z + w) = \cosh z \cosh w + \sinh z \sinh w$
+    - $\sinh z$，$\cosh z$ は周期 $2\pi i$ の周期関数
+    - 零点：$\sinh z = 0 \to z = 0, \pm \pi i, \pm 2\pi i, \cdots$，$\cosh z = 0 \to z = \pm \frac{\pi}{2}i, \pm \frac{3\pi}{2}i, \cdots$
+- 指数関数と双曲線関数の関係
+    - $\cosh z = \cos(iz)$，$\sinh z = -i\sin(iz)$
+    - $\cos z = \cosh(iz)$，$\sin z = -i\sinh(iz)$
+    - $\cos z = \cos x \cosh y - i \sin x \sinh y$，$\sin z = \sin x \cosh y + i \cos x \sinh y$
+
+---
+複素平面：$z$を実数軸 $x$，虚数軸 $y$ の平面上の点として表す。
+- 開集合、閉集合、有界などは $\mathbb{R}^2$ と同様に定義される
+- コンパクト集合：有界かつ閉集合
+- $r$-近傍：$B_r(z_0) = \{z \in \mathbb{C}~|~|z - z_0| < r\}$
+- 集合 $D$ が **連結** $\Leftrightarrow$ 任意の $2$ 点 $z_1, z_2 \in D$ を結ぶ連続曲線が $D$ に含まれる
+- 領域($G \subset \mathbb{C}$)：空集合でない連結な開集合
+- **単連結** $\Leftrightarrow$ $G$ の任意の閉曲線が $G$ の中で連続的に縮められる，穴が空いていないイメージ
+- 境界点($z_0 \in \partial D)$ $ \Leftrightarrow \forall r > 0, B_r(z_0) \cap D \neq \emptyset, B_r(z_0) \cap \overline{D} \neq \emptyset$，
+境界：$\partial D$
+- 閉包：$\overline{D} = D \cup \partial D$，内部：$D^\circ = \{z \in D~|~\exists r > 0, B_r(z) \subset D\}$，
+- $z_0 \in D$ が孤立点 $\Leftrightarrow \exists r > 0, B_r(z_0) \cap D = \{z_0\}$：近傍取ったら自分以外の点がない
+- $z_0 \in D$ が集積点 $\Leftrightarrow \forall r > 0, B_r(z_0) \cap D \cap \overline{\{z_0\}} \neq \emptyset$：どんな近傍でも自分以外の点がある
+
+---
+無限遠点 $\infty$：複素平面を $\mathbb{C} \cup \{\infty\}$ と拡張したものしたものを $\overline{\mathbb{C}}$ とおく
+- $a\in \mathbb{C}, a \neq 0$ に対して，$\frac{a}{0} = \infty$，$\frac{a}{\infty} = 0$ と定義
+- 定義しない：$\frac{0}{0}$，$\frac{\infty}{\infty}$，$0 \cdot \infty$，$\infty - \infty$，$\infty + \infty$
+
+極限について：基本的には実数と同様に定義する。
+
+関数について：$f:D \to \mathbb{C}~(D \subset \mathbb{C})$ を基本的に扱う
+- $f(x + yi) = u(x,y) + iv(x,y)$ ($u,v$ は実数値関数) とも考えられる

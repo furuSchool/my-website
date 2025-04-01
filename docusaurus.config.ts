@@ -176,6 +176,10 @@ const config: Config = {
               label: 'QRコードを体験してみよう！',
               href: 'https://ut-code.github.io/qrcode/',
             },
+            {
+              label: '灯火のサイエンス',
+              href: 'https://www.fire-science.net/',
+            }
           ],
         },
         {
