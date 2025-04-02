@@ -1,0 +1,36 @@
+---
+title: 3. 弾性体を伝わる波
+---
+:::warning[目標]
+弾性体の振動について考える！すなわち，弾性体内に生じる時間変化について考える。
+:::
+
+## 縦波
+長さ $l$，断面積 $S$，ヤング率 $E$，密度 $\rho$ の一様な直方体について， $x$ 軸方向の一様でない伸び $u(x,t)$ を考える。
+この時，$x$ 軸と平行な面に働くその面に垂直な力を $\displaystyle F(x,t) = ES\frac{\partial u}{\partial x}$ となる。
+
+また、運動方程式を考えると，$\displaystyle \rho \frac{\partial^2 u}{\partial t^2} = E \frac{\partial^2 u}{\partial x^2}$ となる。
+これは **波動方程式** である。  
+一般解は，$u(x,t) = f(x - ct) + g(x + ct)~(c = \sqrt{\frac{E}{\rho}})$ となる。
+- 微小部分で，$\frac{F}{S} = E \frac{\Delta l}{l}$ と $m \frac{\partial^2 u}{\partial t^2} = F$ を用いた
+
+液体や気体については，平面波（すなわち一次元的に伝わる波）を考えると，$\displaystyle -p(x,t) = K\frac{\partial u}{\partial x}$ ($K$ は体積弾性率) となる。
+また，$\displaystyle \rho \frac{\partial^2 u}{\partial t^2} = K\frac{\partial^2 u}{\partial x^2}$ となり，速度 $c = \sqrt{\frac{K}{\rho}}$ となる。
+
+さらに気体について別の表現をする。振動が断熱的に起きると仮定すると，$pV^\gamma = \text{const}$ となる。
+すると，$\Delta p = -\gamma p \frac{\Delta V}{V}$ となるので，$K = \gamma p$ より，
+$v = \sqrt{\frac{\gamma p}{\rho}} = \sqrt{\frac{\gamma RT}{M}}$ となる。
+- ここから，音波(空気中の縦波)は $v \approx 331.45 + 0.607~T$ (m/s) であることがわかる。
+
+---
+## 横波
+### ねじれ波
+半径 $R$，ずれ弾性率 $G$，ねじれの角度 $\Phi(z,t)$ の円柱を考える。この時，微小部分に対して 
+$I\frac{\partial^2 \Phi}{\partial t^2} = N$ を適用して整理すると，
+$\displaystyle \rho \frac{\partial^2 \Phi}{\partial t^2} = G \frac{\partial^2 \Phi}{\partial z^2}$ となる。
+
+この時，速度 $c = \sqrt{\frac{G}{\rho}}$ となり，半径にはよらない。
+
+<img src="/img/physics/wave-velocity.png" width="50%" alt="弾性波の速度"/>
+（図は[こちら](http://www.wannyan.net/scidog/continuous/ch04.pdf)より引用）  
+

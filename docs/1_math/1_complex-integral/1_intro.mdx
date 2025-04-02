@@ -67,3 +67,24 @@ title: 1. 複素数の基本
 
 関数について：$f:D \to \mathbb{C}~(D \subset \mathbb{C})$ を基本的に扱う
 - $f(x + yi) = u(x,y) + iv(x,y)$ ($u,v$ は実数値関数) とも考えられる
+
+---
+## べき級数
+### 基本
+- 無限級数：複素数列 $\{z_n\}$ の和 $s_n = \sum_{k=0}^n z_k$ の列 $\{s_n\}$ のこと。$\lim_{n \to \infty} s_n = s$ ならば，無限級数は $s$ に収束する
+- $\sum_{n=0}^\infty |z_n|$ が収束するとき，級数は絶対収束するという。絶対収束する級数は収束する。
+- 優級数判定法：ある $\{M_n\}$ が存在して $|z_n| \leq M_n$ であり，$\sum_{n=0}^\infty M_n$ が収束するならば，$\sum_{n=0}^\infty z_n$ も収束する
+- コーシーの収束判定法：${\lim \sup}_{n \to \infty} |z_n|^{\frac{1}{n}} = L$ とするとき，$L < 1$ のとき絶対収束，$L > 1$ のとき発散
+    - $\lim \sup$ は上極限。振動する時も上極限が存在する場合がある。
+- ダランベールの収束判定法：$L = \lim_{n \to \infty} \frac{|z_{n+1}|}{|z_n|}$ とするとき，$L < 1$ のとき絶対収束，$L > 1$ のとき発散
+
+### べき級数と収束半径
+- べき級数：$f(z) = \sum_{n=0}^\infty a_n (z - z_0)^n$
+- 収束半径 $R$：べき級数は，$|z - z_0| < R$ のとき絶対収束，$|z - z_0| > R$ のとき発散，となる $R$ を定められる
+- 収束半径 $R$ は次のように求められる
+    - $R = {\lim \sup}_{n \to \infty} \frac{1}{|a_n|^{\frac{1}{n}}}$ (コーシーの収束判定法)
+    - $R = \lim_{n \to \infty} \frac{|a_n|}{|a_{n+1}|}$ (ダランベールの判定法)
+- 一様収束：$\forall \epsilon > 0, \exists N \in \mathbb{N} \forall z \in D ;~ n > N$ に対して $|f_n(z) - f(z)| < \epsilon$
+    - $\lim_{n \to \infty} \sup_{z \in D} |f_n(z) - f(z)| = 0$ とも書ける
+    - 各点収束：$\forall \epsilon > 0, \forall z \in D, \exists N \in \mathbb{N} ;~ n > N$ に対して $|f_n(z) - f(z)| < \epsilon$
+- べき級数は，閉円板 $|z - z_0| \leq r < R$ 上で一様収束する

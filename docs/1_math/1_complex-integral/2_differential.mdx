@@ -1,0 +1,39 @@
+---
+title: 2. 複素数の微分
+---
+
+## 基本
+- 複素数の微分：$f(z)$ が $z_0$ で微分可能 $\Leftrightarrow \frac{d}{dz}f(z_0) = f^{\prime}(z_0) = \lim_{z \to z_0} \frac{f(z) - f(z_0)}{z - z_0}$ が存在する
+- 各 $z \in G$ ($G$ は領域) に対して導関数 $f^{\prime}(z)$ が存在する時，$f:G \to \mathbb{C}$ は $G$ において **解析的，正則** であると呼ぶ。
+解析関数や正則関数とも呼ばれる
+- 微分の演算則は実数の時と同様
+- $\text{Log}~z$ や $\sqrt{z}$ などは，$\{x~|~x \leq 0\}$ の範囲では定義されない（負の実軸上に切れ目があるから）
+
+### べき級数の微分
+- 収束半径 $R$ のべき級数 $f(z) = \sum_{n=0}^{\infty} a_n (z - z_0)^n$ は $|z - z_0| < R$ の範囲で解析的
+- 導関数は，$f^{\prime}(z) = \sum_{n=1}^{\infty} n a_n (z - z_0)^{n-1}$ で与えられる。また，この級数の収束半径も $R$ である
+    - $a_n = \frac{f^{(n)}(z_0)}{n!}$ である
+
+### コーシー・リーマンの方程式
+:::tip[コーシー・リーマンの方程式]
+$f(x+iy) = u(x,y) + iv(x,y)$ が領域 $G \subset \mathbb{C}$ で解析的であるための条件は，
+1. $(x,y) \to (u(x,y), v(x,y))$ が全微分可能である
+2. コーシー・リーマンの方程式：$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}$，
+$\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$ が成り立つ
+:::
+この時，$f^{\prime}(z) = \frac{\partial u}{\partial x} + i \frac{\partial v}{\partial x} = \frac{\partial u}{\partial y} - i \frac{\partial v}{\partial y}$ である
+- これは，$f^{\prime}(z) = a + ib$ であるとすると，
+$\begin{pmatrix} u(x,y) \\ v(x,y) \end{pmatrix} = \begin{pmatrix} u(x_0,y_0) \\ v(x_0,y_0) \end{pmatrix} + \begin{pmatrix} a & -b \\ b & a \end{pmatrix} \begin{pmatrix} x - x_0 \\ y - y_0 \end{pmatrix}$ であることからもわかる
+    - $(a + ib)(z - z_0) = a(x - x_0) - b(y - y_0) + i(b(x - x_0) + a(y - y_0))$
+- イメージとして，$\overline{z}$ が入っている関数は基本的に解析的でない
+
+また，解析関数 $f, g$ について，$f^{\prime} = g^{\prime}$ ならば，$f = g + C$ ($C$ は定数) である
+
+### 解析関数による写像の等角性
+解析関数 $f:G \to \mathbb{C}$ が $G$ で $f^{\prime}(z) \neq 0$ の時，この写像は等角かつ向き不変である。
+すなわち，点 $z$ を通るに曲線の交角と $f(z)$ を通る曲線の交角は回転の向きを含めて等しい。
+- $f^{\prime}(z) = 0$ の時は角度が変わる場合がある
+
+<img src="/img/math/conformal-map.png" width="50%" alt="解析関数による写像の等角性"/>
+（図は[こちら](https://mathworld.wolfram.com/ConformalMapping.html)より引用）
+

@@ -1,0 +1,100 @@
+---
+title: 3. 複素数の積分
+---
+## 基本
+平面曲線 $C(t) = [x(t), y(t)]^T$ ($t \in [a, b]$) は，複素平面上では $C(t) = x(t) + iy(t)$ と表される。
+そこで，複素積分は次のように定義される。
+
+:::tip[複素積分]
+$G \subset \mathbb{C}$ を領域とする。$f:G \to \mathbb{C}$ を連続関数，$C:[a, b] \to G$ を連続微分可能な曲線とする時，
+
+$\displaystyle \int_C f(z) dz = \int_a^b f(C(t)) C^{\prime}(t) dt$
+と定義する。
+:::
+ここで，$f = u + iv$，$C(t) = x(t) + iy(t)$ とした時，  
+$\int_C f(z) dz = \int_a^b (u\frac{dx}{dt} - v\frac{dy}{dt}) dt + i \int_a^b (u\frac{dy}{dt} + v\frac{dx}{dt}) dt = \int_C (udx - vdy) + i \int_C (udy + vdx)$ となる。
+- 物理的には，$\text{Re} \int_C f(z) dz$ は $C$ に沿う $\begin{pmatrix} u \\ -v \end{pmatrix}$ の循環，
+$\text{Im} \int_C f(z) dz$ は $C$ に沿う $\begin{pmatrix} u \\ -v \end{pmatrix}$ の通過量を表す
+- 閉曲線 $C$ に対する周回積分 $\oint_C f(z) dz$ がよく用いられる
+
+---
+## 積分の計算
+1. 曲線 $C$ をパラメータ表示する：$z(t) = C(t)$ ($t \in [a, b]$)
+2. 代入する：$\int_C f(z) dz = \int_a^b f(z(t)) z^{\prime}(t) dt$
+3. 積分を計算する。$\int_C f(z) dz = \int_a^b (u\frac{dx}{dt} - v\frac{dy}{dt}) dt + i \int_a^b (u\frac{dy}{dt} + v\frac{dx}{dt}) dt$ 
+で，実数と同様に計算できる。または，複素微分の性質を用いれば良い。 **（対数や $n$ 乗根の計算には注意）**
+
+:::tip[基本的な積分]
+$m \in \mathbb{Z},~a \in \mathbb{C},~r > 0$ とする。
+
+$\displaystyle \oint_{|z-a|=r} (z-a)^m dz = \begin{cases}0 & (m \neq -1) \\ 2 \pi i & (m = -1)\end{cases}$  
+:::
+- つまり，$\oint_{|z-a|=r} \frac{1}{z-a} dz = 2 \pi i$（コーシーの積分定理より，点 $z=a$ を中に持つ閉曲線に沿った積分はすべて $2 \pi i$ になる）
+- $z(t) = a + re^{it}$ ($t \in [0, 2\pi]$) なので，これを代入すれば，
+$\oint_{|z-a|=r} (z-a)^m dz = \int_0^{2\pi} (re^{it})^m i re^{it} dt$ を計算すれば良い
+
+積分の演算則：線形性，経路についての加法性などの性質は実数の場合と同じ。
+
+### コーシーの積分定理
+:::tip[コーシーの積分定理]
+$G \subset \mathbb{C}$ を単連結な領域とする。$f:G \to \mathbb{C}$ を $G$ 上で解析的な関数とする時，任意の閉曲線 $C \subset G$ に対して 
+
+$$
+\oint_C f(z) dz = 0
+$$
+:::
+- コーシー・リーマンの方程式とグリーンの定理を用いて証明できる（が，これだと循環論法になっているかも）
+- イメージは，**中に穴を持たない閉曲線に沿って積分しても 0 になる**
+- このとき，積分は経路を変えても同じ値になる
+- またこの時，$f$ の原始関数 $F$ が存在して，$\int_C f(z) dz = F(z_2) - F(z_1)$ となる
+- 領域を切り開いて単連結にしてしまうことがよくある
+<img src="/img/math/cauchy.png" width="30%" alt="単連結領域"/>
+（図は[こちら](https://www.phys.kindai.ac.jp/laboratory/kondo/lectures/el_tb/node79.html)より引用）
+
+さらに，コーシーの積分定理を用いると，次のような定理が成り立つ。
+:::tip[定理]
+$G \subset \mathbb{C}$ を単連結でない領域とする。$f:G \to \mathbb{C}$ を $G$ 上で解析的な関数とする時，
+$f$ が定義されていない同一の集合のまわりを同じ向きに一周する $G$ 内の閉曲線 $C_1, C_2$ に対して，次の式が成り立つ。
+
+$$
+\oint_{C_1} f(z) dz = \oint_{C_2} f(z) dz
+$$
+:::
+
+### コーシーの積分公式
+:::tip[コーシーの積分公式]
+$G \subset \mathbb{C}$ を開領域，$f:G \to \mathbb{C}$ を $G$ 上で解析的な関数，$C \subset G$ を内部が完全に $G$ に含まれる単純閉曲線とする。
+この時，$C$ の内部の任意の点 $z \in G$ に対して，次の式が成り立つ。
+$$
+f(z) = \frac{1}{2 \pi i} \oint_C \frac{f(\xi)}{\xi - z} d\xi,~~~~\oint_C \frac{f(\xi)}{\xi - z} d\xi = 2 \pi i f(z)
+$$
+:::
+これは，閉曲線 $C$ 上の $f$ の値のみによって，内点 $z$ における $f$ の値が決まることを示している。
+- 部分分数展開して，$\displaystyle\oint_C \frac{f(z)}{z - z_0} dz = 2 \pi i f(z_0)$ として使う場合が多い
+- さらに，$\displaystyle f(a) = \frac{1}{2 \pi i} \oint_{|z-a|=r} \frac{f(z)}{z-a} dz = \frac{1}{2 \pi} \int_0^{2\pi} f(a + re^{it}) dt$ も成り立つ
+
+### 級数と積分
+まず，$\frac{1}{\xi - z}$ の級数展開を考えると，以下の様になる。
+
+$$
+\begin{cases}
+\displaystyle |\xi - a| > |z - a| ~\Rightarrow~ \frac{1}{\xi - z} = \sum_{n=0}^{\infty} \frac{(z-a)^n}{(\xi-a)^{n+1}} \\
+\displaystyle |\xi - a| < |z - a| ~\Rightarrow~ \frac{1}{\xi - z} = -\sum_{n=0}^{\infty} \frac{(\xi-a)^{n}}{(z-a)^{n+1}}
+\end{cases}
+$$
+
+次に，テイラー級数について，領域 $G$ 上で解析的な関数 $f(z)$ を考えると，$f(z)$ は $G$ に完全に含まれる
+開円板 $D(a, r) = \{z \in \mathbb{C}~|~|z-a| < r\}$ 上でテイラー展開できる。
+$$
+f(z) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!} (z-a)^n
+$$
+- この級数の収束半径 $R$ は，点 $z=a$ から $f$ が定義されていない(= 解析的でなくなる)点までの最小距離である
+    - 例：$f(z) = \frac{z}{e^z - 1}~(z\neq 0),~f(0) = 1$ の場合，$R = 2\pi$ である
+
+また，$f$ の導関数は以下の様になる。
+$$
+f^{(n)}(z) = \frac{n!}{2 \pi i} \oint_{|\xi - a|=\rho} \frac{f(\xi)}{(\xi - z)^{n+1}} d\xi~~~~(|z-a| < \rho < r)
+$$
+- これは，コーシーの積分公式を用いて示すことができる
+
+また，$\displaystyle \oint_{|z - a|=\rho} \frac{f(z)}{(z - z_0)^{n+1}} dz = \frac{2 \pi i}{n!} f^{(n)}(z_0)$ を用いることも多い。
