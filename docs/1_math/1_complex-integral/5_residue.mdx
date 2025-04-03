@@ -1,0 +1,72 @@
+---
+title: 5. 留数定理
+---
+## 留数定理
+$G \setminus \{z_0\}$ で解析的な関数 $f$ の $z_0$ を中心とするローラン展開は，  
+$f(z) = \sum_{n = 1}^{\infty} \frac{c_n}{(z-z_0)^n} + \sum_{n=0}^{\infty} c_n (z-z_0)^n$ と表される。
+
+この時，$c_{-1}$ を **$f$ の $z_0$ における留数と呼び，$\displaystyle\text{Res}(f, z_0) = c_{-1} = \frac{1}{2 \pi i} \oint_{C} f(z) dz$** と表す。
+
+:::tip[留数定理]
+$f$ が孤立特異点を除いて領域 $G$ で解析的であるとする。単純閉曲線 $C \subset G$ について，
+有限個の特異点 $a_1, a_2, \cdots, a_N$ を囲んでいるが，特異点は通っていない時，次の式が成り立つ。
+
+$$
+\oint_{C} f(z) dz = 2 \pi i \sum_{k=1}^{N} \text{Res}(f, a_k)
+$$
+:::
+---
+## 留数の計算
+1. ローラン級数から求める
+    - 例：$e^{\frac{1}{1-z}} = 1 - \frac{1}{z-1} + \cdots$ より，$\text{Res}(f, 1) = -1$
+2. 1 位の極の留数：$\displaystyle \text{Res}(f, a) = \lim_{z \to a} (z-a) f(z)$
+3. $h(a) = 0, h'(a) \neq 0, g(a) \neq 0$ の場合：$\displaystyle \text{Res}\left(\frac{g(z)}{h(z)}, a\right) = \frac{g(a)}{h^{\prime}(a)}$
+4. $m$ 位の極の留数：$\displaystyle \text{Res}(f, a) = \frac{1}{(m-1)!} \lim_{z \to a} \frac{d^{m-1}}{dz^{m-1}} \left( (z-a)^m f(z) \right)$
+    - ローラン展開から $(z-a)^m f(z) = c_{-m} + \cdots + c_{-1} (z-a)^{m-1} + c_0 (z-a)^m + \cdots$ であるため
+
+---
+## 留数定理の応用
+### 1. 周回積分の計算
+- 閉曲線内の孤立特異点のみ考えれば良い
+
+### 2. 実積分の計算
+#### 1. $\int_0^{2\pi} f(\cos \theta, \sin \theta) d\theta$ の形の積分
+$z = e^{i\theta}~~(\theta \in [0, 2\pi])$ と置き換えると，
+$\displaystyle \int_0^{2\pi} f(\cos \theta, \sin \theta) d\theta = \int_{|z|=1} f\left(\frac{z+z^{-1}}{2}, \frac{z-z^{-1}}{2i}\right) \frac{1}{iz} dz$
+- もっと言えば，$\cos k\theta = \frac{z^k + z^{-k}}{2}, \sin k\theta = \frac{z^k - z^{-k}}{2i}$ も使える
+
+#### 2. $\int_{-\infty}^{\infty} f(x) dx$ の形の積分
+半円弧 $C_R$ などを使って積分を行う。（実軸上の積分 + 円などの経路の積分 = 周回積分で，円などの経路の積分を 0 にするイメージ）
+
+<img src="/img/math/residue.png" width="30%" alt="留数定理の応用"/>
+（図は[こちら](https://manabitimes.jp/math/2645)より引用）
+
+:::tip[定理]
+$f(z)$ が点 $z_1, z_2, \cdots, z_N~~(\text{Im} z_k > 0)$ を除いて上半平面と実軸上で解析的でかつ $\lim_{z \to \infty} zf(z) = 0$ の時，次の式が成り立つ。
+$$
+\displaystyle
+\int_{-\infty}^{\infty} f(x) dx = 2 \pi i \sum_{k=1}^{N} \text{Res}(f, z_k)
+$$
+:::
+- $\int_0^{\pi} f(Re^{i\theta}) iRe^{i\theta} d\theta$ が $R \to \infty$ で 0 になるため
+
+この系として，多項式 $q$ の次数が多項式 $p$ の次数より 2 以上大きいなら，$\text{Im} z > 0$ の $q(z)$ の零点 $z_k$ を用いて，    
+$\displaystyle \int_{-\infty}^{\infty} \frac{p(x)}{q(x)} dx = 2 \pi i \sum_{k=1}^{N} \text{Res}\left(\frac{p(z)}{q(z)}, z_k \right)$ が成り立つ。
+
+さらに，よりゆるい条件において，以下のような定理が成り立つ。
+:::tip[定理]
+$f(z)$ が点 $z_1, z_2, \cdots, z_N~~(\text{Im} z_k > 0)$ を除いて上半平面と実軸上で解析的でかつ $zf(z)$ が **有界** である時，
+$\omega > 0$ として次の式が成り立つ。
+$$
+\displaystyle
+\int_{-\infty}^{\infty} e^{iwx} f(x) dx = 2 \pi i \sum_{k=1}^{N} \text{Res}\left(e^{iwz}f(z), z_k \right)
+$$
+:::
+- $|zf(z)| \leq C$ として，
+$|\int_0^{\pi} e^{iwRe^{i\theta}} f(Re^{i\theta}) iRe^{i\theta} d\theta| \leq C\int_0^{\pi} e^{-wR\sin \theta} d\theta 
+\leq 2C\int_0^{\frac{\pi}{2}} e^{-wR\frac{2\theta}{\pi}} d\theta \to 0$
+
+この系として，多項式 $q$ の次数が多項式 $p$ の次数より 1 以上大きいなら，$\text{Im} z > 0$ の $q(z)$ の零点 $z_k$ を用いて，    
+$\displaystyle \int_{-\infty}^{\infty} e^{iwx} \frac{p(x)}{q(x)} dx = 2 \pi i \sum_{k=1}^{N} \text{Res}\left(e^{iwz} \frac{p(z)}{q(z)}, z_k \right)~~(w > 0)$ が成り立つ。
+
+- 他にも，$\displaystyle\int_{-\infty}^{\infty} \frac{\cos \omega x}{1 + x^2} dx = \text{Re} \int_{-\infty}^{\infty} \frac{e^{i\omega x}}{1 + x^2} dx = \pi e^{-|\omega|}$ のように利用する場合も

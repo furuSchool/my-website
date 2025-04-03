@@ -1,0 +1,64 @@
+---
+title: 4. ローラン展開
+---
+
+## ローラン展開
+:::tip[ローラン展開]
+円環 $A = \{ z \in \mathbb{C} \mid r < |z-a| < R \}$ 上で解析的な関数 $f(z)$ の点 $a$ の周りのローラン展開は，次の様に表される。
+$$
+f(z) = \sum_{n=-\infty}^{\infty} c_n (z-a)^n = \sum_{n=0}^{\infty} c_n (z-a)^n + \sum_{n=1}^{\infty} \frac{c_{-n}}{(z-a)^n}
+$$
+
+また，この時，$\displaystyle c_n = \frac{1}{2 \pi i} \oint_{|z-a|=\rho} \frac{f(z)}{(z-a)^{n+1}} dz~~(r < \rho < R)$ が成り立つ。
+:::
+**ローラン展開はどの点周りで展開するかで結果が変わる**。また，特異点に応じて円環が変わるため，**$z$ に応じた場合分けが必要かもしれない**
+- 係数は，級数の一様収束性を使えば，$\displaystyle \oint_{|z-a|=\rho} \frac{f(z)}{(z-a)^{k+1}} dz = \sum_{n=-\infty}^{\infty} c_n \oint_{|z-a|=\rho} (z-a)^{n-k-1} dz = 2\pi i c_k$ 
+- 円環内も解析的である場合は，$c_{-1} = c_{-2} = \cdots = 0$ となり，テイラー展開になる
+
+
+### 計算方法
+テイラー展開は，**既知の級数の微分や積分**，**和や積に分解して計算**　などが多い。
+
+ローラン展開は，以下の様な方法がある。
+
+#### 1. 単純に代入する：原点の近傍で解析的な関数 $f(z) = \sum_{n=0}^{\infty} a_n z^n$ の $z$ を置き換える
+- 例：$\sin \frac{1}{z} = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n+1)!} \frac{1}{z^{2n+1}}$
+
+#### 2. 典型的な関数のローラン展開
+$\frac{1}{z-z_0}$ の点 $a$ を中心にしたローラン展開は，$z$ が $z_0$ より 点 $a$ に近い場合と遠い場合で異なる。$z$ の方が近い場合はただのテイラー展開になる。
+
+$
+\begin{cases}
+\displaystyle |z-a| < |z_0-a| \Rightarrow \frac{1}{z-z_0} = -\sum_{n=0}^{\infty} \frac{(z-a)^n}{(z_0-a)^{n+1}} \\
+\displaystyle |z-a| > |z_0-a| \Rightarrow \frac{1}{z-z_0} = \sum_{n=0}^{\infty} \frac{(z_0-a)^n}{(z-a)^{n+1}}
+\end{cases}
+$
+
+さらに，$\frac{1}{(z-z_0)^m}$ のローラン展開は，次の様に表される。
+
+$
+\begin{cases}
+\displaystyle a = z_0 \Rightarrow \frac{1}{(z-z_0)^m} \\
+\displaystyle a \neq z_0 \Rightarrow \frac{1}{(z-z_0)^m} = \frac{(-1)^{m-1}}{(m-1)!} \frac{d^{m-1}}{dz^{m-1}} \left( \frac{1}{z-z_0} \right)
+\text{を用いて項別微分を行う}
+\end{cases}
+$
+
+#### 3. 部分分数分解
+有理関数は，部分分数分解を行えば 2 を使ってローラン展開ができる。**$z$ の位置に応じて場合分けが必要な可能性に注意**
+
+---
+## 特異点
+関数 $f$ の特異点 $z_0$ は，$f$ が定義されない点のことを指す。特異点の近傍 $0 < |z-z_0| < r$ で解析的な場合，$z_0$ は孤立特異点と呼ばれる。
+この時，$f(z) = \sum_{n=-\infty}^{\infty} c_n (z-z_0)^n~~(0 < |z-z_0| < r)$ と表される。
+
+孤立特異点は，以下の 3 種類に分類される。
+1. 除去可能点：$c_{-1} = c_{-2} = \cdots = 0$ の場合 ($f(z) = c_0 + c_1 (z-z_0) + c_2 (z-z_0)^2 + \cdots$)
+    - この時は，$f(z_0) = c_0$ とすれば $|z-z_0| < r$ で解析的になる
+    - また，$\lim_{z \to z_0} (z - z_0) f(z) = 0$ となる
+    - 例：$f(z) = \frac{\sin z}{z}$
+2. $m$ 位の極：$|c_{-m}| \neq 0$ かつ $c_{-m-1} = c_{-m-2} = \cdots = 0$ の場合 ($f(z) = \frac{c_{-m}}{(z-z_0)^m} + \frac{c_{-m+1}}{(z-z_0)^{m-1}} + \cdots $)
+    - 必ず，$\lim_{z \to z_0} |f(z)| = \infty$ となる
+3. 真性特異点：$c_{-n} \neq 0$ なる $n \in \mathbb{N}$ が無限に存在する場合
+    - 例：$f(z) = \sin (\frac{1}{z})$
+

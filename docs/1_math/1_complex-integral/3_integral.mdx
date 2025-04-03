@@ -98,3 +98,16 @@ $$
 - これは，コーシーの積分公式を用いて示すことができる
 
 また，$\displaystyle \oint_{|z - a|=\rho} \frac{f(z)}{(z - z_0)^{n+1}} dz = \frac{2 \pi i}{n!} f^{(n)}(z_0)$ を用いることも多い。
+
+---
+## まとめ
+:::tip[まとめ]
+- $\displaystyle \oint_{|z-a|=r} (z-a)^m dz = \begin{cases}0 & (m \neq -1) \\ 2 \pi i & (m = -1)\end{cases}~~(m \in \mathbb{Z},~a \in \mathbb{C},~r > 0)$
+
+単連結領域 $G$ 上で解析的な関数 $f(z)$ に対して，任意の閉曲線 $C \subset G$ に対して 
+- $\displaystyle \oint_C f(z) dz = 0$ (コーシーの積分定理)
+- $\displaystyle f^{(n)}(z) = \frac{n!}{2 \pi i} \oint_{C} \frac{f(\xi)}{(\xi - z)^{n+1}} d\xi$ (コーシーの積分公式, $z$ は $C$ の内部にある)
+    - 特に，$\displaystyle f(z) = \frac{1}{2 \pi i} \oint_{C} \frac{f(\xi)}{\xi - z} d\xi$ 
+- $\displaystyle f(z) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!} (z-a)^n$ (テイラー展開, $G$ に完全に含まれる開円板 $|z-a| < r$ )
+- $\displaystyle \oint_{|z - a|=\rho} \frac{f(z)}{(z - z_0)^{n+1}} dz = \frac{2 \pi i}{n!} f^{(n)}(z_0)$
+:::
