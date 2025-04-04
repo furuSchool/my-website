@@ -34,3 +34,19 @@ $\displaystyle \rho \frac{\partial^2 \Phi}{\partial t^2} = G \frac{\partial^2 \P
 <img src="/img/physics/wave-velocity.png" width="50%" alt="弾性波の速度"/>
 （図は[こちら](http://www.wannyan.net/scidog/continuous/ch04.pdf)より引用）  
 
+### 曲げの波
+断面積 $S$ の真っ直ぐであった棒や板に非一様な曲げが生じている。位置 $x$ の断面にモーメント $M(x,t)$ が働き，$z$ 軸方向に $z(x,t)$ の変位があるとする。
+
+接線応力 $f(x)$，密度 $\rho$ として，$\frac{\partial M}{\partial x} \Delta x =  M(x + \Delta x,t) - M(x,t) = \Delta x \cdot f(x)S$ より，
+$M(x,t) = EI \frac{\partial^2 z}{\partial x^2}$ となる。
+また，$z$ 軸方向の運動方程式 $\rho (S \Delta x) \frac{\partial^2 z}{\partial t^2} = -f(x + \Delta x)S + f(x)S$ なので，
+$v = \sqrt{\frac{E}{\rho}},~\kappa = \frac{I}{S}$ とおいて整理して，
+
+$\displaystyle \left(\frac{\partial}{\partial t} \pm i\kappa v \frac{\partial^2}{\partial x^2}\right)z(x,t) = 0$ となる。
+これはシュレディンガー方程式と同じ形である。
+
+### 参考
+弾性体の境界条件には，次の三つがある。
+1. 固定：端の位置 $z$ とその傾き $\frac{\partial z}{\partial x}$ が与えられ変化しない
+2. 支持：端の位置 $z$ が与えられ，モーメント $M = 0$ となる
+3. 自由：モーメント $M = 0~(\frac{\partial^2 z}{\partial x^2} = 0)$，応力 $f = 0~(\frac{\partial^3 z}{\partial x^3} = 0)$ となる
