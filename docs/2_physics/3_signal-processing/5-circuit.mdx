@@ -89,7 +89,7 @@ http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より�
     - 遅延素子数：$\max(K,L)$ 個
     - 安定性の確保が楽
 3. **並列型構成**：$H(z) = H_1(z) + H_2(z) + …$ と部分分数分解して，$H_i(z)$ を別々に実装してから合成する
-    - $H_i(z)$ の分子を二次式以下、分母を分子より次数が小さい実係数の多項式に分解できる
+    - $H_i(z)$ の分子を二次式以下，分母を分子より次数が小さい実係数の多項式に分解できる
 <img src="/img/physics/parallel.png" style={{ width: '30%', marginLeft: '40px' }} />
 4. **ハシゴ型構成**：$H(z) = a_0 + \frac{a_1 z^{-1}}{1 + \frac{a_2 z^{-1}}{{…}}}$ と連分数展開
 <img src="/img/physics/iir_divide.png" style={{ width: '30%', marginLeft: '40px' }} />
@@ -100,7 +100,7 @@ http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より�
 | 素子感度 | IIR: 高い，FIR: 阻止域で高い | 少し高い| 少し高い| 低い| 低い|
 | 出力雑音 | IIR: 高い，IR: 低い| IIR: 低い，FIR: 高い | 低い | 低い | 低い |
 | 計算量 | 少ない | 少ない | 若干増える | 少ない    | 若干増える |
-| 回路構造の規則性 | 積和演算 | 2次回路のモジュール化 | やや不規則 | 規則性、モジュール化に不向き | モジュール化にやや不向き |
+| 回路構造の規則性 | 積和演算 | 2次回路のモジュール化 | やや不規則 | 規則性，モジュール化に不向き | モジュール化にやや不向き |
 
 ---
 ## 伝達関数設計

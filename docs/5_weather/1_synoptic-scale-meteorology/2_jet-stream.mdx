@@ -1,0 +1,138 @@
+---
+title: 2. ジェット気流
+---
+
+ジェット気流は，総観規模現象の背景場となる総観規模より大きなスケールの現象。
+
+## 基本
+:::tip[ジェット気流]
+**ジェット気流：一般には「強い風の吹く帯状の領域」**
+- 対流圏上端の境界条件として，ジェット気流の蛇行や風速変化が中高緯度の天気に影響
+- 地球規模だが主に中緯度に現れる
+    - 他には，前線帯や地形により下層ジェットも現れうる
+:::
+
+### 気象庁による用語の定義
+- 強風帯：周囲に比べて風速の大きな帯状の領域
+    - 圏界面付近で地球をほぼ一周するジェット気流
+    - 集中豪雨時に700~850hPaで出現する下層ジェット など
+    - ジェット気流の解析を目的とする場合は，強風帯の中心を連ねると等高線を横切ることがあるが，地衡風成分が大きいため無理に繋げないほうが良い場合がある
+- ジェット気流：対流圏上部または圏界面付近の狭い領域に集中して吹いている帯状の非常に強い風
+    - 通常高度10kmくらいに強風軸，中心の風速 50〜100m/s （寒候期）
+        - 強風軸：強風帯の中心を連ねた線
+    - 北半球では，亜熱帯ジェット気流（緯度30度付近）と，その北側の寒帯前線を伴う寒帯前線ジェット気流（ポーラー・ジェット気流）がある
+
+### 古典的な模式図
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div style={{ width: '50%' }}>
+    <ul>
+        <li>$J_S$ :亜熱帯ジェット気流</li>
+        <ul>
+            <li>図では 200hPa 付近</li>
+            <li>亜熱帯前線を伴うが，前線は不明瞭</li>
+            <li>変動が比較的小さい</li>
+        </ul>
+        <li>$J_P$ :寒帯前線ジェット気流</li>
+        <ul>
+            <li>寒帯前線を伴う。図では下層に達しているように表現されている</li>
+            <li>南北変動が大きく，時間平均すると見えなくなる</li>
+        </ul>
+        <li>その他</li>
+        <ul>
+            <li>極側に極前線ジェットを定義する場合もある</li>
+            <li>ジェット気流の分流や合流がしばしば見られる</li>
+            <li>$J_S,J_P$ ともに対流圏界面の直下で，それが対流圏側に折れ込んでいるところの赤道側に存在する</li>
+        </ul>
+    </ul>
+    </div>
+    <img src="/img/weather/jet-stream.png" alt="ジェット気流" style={{ width: '45%' }} />
+</div>
+
+### 実際の例
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+    <div style={{ width: '50%' }}>
+    <ul>
+        <li>寒帯前線ジェット気流を北系と南系にわけて解釈（チベット高原！）</li>
+        <li>風の強いところを結んでいるので，ジオポテンシャル高度の等値線を横切っている箇所があるが，そのような風はあまり吹かない</li>
+        <li>ジェット気流は高緯度では高度が低くなる</li>
+    </ul>
+    </div>
+    <img src="/img/weather/jet-stream-example.png" alt="ジェット気流の例" style={{ width: '45%' }} />
+</div>
+
+### 子午面循環
+<div style={{ display: 'flex', justifyContent: 'left', gap: '40px' }}>
+  <img src="/img/weather/atmospheric-circulation1.png" alt="子午面循環" style={{ width: '40%' }} />
+  <img src="/img/weather/atmospheric-circulation2.png" alt="子午面循環" style={{ width: '40%' }} />
+</div>
+- ハドレー循環：暖気側で上昇，寒気側で下降
+    - 亜熱帯ジェット気流：角運動量保存則により，赤道付近から移動した空気が速度を持つ……？
+- フェレル循環：暖気側で下降，寒気側で上昇する熱的間接循環
+    - 温帯低気圧に関連した流れ。見かけ上の循環と言われる事も
+    - 寒帯前線ジェット気流：南北の水平温度傾度による……？実際には，下層前線と上層ジェット気流はそれぞれ異なるメカニズムで強化・衰弱しているらしい
+- 極循環：暖気側で上昇，寒気側で下降
+
+---
+## 長波長トラフと短波長トラフ
+:::warning[目標]
+まずは，トラフ・リッジの波長依存性について，傾圧性を無視したものである「ロスビー波」で考える
+:::
+- 傾圧性を無視 = 水平温度傾度や水平温度移流を無視 $\to$ 渦度保存の法則が使える
+
+<img src="/img/weather/rossby-wave.png" alt="ロスビー波" style={{ width: '50%' }} />
+
+$u = U,~v = v_0\cos(\frac{2\pi}{L}(x-ct))$ のような波を考える。鉛直運動なし，摩擦が無視できるとして，  
+絶対渦度保存： $\frac{d\zeta}{dt} + \beta v = 0$  より， **ロズビー波の位相速度：$c = U - \frac{\beta L^2}{4\pi^2}$**
+
+- ロズビー波の右辺第 1 項：西風による相対渦度移流，右辺第 2 項：惑星渦度の移流（ベータ効果）
+- ロズビー波の位相速度 $\approx$ トラフやリッジの移動速度
+- 基本流（偏西風） $U$ 「大」$\to$ ロズビー波の位相速度「大」
+- 波長 $L$ が「大」$\to$ ロズビー波の位相速度「小」（西進する場合もある！）
+    - 北上する流れでは惑星渦度が増大するので相対渦度は減少し，南下する流れでは惑星渦度が減少するので相対渦度は増大するので，波動が形成される
+
+<img src="/img/weather/rossby-wave2.png" alt="ロスビー波の西進" style={{ width: '50%' }} />
+
+---
+## ジェットストリーク
+:::tip[ジェットストリーク]
+ジェットストリーク：ジェット気流の中で特に風速の大きい領域
+:::
+**渦度と渦度移流は天気に大きく影響する** が，渦度には大きく分けて二種類ある。
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '60%' }}>
+    <ol>
+        <li>曲率渦度：回転する成分を持つ渦度</li>
+        <ul>
+            <li>トラフ：正の相対渦度，リッジ：負の相対渦度など。**トラフ・リッジを考える = 曲率渦度を考える**</li>
+        </ul>
+        <li>シアー渦度：水平シアーによる渦度</li>
+        <ul>
+            <li>ジェットストリークなど</li>
+        </ul>
+    </ol>
+    </div>
+    <img src="/img/weather/vorticity2.png" alt="渦度の種類" style={{ width: '35%' }} />
+</div>
+
+### シアー渦度
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
+  <img src="/img/weather/west-wind.png" alt="西風シアー" style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="/img/weather/jet-streak.png" alt="ジェットストリーク" style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+西風シアー = 渦度 + シアー変形
+- 強風軸：相対渦度「0」
+- 強風軸の北側：相対渦度「正」，ジェットストリークの場合正渦度極大
+- 強風軸の南側：相対渦度「負」，ジェットストリークの場合負渦度極大
+
+### 例
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+  <img src="/img/weather/jet-stream-example1.png" alt="ジェットストリークの例" style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="/img/weather/jet-stream-example2.png" alt="ジェットストリークの例" style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+
+$\zeta_g > -f$ なら慣性安定（ $\zeta_g$ ：地衡風相対渦度）
+- 水蒸気画像は対流圏上層に感度を持ち，水蒸気が多いほど白い
+- 強風軸の南側では，相対渦度がある程度小さくなると慣性不安定になり， 水平混合が生じる
+- 強風軸の北側は常に慣性安定なので，水平混合が起こりにくい $\to$ 低気圧・前線に伴う上層雲の北側の境界が明瞭なことが多い
+- 強風軸をはさんで暖気側では水蒸気が「多」，寒気側では「少」

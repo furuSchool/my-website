@@ -43,13 +43,13 @@ if (pthread_create(&child_thread_id, 0, f, &arg)) {
 
 #### `pthread_exit(p)` ：`pthread_exit` を呼んだプロセスを, 指定した終了ステータス p で終了させる
 
-- p : ポインタ (void *)、p は `pthread_join` で取得可能
+- p : ポインタ (void *)，p は `pthread_join` で取得可能
 - スレッドの開始関数が終了した場合も同じ効果（この場合, pの代わり `return value` が終了ステータス）
 
 #### `pthread_join(tid, p)`
 - 子スレッド tid の終了を待つ
 - 子スレッドの終了ステータスを `*p` に書き込む
-- `waitpid` と似ている（が親でなくても、スレッドを呼んでも良い）
+- `waitpid` と似ている（が親でなくても，スレッドを呼んでも良い）
 ```c
 void * ret = 0;
 if (pthread_join(child_thread_id, &ret)) {

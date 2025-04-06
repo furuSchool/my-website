@@ -28,17 +28,17 @@ title: 2. プロセス
 - pgrep : 色々な基準でプロセスを検索 (≈ ps + grep)
 :::
 - Windows はタスクマネージャとか, Ubuntu は System Monitor とか, Linux は `/proc/pid` とか
-- Unix についての[参考記事](https://qiita.com/minnsou/items/6b6b74fcd79bd00ace1a). イメージは, MacOS、Linuxの元となるOS. WindowsOSと対比される. CLI(CUI)なのが特徴？
+- Unix についての[参考記事](https://qiita.com/minnsou/items/6b6b74fcd79bd00ace1a). イメージは, MacOS，Linuxの元となるOS. WindowsOSと対比される. CLI(CUI)なのが特徴？
 
 ---
 ## プロセスに関わるシステムコール（Unix）
 ### `fork`：プロセスを作る (コピーする)
 - `fork()` の後, 続きが2 プロセス (親と子) で実行される
-- 親と子で返り値だけが違う：（親: 子プロセスのプロセスID、子: 0）
+- 親と子で返り値だけが違う：（親: 子プロセスのプロセスID，子: 0）
 - **変数は共有されない**
 
 ```c
-pid_t pid = fork(); // 以下、二つのプロセスが動く
+pid_t pid = fork(); // 以下，二つのプロセスが動く
 if (pid == -1) {
     // 失敗 (子プロセスは作られていない)
 } else if (pid == 0) { 
@@ -69,7 +69,7 @@ exit(status);
 - 変種: wait, wait3, wait4
 - プロセス C がゾンビ (defunct) = C が終了しているが,その親が (waitpid などで)C の終了を確認していない状態
 = C のプロセス番号を再利用できない状態 「waitpid = “the parent reaps the child”」
-    - `waitpid` は、子がプロセスを終了するまで待ち, プロセス番号を回収して処理を終える = 子プロセスがなくなる
+    - `waitpid` は，子がプロセスを終了するまで待ち, プロセス番号を回収して処理を終える = 子プロセスがなくなる
     - 親が子より先に終了する $\rightarrow$ 全プロセスの先祖 (init) が C の親をする
 
 ```c
