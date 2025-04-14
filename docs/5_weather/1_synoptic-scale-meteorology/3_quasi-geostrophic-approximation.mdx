@@ -1,0 +1,223 @@
+---
+title: 3. 準地衡風近似
+---
+:::warning[目標]
+**「準地衡風近似」** を適用して，中緯度の総観規模での上層トラフ・リッジとそれにより励起される鉛直運動について，渦度を用いて理解する！
+:::
+この章はめっちゃ数式。得られた結果の感覚だけでも覚えておきたい。
+
+---
+## 準地衡風近似
+:::tip[準地衡風近似]
+摩擦を無視し，移流する水平風は地衡風と仮定する。この時，発散は非地衡風で説明され，鉛直運動が説明できる。
+
+運動方程式：$\displaystyle\frac{d_g\bm{v_g}}{dt} = - f\bm{k}\times\bm{v_a}$ $(\frac{d_g}{dt} = \frac{\partial}{\partial t} + \bm{v_g}\cdot
+\nabla_p = \frac{\partial}{\partial t} + u_g\frac{\partial}{\partial x} + v_g\frac{\partial}{\partial y})$
+
+**地衡風の水平運動の加速度（時間変化）と非地衡風の水平運動の速度が対応する。**
+:::
+- 運動方程式（摩擦無視）：p座標系：$\frac{d\bm{v}}{dt} = -\nabla_p \Phi - f\bm{k}\times\bm{v}$ 
+$(\nabla_p = \frac{\partial}{\partial x}\bm{i} + \frac{\partial}{\partial y}\bm{j})$
+- 地衡風成分： $\bm{v}_g = \frac{g}{f}\bm{k}\times\nabla_p Z$  (静水圧近似で $Z = \frac{\Phi}{g}$) と，非地衡風成分： $\bm{v_a}$ とを考えるとわかる
+- 移流は地衡風のみであると考える $\to$ $\frac{d}{dt} = \frac{\partial}{\partial t} + \bm{v}\cdot\nabla_p+\omega\frac{\partial}{\partial p}$ であり，
+第 3 項(鉛直流)は無視している
+
+さらに，連続の式：$\left( \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y}\right)_p + \frac{\partial \omega}{\partial p} = 0$ と，
+地衡風の水平・発散の式：$\frac{\partial u_g}{\partial x} + \frac{\partial v_g}{\partial y} = -\frac{\beta}{f}v_g ~ (\beta = \frac{df}{dy})$ で，
+中緯度では $\beta \approx 10^{-11}~m^{-1}s^{-1},~f \approx 10^{-4}~s^{-1},~v_g \approx 10~m\cdot s^{-1}$ より右辺を $0$ とすると
+以下がわかる（地衡風の発散を無視）
+
+:::tip[準地衡風近似2]
+**非地衡風成分の水平発散・収束が鉛直運動と対応する。**（連続の式より）
+$$
+\frac{\partial \omega}{\partial p} =  -  \left( \frac{\partial u_a}{\partial x} + \frac{\partial v_a}{\partial y}\right)
+$$ 
+:::
+
+例えば，
+- 地衡風の西風成分が強まる $\leftrightarrow$ 非地衡風は南風（非地衡風は左向きに励起される）
+- 非地衡風が収束する $\leftrightarrow$ 上昇流が発生する
+
+### ジェットストリークの例
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+  <img src="/img/weather/quasi-geostrophic-approximation-example1.png" alt="ジェットストリークと非地衡風成分" style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="/img/weather/quasi-geostrophic-approximation-example2.png" alt="ジェットストリークと収束・発散" style={{ width: '50%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+
+#### ジェットストリークの入口：気圧傾度力「大」，$\bm{v}$ はまだそのまま 
+1. 地衡風の加速度がジェット気流と同じ向きに生じる
+2. 非地衡風運動はジェット気流に対して左向きに生じる
+3. 入口の左で収束，入口の右で発散
+
+#### ジェットストリークの出口：気圧傾度力「小」
+1. 地衡風の加速度がジェット気流と逆向きに生じる
+2. 非地衡風運動はジェット気流に対して右向きに生じる
+3. 出口の右で収束，出口の左で発散
+
+### トラフ・リッジ
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '50%' }}>
+    <h4>トラフ</h4>
+    <ol>
+        <li>地衡風の加速度は左に曲がる方向に生じる</li>
+        <li>非地衡風運動は流れに対して後ろ向きに生じる</li>
+    </ol>
+    <h4>リッジ</h4>
+    <ol>
+        <li>地衡風の加速度は右に曲がる方向に生じる</li>
+        <li>非地衡風運動は流れに対して前向きに生じる</li>
+    </ol>
+    </div>
+    <img src="/img/weather/quasi-geostrophic-approximation-example3.png" alt="ジェットストリークとトラフ・リッジ" style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+
+:::note[注意]
+ジェットストリークやトラフ・リッジに伴う収束・発散が圏界面付近で生じるのであれば，対流圏では補償流としての下降・上昇運動が生じる
+:::
+
+---
+## 準地衡風渦度方程式
+:::warning[目標]
+運動方程式から渦度で簡潔に表して，渦度の変化を理解する！
+:::
+
+まず，地衡風渦度：$\displaystyle\zeta_g = \frac{\partial v_g}{\partial x} -  \frac{\partial u_g}{\partial y} = \frac{1}{f_0}\nabla^2 \Phi$ 
+を定義する。（ただの渦度の定義）
+- 準地衡風近似で， $\frac{d_g\bm{v_g}}{dt} = - f\bm{k}\times\bm{v_a}$ であることと，地衡風に対して，$f = f_0 + \beta y$： $\beta$ 面近似 を用いた
+- 前の時は，$f$ が一定であるという $f$ 面近似を用いたらしい。地衡風が非発散 $\leftrightarrow$ $\beta = 0$ すなわち $f = f_0$
+- $f_0$ は基準面でのコリオリパラメータ
+
+ここから，以下の式が得られる。
+:::tip[準地衡風渦度方程式]
+**地衡風の渦度の時間変化 = 地衡風の絶対渦度の水平移流（= トラフの移動など）+ 非地衡風の水平収束・発散**
+$$
+\frac{\partial \zeta_g}{\partial t} = -\bm{v_g}\cdot \nabla_p(\zeta_g + f)
+- f_0\left( \frac{\partial u_a}{\partial x}+ \frac{\partial v_a}{\partial y}\right)
+$$
+:::
+ここから，「水平収束発散は大気中間では小さいはず $\to$ 500hPaの渦度は近似的にはそのまま移動するはず」ということが言える
+- $\beta$ 効果による惑星渦度の移流：渦度は北半球では，南風で減少，北風で増加する（$-v_g\beta = -\bm{v_g}\cdot\nabla_p f$）
+    - 惑星渦度 $f = 2\Omega \sin \phi$ は低緯度では小さく，高緯度では大きい
+- 準地衡風近似でない渦度方程式：$\frac{d\zeta}{dt} + \beta v = -(\zeta + f)\nabla\cdot\bm{v} - 
+\left(\frac{\partial\omega}{\partial x}\frac{\partial v}{\partial p} - 
+\frac{\partial\omega}{\partial y}\frac{\partial u}{\partial p}\right) + \nabla\times\bm{F_r}~~\left(\beta = \frac{df}{dy}\right)$
+    - $\zeta$ は相対渦度，$\bm{F_r}$ は摩擦力
+
+連続の式を用いると，以下のようにもできる
+
+:::tip[準地衡風渦度方程式2]
+**渦度の時間変化（風の変化）と鉛直運動の関係式。**
+$$
+\frac{\partial \zeta_g}{\partial t} = -\bm{v_g}\cdot \nabla_p(\zeta_g + f)+ f_0 \frac{\partial \omega}{\partial p}
+$$ 
+- 渦管の上端と下端の鉛直運動の差で，渦管の長さが変化する
+- 渦管が伸びる $\leftrightarrow$ 渦管が細くなる(=収束) $\leftrightarrow$ 渦度の増大
+:::
+- 渦度ベクトルを流線のようにつなげた曲線を渦線といい，渦線によってできる曲面を渦管という。
+単位質量あたりの円柱的なものを考えて，収束 = 渦管が伸びる = 渦度が増大 と考えれば良いのかな？
+
+---
+## 準地衡風オメガ方程式と傾向方程式
+準地衡風渦度方程式は変数が $\zeta_g$ と $\omega$ の2個あるため，もう一つ式が必要。ここまでで運動方程式と連続の式は用いたので，熱力学方程式を用いて解く。  
+
+まず，ジオポテンシャル変化傾向 $\displaystyle\chi = \frac{\partial \Phi}{\partial t}$ を導入する。すると，準地衡風渦度方程式は以下のようになる。
+
+:::tip[準地衡風渦度方程式3]
+$$
+\nabla^2\chi = -f_0\bm{v_g}\cdot \nabla_p(\zeta_g + f)+ f_0^2\frac{\partial \omega}{\partial p}~~(\zeta_g = \frac{1}{f_0}\nabla^2 \Phi)
+$$
+:::
+
+### 準地衡風近似の熱力学方程式
+近似してない熱力学方程式： $\displaystyle\frac{\partial T}{\partial t} = 
+-\bm{v}\cdot\nabla_pT + \left( \frac{R_dT_v}{C_p p} - \frac{\partial T}{\partial p}  \right)\omega + \frac{J}{C_p}$
+
+仮温度 $T_v$ は $T$ で近似，温位の式 $\theta = T\left(\frac{p_0}{p} \right)^{\frac{R_d}{C_p}}$ も使うと，
+$$
+\left(\frac{\partial}{\partial t}+\bm{v}\cdot\nabla_p\right)T + \frac{T}{\theta}\frac{\partial \theta}{\partial p} \omega= \frac{J}{C_p}
+$$
+
+準地衡風近似 (地衡風の鉛直移流成分は無視) と断熱 $(J = 0)$ を使えば以下のようになる。
+:::tip[準地衡風近似の熱力学方程式]
+準地衡風近似の熱力学方程式：$\displaystyle\frac{d_gT}{dt} = \frac{\sigma p}{R}\omega$ 
+
+さらに，状態方程式などを適用すると，以下の $\chi, \omega$ の式になる
+$$
+\frac{\partial \chi}{\partial p} = -\bm{v_g}\cdot\nabla_p \left( \frac{\partial \Phi}{\partial p}\right) - \sigma\omega
+$$
+:::
+- $\sigma = -\frac{RT_0}{p}  \frac{\partial \ln\theta_0}{\partial p}$ であり鉛直安定度に関係する。$T_0, \theta_0$ は等圧面上の代表値
+- 二つ目の式は，$\frac{\partial \Phi}{\partial p} = -\frac{1}{\rho} = - \frac{RT}{p}$ であることを用いた（静水圧近似 + 状態方程式）
+- 層厚は 2 つの等圧面のジオポテンシャル高度の差である。すなわち，$\frac{\partial \Phi}{\partial p}$ が層厚であるとも考えられる
+
+あとは，熱力学方程式と準地衡風渦度方程式を整理すれば，以下の式が得られる。
+:::tip[オメガ方程式と傾向方程式]
+#### オメガ方程式
+$$
+\left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2} \right)\omega = 
+\frac{f_0}{\sigma} \frac{\partial}{\partial p} \left[ \bm{v_g}\cdot \nabla_p(\zeta_g + f) \right]	+ 
+\frac{1}{\sigma} \nabla_p^2 \left[ \mathbf{v}_g \cdot \nabla_p \left( -\frac{\partial \Phi}{\partial p} \right) \right]
+$$
+
+#### 傾向方程式
+$$
+\left[ \nabla_p^2 + \frac{\partial}{\partial p} \left( \frac{f_0^2}{\sigma} \frac{\partial}{\partial p} \right) \right] \chi = 
+- f_0 \bm{v_g}\cdot \nabla_p(\zeta_g + f) - 
+\frac{\partial}{\partial p} \left[ -\frac{f_0^2}{\sigma} \mathbf{v}_g \cdot \nabla_p \left( -\frac{\partial \Phi}{\partial p} \right) \right]
+$$
+:::
+- **オメガ方程式は鉛直運動の分布を表す診断方程式** で予報はできない。
+- **傾向方程式はジオポテンシャルの時間変化を表す予報方程式**
+- どちらも，右辺はジオポテンシャルの観測値だけで決まり，ジポテンシャルの分布から $\omega$ や $\chi$ を求めるられる
+- どちらも，右辺の地衡風による変形により，左辺の非地衡風運動またはジオポテンシャルの時間変化が生じることを示す
+
+---
+## オメガ方程式の解釈
+$$
+\left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2} \right)\omega = 
+\frac{f_0}{\sigma} \frac{\partial}{\partial p} \left[ \bm{v_g}\cdot \nabla_p(\zeta_g + f) \right]	+ 
+\frac{1}{\sigma} \nabla_p^2 \left[ \mathbf{v}_g \cdot \nabla_p \left( -\frac{\partial \Phi}{\partial p} \right) \right]
+$$
+鉛直流 $\omega$ の分布が，大気下端と上端で0，中層で極大となる波動の形 
+$\omega = \omega_0 \sin(\frac{2\pi x}{L_x}) \sin(\frac{2\pi y}{L_y})\sin(\frac{\pi p}{L_p})$ を考えると，
+$\left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2} \right)\omega \propto -\omega$ となる。
+
+よって，例えば 1000〜500hPa の層を考え，そのほぼ中間である 700hPaの分布を「診断」ができる。
+- 左辺 = 700hPa の $-\omega$：鉛直上昇流
+- 右辺 = 500hPa の絶対渦度移流（1000hPa は無視）+ 500〜1000hPa の層厚移流 (水平温度移流)
+    - $\frac{\partial \Phi}{\partial p} = -\frac{1}{\rho} = - \frac{RT}{p}$ であるため。ただし，$T$ は 1000〜500hPa の平均温度，$\bm{v_g}$ はどの高度でも良い
+
+:::tip[オメガ方程式の解釈例]
+- **700hPaの上昇流は，500hPa正渦度移流と下層暖気移流に関連して生じる**
+- **700hPaの下降流は，500hPa負渦度移流と下層寒気移流に関連して生じる**
+:::
+- 準地衡風理論においては，鉛直運動は温度風バランスを維持するために励起されると説明される
+    - もっと単純には，正渦度移流 $\leftrightarrow$ 上昇流励起、 負渦度移流 $\leftrightarrow$ 下降流励起
+- オメガ方程式では，渦度移流 $\leftrightarrow$ 鉛直シアーの変化 + 水平温度分布 のバランス = 鉛直運動
+    - 鉛直シアー = 鉛直方向の風ベクトルの差
+
+#### 注意点
+- 台風のように中上層より下層の方が風が強い場合は 1000hPa の渦度移流は無視できない
+- 右辺の渦度移流の項と温度移流の項が互いに打ち消し合う場合があって誤差が生じる場合がある。寒冷前線近傍とか
+- 鉛直微分 $\frac{\partial}{\partial p}$ を含むため，等圧面での診断はできない
+
+### ジェットストリークの入り口
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '50%' }}>
+    <ol>
+        <li>下層の風速 0 $\to$ ジェットストリークの方が鉛直シアーが強い</li>
+        <li>地点 A からみると，風の弱い空気が流入するが，層厚分布（水平温度分布）は変わらない $\to\\$ 温度風バランス：
+        $\frac{\partial\bm{v}_g}{\partial p} = -\frac{R}{fp}\bm{k}\times\nabla_p T$ が崩れる</li>
+        <li>鉛直シアーを強めるか，南北の温度傾度を弱める必要がある $\to$
+        暖気の上昇による冷却，寒気の沈降による昇温により，水平温度傾度が小さくなる（これで温度風バランスを戻す）</li>
+        <li>上層で南風，下層で北風の非地衡風運動が発生</li>
+        <li>コリオリ力により，上層では西風が強まる = 鉛直シアーを強める</li>
+    </ol>
+    </div>
+    <div style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <img src="/img/weather/omega-example1.png" alt="ジェットストリークの入り口と"  />
+        <img src="/img/weather/omega-example2.png" alt="ジェットストリークの入り口"  />
+    </div>
+</div>
+- この考え方では，ある地点 $A$ に着目して $\left(\frac{\partial}{\partial t}\right)$，風速が小さくなることを考えている
+- [ジェットストリークの例](#ジェットストリークの例) では，ある空気塊に着目して $\left(\frac{d}{dt}\right)$，地衡風が気圧傾度力で加速されることを考えた

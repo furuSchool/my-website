@@ -101,6 +101,12 @@ $\frac{dT}{dt} = \frac{J}{C_p}-\frac{g}{C_p}\frac{dz}{dt}=\frac{J}{C_p}+\frac{1}
 - 温位を用いると，熱力学方程式は $\frac{\partial \theta}{\partial t} = -\bm{v}\cdot\nabla_p \theta - \omega \frac{\partial \theta}{\partial p}+ \frac{J}{C_p}\frac{\theta}{T}$ 
 であり， $\frac{d\theta}{dt} = \frac{1}{C_p}\frac{\theta}{T}J$ より，$J=0$ （断熱変化）では温位は変化しない
 
+
+:::note[プリミティブ方程式系]
+プリミティブ方程式系：水平方向の運動方程式，静水圧の式（静力学平衡），連続の式，熱力学方程式，水蒸気の方程式（大気の水蒸気変化），気体の状態方程式を用いて計算を行う
+:::
+- 詳細は [こちら](https://www.jma.go.jp/jma/kishou/books/nwptext/45/1_chapter4.pdf) を参照
+
 ---
 ## 現象のスケール
 <div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap' }}>
@@ -382,7 +388,9 @@ $\to$ 風向が下層から上層で，**時計回りに変化：暖気移流，
 
 ### 渦度保存
 :::tip[絶対渦度保存]
-$\displaystyle\frac{d(\zeta + f)}{dt}=\frac{d\zeta}{dt} + \beta v = -(\zeta + f)\nabla\cdot\bm{v} - \left(\frac{\partial\omega}{\partial x}\frac{\partial v}{\partial p} - \frac{\partial\omega}{\partial y}\frac{\partial u}{\partial p}\right) + \nabla\times\bm{F_r}~~\left(\beta = \frac{df}{dy}\right)$
+$\displaystyle\frac{d(\zeta + f)}{dt}=\frac{d\zeta}{dt} + \beta v = 
+-(\zeta + f)\nabla\cdot\bm{v} - \left(\frac{\partial\omega}{\partial x}\frac{\partial v}{\partial p} - 
+\frac{\partial\omega}{\partial y}\frac{\partial u}{\partial p}\right) + \nabla\times\bm{F_r}~~\left(\beta = \frac{df}{dy}\right)$
 
 - $\beta = \frac{df}{dy}$：惑星渦度の南北傾度。低緯度ほど大きい
 - 左辺第1項：相対渦度の時間変化
@@ -393,6 +401,8 @@ $\displaystyle\frac{d(\zeta + f)}{dt}=\frac{d\zeta}{dt} + \beta v = -(\zeta + f)
 :::
 - 運動方程式： $\frac{d\bm{v}}{dt} = -\frac{1}{\rho}\nabla_z p - f\bm{k}\times\bm{v}+\bm{F_r}$ を偏微分などするとわかる
 - 相対渦度は，1. 空気塊が南向きに速度を持つ，2. 収束している，ほど大きくなる。けど，500hPa面の絶対渦度は保存するとみなすことが多い（すなわち，収束・発散が小さい）
+- 渦度ベクトルをつなげた曲線を渦線といい，渦線によってできる曲面を渦管という
+
 
 ### 慣性安定性
 西風のみ（ $u$ の平均流 $u_g$ ，$v$ の平均流は $0$），摩擦力無視の場を考える。
@@ -412,7 +422,7 @@ $\frac{d^2v}{dt^2} = -f(f-\frac{\partial u_g}{\partial y})\frac{\partial y}{\par
 - 一方で，シアー渦度（風速の変化による渦度。曲率を考えない成分）もあり，ジェットストリークで重要
 
 :::tip[安定性]
-**鉛直方向の安定性：静的安定度が重要**。相当温位 $\theta_e$ の鉛直分布で考えることが多い？
+**鉛直方向の安定性：静的安定度が重要**。温位 $\theta$ の鉛直分布で考えることが多い？
 
 **水平方向の安定性：慣性安定度が重要**。相対渦度 $\zeta$ の分布で考えることが多い？
 :::
