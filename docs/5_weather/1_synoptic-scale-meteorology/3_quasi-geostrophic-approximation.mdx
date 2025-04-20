@@ -192,7 +192,7 @@ $\left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2} \right
 - **700hPaの下降流は，500hPa負渦度移流と下層寒気移流に関連して生じる**
 :::
 - 準地衡風理論においては，鉛直運動は温度風バランスを維持するために励起されると説明される
-    - もっと単純には，正渦度移流 $\leftrightarrow$ 上昇流励起、 負渦度移流 $\leftrightarrow$ 下降流励起
+    - もっと単純には，正渦度移流 $\leftrightarrow$ 上昇流励起， 負渦度移流 $\leftrightarrow$ 下降流励起
 - オメガ方程式では，渦度移流 $\leftrightarrow$ 鉛直シアーの変化 + 水平温度分布 のバランス = 鉛直運動
     - 鉛直シアー = 鉛直方向の風ベクトルの差
 
@@ -221,3 +221,101 @@ $\left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2} \right
 </div>
 - この考え方では，ある地点 $A$ に着目して $\left(\frac{\partial}{\partial t}\right)$，風速が小さくなることを考えている
 - [ジェットストリークの例](#ジェットストリークの例) では，ある空気塊に着目して $\left(\frac{d}{dt}\right)$，地衡風が気圧傾度力で加速されることを考えた
+:::note[ジェットストリークの入り口]
+ジェットストリークの入り口について，以下の二つの考え方ができる
+
+1. **地衡風運動の変化による非地衡風運動の励起**：
+地衡風の加速度がジェット気流と同じ向きに生じる $\to$ 非地衡風運動はジェット気流に対して左向きに生じる $\to$ 入口の左で収束，入口の右で発散が起こる
+2. **温度風バランスのための鉛直運動の励起**：
+入口での移流により温度風バランスが崩れる $\to$ 温度風バランスを戻すための非地衡風運動はジェット気流に対して左向きに生じる $\to$ 入口の左で収束，入口の右で発散が起こる
+:::
+
+---
+## 傾向方程式の解釈
+$$
+\left[ \nabla_p^2 + \frac{\partial}{\partial p} \left( \frac{f_0^2}{\sigma} \frac{\partial}{\partial p} \right) \right] \chi = 
+- f_0 \bm{v_g}\cdot \nabla_p(\zeta_g + f) - 
+\frac{\partial}{\partial p} \left[ -\frac{f_0^2}{\sigma} \mathbf{v}_g \cdot \nabla_p \left( -\frac{\partial \Phi}{\partial p} \right) \right]
+$$
+
+:::tip[傾向方程式の解釈]
+- 左辺：**ジオポテンシャル変化傾向 $(-\chi = - \frac{\partial \Phi}{\partial t})$（ = 地上低気圧やトラフ・リッジの変化。単純には，ある地点の気圧の変化）**
+- 右辺：**左辺と同じ気圧面の地衡風の絶対渦度移流（ = 低気圧・高気圧やトラフ・リッジの移動） + 
+層厚の水平移流の鉛直傾度（ = 上下の水平温度移流の差）**
+
+**傾向方程式は予報方程式。右辺を計算することで，地上低気圧やトラフ・リッジの変化が説明できる**
+:::
+
+### 傾向方程式 B 項の解釈
+$- f_0 \bm{v_g}\cdot \nabla_p(\zeta_g + f)$：ある等圧面での地衡風の絶対渦度移流を表す
+#### トラフについて
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '55%' }}>
+    <ul>
+        <li>トラフの移動：トラフの前面で正渦度移流 $\to$ ジオポテンシャル下降</li>
+        <li>トラフの移動：トラフの後面で負渦度移流 $\to$ ジオポテンシャル上昇</li>
+    </ul>
+    すなわち，トラフの移動が示される（水平移流によるシステムの移動に対応）
+    </div>
+    <div style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <img src="/img/weather/tendency-equation-b1.png" alt="トラフの移動"  />
+    </div>
+</div>
+
+#### シアー渦度（ジェットストリークなど）について
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '55%' }}>
+    <div>負/正渦度移流域 $\to$ ジオポテンシャル下降/上昇 なので</div>
+    <ul>
+        <li>トラフ後面にジェットストリーク $\to$ トラフは深まり，負の傾きのトラフ（北西-南北走向）となる傾向</li>
+        <li>トラフ前面にジェットストリーク $\to$ トラフは浅まり，正の傾きのトラフ（北東-南西走向）となる傾向</li>
+    </ul>
+    </div>
+    <div style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <img src="/img/weather/tendency-equation-b2.png" alt="シアー渦度の移流"  />
+    </div>
+</div>
+
+### 傾向方程式 C 項の解釈
+$-\frac{\partial}{\partial p} \left[ -\frac{f_0^2}{\sigma} \mathbf{v}_g \cdot \nabla_p \left( -\frac{\partial \Phi}{\partial p} \right) \right]$：
+地衡風による層厚の水平移流の鉛直傾度，すなわち上下の水平温度移流の差を表す
+- 水平温度移流が上ほど大きい $\to$ $\chi < 0$：ジオポテンシャル下降
+- 水平温度移流が下ほど大きい $\to$ $\chi > 0$：ジオポテンシャル上昇
+    - 寒気移流は負の水平温度移流として考えている
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '45%' }}>
+    <div>下層で暖気移流 $\to$ 地上気圧は低下，500hPa リッジ強化</div>
+    <img src="/img/weather/tendency-equation-c1.png" alt="下層で暖気移流"  />
+    </div>
+    <div style={{ width: '45%' }}>
+    <div>上層で寒気移流 $\to$ 地上気圧は上昇，500hPa トラフ強化 </div>
+    <img src="/img/weather/tendency-equation-c2.png" alt="上層で寒気移流"  />
+    </div>
+</div>
+
+- 注意：層厚の移流 = 単純な空気塊の移流 みたい。そのため，以下のような気持ち悪いことが起こる。水平温度移流で考えれば良いのに
+    - 暖気移流の場合，層厚の移流が下ほど大きい $\to$ ジオポテンシャル下降
+    - 寒気移流の場合，層厚の移流が下ほど大きい $\to$ ジオポテンシャル上昇
+
+:::tip[傾向方程式の解釈例]
+#### 上層トラフ・リッジ
+- 上層トラフの位置で中下層に寒気移流があれば，トラフは強まる
+- 中緯度で上層トラフの西方にサーマルトラフ（寒気中心）がずれていれば，トラフは強まる
+- 上層リッジの位置で中下層に暖気移流があれば，リッジは強まる
+
+#### 地上気圧
+- 上空に暖気移流があれば地上気圧は下降 = 地上低気圧は発達
+- 上空に寒気移流があれば地上気圧は上昇 = 低気圧は衰弱，高気圧は強化
+:::
+これは上層トラフ・リッジ（500hPa 程度）をもとにした解釈であり，それより上層（上部対流圏・圏界面）は考えていない
+
+---
+## まとめ
+:::tip[準地衡風オメガ方程式と傾向方程式が意味すること]
+- 上昇流 / 下降流は，上層の正 / 負の渦度移流または暖気 / 寒気移流により，温度風バランスが崩れた際にそのバランスを回復させるように生じる
+- 渦度移流により，擾乱が移動する
+- 中下層の暖気移流により，下層低気圧と上層リッジが強まる
+- 中下層の寒気移流により，下層高気圧と上層トラフが強まる
+- 発達中の低気圧は「トラフの軸が西に傾く」ように見えることになる
+:::
