@@ -1,0 +1,52 @@
+---
+title: 4. 内積
+---
+
+## 定義
+:::tip[内積の定義]
+$\mathbb{C}$ 上のベクトル空間 $V$ に対し，写像 $\phi : V \times V \to \mathbb{C}$ が次の性質をみたすとき，内積という。
+なお，内積は，$\phi(\bm{u}, \bm{v}) = \bm{u} \cdot \bm{v}$ または $\phi(\bm{u}, \bm{v}) = (\bm{u}, \bm{v})$ と表される。
+ただし以下では，$\bm{u}, \bm{v}, \bm{w} \in V$ ，$\lambda, \mu \in \mathbb{C}$ とする。
+1. $\bm{u} \cdot \bm{u} \ge 0$ かつ，$\bm{u} \cdot \bm{u} = 0$ $\Leftrightarrow$ $\bm{u} = \bm{0}$
+2. $\bm{u} \cdot \bm{v} = \overline{\bm{v} \cdot \bm{u}}$
+3. $(\lambda \bm{u} + \mu \bm{v}) \cdot \bm{w} = \lambda (\bm{u} \cdot \bm{w}) + \mu (\bm{v} \cdot \bm{w}),~~~~
+\bm{u} \cdot (\lambda \bm{v} + \mu \bm{w}) = \overline{\lambda} (\bm{u} \cdot \bm{v}) + \overline{\mu} (\bm{u} \cdot \bm{w})$
+
+そして，内積が定義されたベクトル空間 $V$ を **内積空間**，**計量ベクトル空間** と呼ぶ。
+:::
+- $\mathbb{R}$ 上のベクトル空間で定義すれば，共役の必要がない
+- ベクトル空間 $\mathbb{C}^n$ 上の標準的な内積 (エルミート内積) は，
+$\bm{z},\bm{w} \in \mathbb{C}^n$ として，$\bm{z} \cdot \bm{w} = \bm{z}^{T} \overline{\bm{w}}$ である
+- $\mathbb{R}^n$ や $\mathbb{C}^n$ の標準基底 $\bm{e}_i$ について，$\bm{e}_i \cdot \bm{e}_j = \delta_{ij}$
+- 次数 $n$ 次以下の多項式全体からなるベクトル空間を考えると，例えば $\int_{-1}^{1} f(x)g(x)~dx$ は内積となる
+
+### ノルム
+:::tip[ノルムの定義]
+$\bm{a} \in V$ : 内積空間 に対して，$\displaystyle \|\bm{a}\| = \sqrt{\bm{a} \cdot \bm{a}}$ を $\bm{a}$ の **ノルム** と呼ぶ。
+- この時， $\displaystyle\bm{a} \cdot \bm{b} = \frac{\|\bm{a} + \bm{b}\|^2 + i\|\bm{a} + i\bm{b}\|^2 - (1 + i)(\|\bm{a}\|^2 + \|\bm{b}\|^2)}{2}$
+- 特に，$\mathbb{R}$ 上の内積空間なら，$\displaystyle\bm{a} \cdot \bm{b} = \frac{\|\bm{a} + \bm{b}\|^2  - (\|\bm{a}\|^2 + \|\bm{b}\|^2)}{2}$
+:::
+### ノルムや内積の性質
+- $\|\bm{a}\| \ge 0$，$\|\bm{a}\| = 0$ ならば $\bm{a} = \bm{0}$
+- $\|\lambda\bm{a}\| = |\lambda| \|\bm{a}\|$
+- 三角不等式 : $\|\bm{a} + \bm{b}\| \le \|\bm{a}\| + \|\bm{b}\|$
+- Cauchy-Schwarz の不等式 : $\displaystyle |\bm{a} \cdot \bm{b}| \le \|\bm{a}\|\|\bm{b}\|$。
+等号成立は，$\bm{a} = \bm{0}$ または $\bm{b} = \bm{0}$ または $\bm{a},~\bm{b}$ が平行となることである
+
+$\bm{a} \ne \bm{0}$ かつ $\bm{b} \ne \bm{0}$ の時，$\bm{a} \cdot \bm{b} = \|\bm{a}\| \|\bm{b}\| \cos \theta$ なる 
+$\theta \in [0,\pi]$ が一意に定まる。この時， $\theta$ を $\bm{a}$ と $\bm{b}$ の **角** という。
+また，$\bm{a} \cdot \bm{b} = 0$ である時，$\bm{a}$ と $\bm{b}$ は **直交する** という。
+
+さらに，$V$ の基底 $\mathcal{A} : \bm{a}_1,\cdots, \bm{a}_n$ が $\bm{a}_i \cdot \bm{a}_j = \delta_{ij}$ を満たす時，
+この基底を **正規直交基底** と呼ぶ
+- この時，$\bm{a} \in V$ について，$\bm{a} = (\bm{a} \cdot \bm{a}_1) \bm{a}_1 + \cdots + (\bm{a} \cdot \bm{a}_n) \bm{a}_n = 
+(\bm{a} \cdot \bm{a}_1, \cdots, \bm{a} \cdot \bm{a}_n)^{T}$ となる。これは量子力学などでもよく使う
+
+### 直交補空間
+:::note[直交補空間]
+$W \subset V$ : 内積空間に対して， $W^{\perp} = \{\bm{v} \in V | \bm{v} \cdot \bm{w} = 0,~\forall \bm{w} \in W\}$ を定義し，
+$W^{\perp}$ を $V$ における $W$ の **直交補空間** と呼ぶ。
+
+この時， $W^{\perp}$ は $V$ の部分空間であり，$\displaystyle V = W \oplus W^{\perp}$ が成り立つ。
+:::
+- $W$ の正規直交基底をとって Gram-Schmidt の正規直交化法を用いればわかる

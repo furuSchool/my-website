@@ -1,0 +1,228 @@
+---
+title: 1. 基本
+---
+
+import Toggle from '/components/toggle.tsx'
+
+## ベクトル空間
+:::tip[ベクトル空間]
+集合 $V$ に対し，以下の条件を満たすものを $\mathbb{K}$ 上のベクトル空間といい， $V$ の元をベクトルと呼ぶ。
+ただし， $\bm{a}, \bm{b}, \bm{c} \in V,~ \lambda, \mu \in \mathbb{K}$ とする。
+- 零ベクトル $\bm{0}$，加法 $\bm{a} + \bm{b}$，スカラー倍 $\lambda \bm{a}$ が定義されている
+- $\bm{a} + \bm{b} = \bm{b} + \bm{a}$
+- $(\bm{a} + \bm{b}) + \bm{c} = \bm{a} + (\bm{b} + \bm{c})$
+- $\bm{a} + \bm{0} = \bm{0} + \bm{a} = \bm{a}$
+- 任意の元 $\bm{a} \in V$ に対し，$\bm{a} + (-\bm{a}) = \bm{0}$ をみたす $-\bm{a} \in V$ が存在する
+- $(\lambda\mu) \bm{a} = \lambda(\mu\bm{a})$
+- $1\bm{a} = \bm{a}$
+- $(\lambda + \mu)\bm{a} = \lambda\bm{a} + \mu\bm{a}$
+- $\lambda(\bm{a} + \bm{b}) = \lambda\bm{a} + \lambda\bm{b}$
+:::
+
+- 例 : $\mathbb{R}^n, \mathbb{C}^n$ は $\mathbb{R}, \mathbb{C}$ 上のベクトル空間
+- 次を満たす時，$W$ を $V$ の **部分ベクトル空間** と呼ぶ。 $V$ もベクトル空間となる  
+「$W \subset V,~\bm{0}\in W,~$ 任意の $\bm{w}, \bm{v} \in W, \lambda \in \mathbb{K}$ に対し，$\bm{w} + \bm{v} \in W, \lambda \bm{w} \in W$」
+- $\sum_i \lambda_i \bm{a}_i$ の形の $V$ の元を **1 次結合** または **線形結合** と呼ぶ。
+さらに，$\bm{a}_1,…,\bm{a}_n \in V$ の 1 次結合全体の集合を $ \braket{\bm{a}_1,…, \bm{a}_n}$ と書く。
+これは，$\bm{a}_1,…,\bm{a}_n \in V$ によって張られる部分ベクトル空間となる。
+- なお，$V$ 自身が有限個の元で張られる場合 $V$ は有限次元ベクトル空間，そうでない場合は無限次元ベクトル空間である
+
+---
+## 行列の基本
+行基本変形（列基本変形もある）は以下の三つであり，**いずれも左から行列をかけることで表される**。（これらの行列は基本行列とよぶらしい）
+1. $1$ つの行を $\lambda(\neq 0)$ 倍する
+2. $2$ つの行を入れ替える
+3. $1$ つの行に，他の行の $\mu$ 倍を加える
+
+行同値 : 行列 $A$ から行基本変形を繰り返して行列 $B$ が得られる時，$A$ と $B$ は行同値であるという。
+- つまり，$B = PA,~A = P^{-1}B$ となる基本行列の積 $P$ が存在する
+- 基本行列の積 $P$ を正則行列と呼び， $n$ 次正方行列 $A$ に対し，$A$ が正則行列 $\Leftrightarrow$ $\mathrm{rank}(A) = n$ である
+    - 正則行列の定義は色々ある
+- 同値 : 一般に集合 $X$ の任意の元 $x, y$ に対して $x \sim y$ または $x \nsim y$ を定義できる時，
+反射律 ($x \sim x$)，対称律 ($x \sim y \Rightarrow y \sim x$)，推移律 ($x \sim y, y \sim z \Rightarrow x \sim z$) を満たすこと
+
+### 行簡役行列
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '0px' }}>
+    <div style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>行階段行列</h4>
+        <div>
+        $\begin{pmatrix}0 & \cdots & 0 & a_1 & \cdots & * & \cdots & * \\0  & \cdots & 0 & 0 & \cdots & a_2 & \cdots & * \\\vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots \\0  & \cdots & 0 & 0 & \cdots & 0 & \cdots & a_r\\0  & \cdots & 0 & 0 & \cdots & 0 & \cdots & 0\end{pmatrix}$
+        </div>
+    </div>
+    <div style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>行簡役行列</h4>
+        <div>
+        $\begin{pmatrix}0 & \cdots & 0 & 1 & \cdots & * & \cdots & * \\0 & \cdots & 0 & 0 & \cdots & 1 & \cdots & * \\\vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \ddots & \vdots \\0 & \cdots & 0 & 0 & \cdots & 0 & \cdots & 1\\0 & \cdots & 0 & 0 & \cdots & 0 & \cdots & 0\end{pmatrix}$
+        </div>
+    </div>
+</div>
+- $a_1, a_2, \cdots, a_r$ をピボットと呼ぶ
+- 行簡役行列の零でない行ベクトルの個数 $r$ を $A$ の階数，ランクと呼び，$\mathrm{rank}(A) = r$ と書く
+- 任意の行列に対し，行基本変形を繰り返すことで一意の行簡約行列にできる
+
+### 連立一次方程式
+$$
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= 0 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= 0 \\
+&\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= 0
+\end{cases}
+$$
+上記の連立一次方程式を行列の形で表すと， $\displaystyle A \bm{x} = \bm{0}$ となる。( $A: m \times n$，$\bm{x}: n \times 1$ )
+- この時，自明解 $\bm{x} = \bm{0}$ とそれ以外の非自明解を持つ
+- 連立一次方程式の解空間は，$K^n$ の部分ベクトル空間であり，$n-r$ 個のベクトル $\bm{w}_1,…,\bm{w}_{n-r}$ で生成される
+    - $r < n$ の時，特に $m < n$ の時は，非自明解を持つ。$n = r$ の時，解空間は $\bm{0}$ のみ
+- $\bm{w}_1,…,\bm{w}_{n-r}$ を基本解，それ以外の解を一般解と呼び $\bm{x} = \sum_{i=1}^{n-r} \lambda_i \bm{w}_i$ で表せる
+- 基本解は解空間の基底をなし，$\dim W = n - r$ である
+    - もちろん，基本解には多様な取り方がある
+
+#### 一般の連立一次方程式
+$$
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2 \\
+&\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m
+\end{cases}
+$$
+上記の連立一次方程式を行列の形で表すと， $\displaystyle A \bm{x} = \bm{b}$ となる。( $A: m \times n$，$\bm{x}: n \times 1$，$\bm{b}: m \times 1$ )
+- $r = \mathrm{rank}(A) = \mathrm{rank}(A|b)$ の時，解を持つ。すなわち，$(A | b)$ を行簡約行列にした時，第 $r + 1$ 行からは $0$ である
+- 「 $A\bm{x} = \bm{b}$ の一般解」 = 「$A\bm{x} = \bm{0}$ の一般解」 + 「$A\bm{x} = \bm{b}$ の特殊解」
+
+:::tip[連立一次方程式の解き方]
+$A\bm{x} = \bm{b}$ に対して，$(A | b)$ を行簡約行列にして，連立方程式に戻して解を求める
+:::
+<Toggle title="例" open={false}>
+$\begin{cases}
+-2x_1 + 4x_2 - 3x_3 - x_4 &= 8 \\
+x_1 - 2x_2 + 3x_3 - x_4 &= -1 \\
+-x_1 + 2x_2 - 9x_3 + 7x_4 &= -11 \\
+\end{cases}$
+- $(A | b) = \begin{pmatrix}-2 & 4 & -3 & -1 & | & 8 \\1 & -2 & 3 & -1 & | & -1 \\-1 & 2 & -9 & 7 & | & -11\end{pmatrix}$
+- 行基本変形を行って，$\begin{pmatrix}1 & -2 & 0 & 2 & | & -7 \\0 & 0 & 1 & -1 & | & 2 \\0 & 0 & 0 & 0 & | & 0\end{pmatrix}$
+- 解は，$\begin{pmatrix}x_1 \\ x_2 \\ x_3 \\ x_4\end{pmatrix} 
+= \begin{pmatrix} - 7 \\ 0 \\ 2 \\ 0\end{pmatrix} + x_2 \begin{pmatrix} 2 \\ 1 \\ 0 \\ 0\end{pmatrix} + x_4 \begin{pmatrix} -2 \\ 0 \\ 1 \\ 1\end{pmatrix}$
+($ x_2, x_4$ は任意のスカラー)
+</Toggle>
+
+### 逆行列
+さらに，$A$ が正則行列の時， $A^{-1}$ を行基本変形を用いて求められる。
+- 逆行列 $A^{-1}$ $\Leftrightarrow$ $A A^{-1} = A^{-1} A = E$ が定義
+- 逆行列が存在する $\Leftrightarrow$ $A$ が正則行列である $\Leftrightarrow$ $\mathrm{rank}(A) = n$ である
+- 正方行列 $A$ が正則でない $\Leftrightarrow$ $A$ が零因子となる，すなわち $AB = 0$ または $BA = 0$ となる正方行列 $B(\neq 0)$ が存在する
+:::tip[逆行列を求める]
+$(A | E)$ を行基本変形して，$(E | A^{-1})$ を得ることができる。
+:::
+<Toggle title="例" open={false}>
+$A = \begin{pmatrix}1 & 2 \\3 & 4\end{pmatrix}$
+- $(A | E) = \begin{pmatrix}1 & 2 & | & 1 & 0 \\3 & 4 & | & 0 & 1\end{pmatrix}$
+- 行基本変形を行って，$\begin{pmatrix}1 & 0 & | & -2 & 1 \\0 & 1 & | & \frac{3}{2} & -\frac{1}{2}\end{pmatrix}$
+- よって，$A^{-1} = \begin{pmatrix}-2 & 1 \\ \frac{3}{2} & -\frac{1}{2}\end{pmatrix}$
+</Toggle>
+
+### 対角行列など
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '0px' }}>
+    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>対角行列</h4>
+        <div>
+        $\begin{pmatrix} * & 0 & \cdots & 0 \\0 & * & \cdots & 0 \\\vdots & \vdots & \ddots & \vdots \\0 & 0 & \cdots & * \end{pmatrix}$
+        </div>
+    </div>
+    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>上三角行列</h4>
+        <div>
+        $\begin{pmatrix} * & * & \cdots & * \\0 & * & \cdots & * \\\vdots & \vdots & \ddots & \vdots \\0 & 0 & \cdots & * \end{pmatrix}$
+        </div>
+    </div>
+    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>下三角行列</h4>
+        <div>
+        $\begin{pmatrix}* & 0 & \cdots & 0 \\ * & * & \cdots & 0 \\\vdots & \vdots & \ddots & \vdots \\ * & * & \cdots & * \end{pmatrix}$
+        </div>
+    </div>
+</div>
+
+---
+## 基底
+### 1 次独立・1 次従属
+$V$ の元 $\bm{a}_1,…,\bm{a}_n$ が 1 次独立である $\Leftrightarrow$ $\sum_{i=1}^n \lambda_i \bm{a}_i = \bm{0}$ が $\lambda_1 = \cdots = \lambda_n = 0$ の時のみ成り立つ
+- $\mathbb{K^m}$ の元 $\bm{a}_1,…,\bm{a}_n$ が 1 次独立 $\Leftrightarrow$ 
+$(\bm{a}_1,…,\bm{a}_n) \bm{x} = \bm{0}$ が $\bm{x} = \bm{0}$ の時のみ成り立つ (変数 $n$ 個，方程式 $m$ 本で，1 次独立より $m \geq n$)
+- 1 次従属 : $\bm{a}_1,…,\bm{a}_n$ が 1 次独立でない
+- $\bm{a}_1,…,\bm{a}_n$ が 1 次独立 $\Leftrightarrow$ 任意の $\bm{b} \in \braket{\bm{a}_1,…,\bm{a}_n}$ に対し，
+一次結合 $\bm{b} = \sum_{i=1}^n \lambda_i \bm{a}_i$ の表現は一意である
+
+### ベクトル空間の基底
+$\mathscr{A}: \{\bm{a}_1,…,\bm{a}_n\}$ が $W$ を生成する 1 次独立なベクトルであるとき，$\mathscr{A}$ を $W$ の基底と呼ぶ。
+また，$W$ の基底の個数 $n$ を $W$ の次元と呼び，$\dim W = n$ と書く。
+- $n$ は $\mathbb{A}$ の取り方に依存しない
+- 基本ベクトル系 $\bm{e}_1,…,\bm{e}_n$ は $\mathbb{R}^n$ の基底である
+
+### ベクトル空間の直和
+ベクトル空間 $V$ の部分ベクトル空間 $W = \braket{\bm{w}_1,…,\bm{w}_m},~W^{\prime} = \braket{\bm{w}^\prime_1,…,\bm{w}^\prime_n}$ を考える。
+- $W_1 + W_2 = \braket{\bm{w}_1,…,\bm{w}_m, \bm{w}^\prime_1,…,\bm{w}^\prime_n}$ を $W_1$ と $W_2$ の和と呼ぶ
+- さらに，$W_1 \cap W_2 = \{\bm{0}\}$ の時，$W_1 + W_2$ を **直和** と呼び， $W_1 \oplus W_2$ と書く
+
+:::note[直和について成り立つ性質]
+- $\dim(W_1 + W_2) = \dim W_1 + \dim W_2 - \dim(W_1 \cap W_2)$
+- 特に $W_1 \cap W_2 = \{\bm{0}\}$ の時，$\dim(W_1 \oplus W_2) = \dim W_1 + \dim W_2$
+:::
+
+また，$W_1, \cdots, W_k$ について，任意の $\bm{v} \in V$ に対し，$\bm{v} = \bm{w}_1 + \cdots + \bm{w}_k$ となる時，
+- $V = W_1 + \cdots + W_k$ を $W_1, \cdots, W_k$ の和と呼ぶ
+- さらに，$\bm{w}_1 + \cdots + \bm{w}_k = \bm{0}$ $\Leftrightarrow$ $\bm{w}_1 = \cdots = \bm{w}_k = \bm{0}$ の時，
+$V = W_1 \oplus \cdots \oplus W_k$ を $W_1, \cdots, W_k$ の直和と呼ぶ
+
+### 基底変換
+$\mathscr{A}: \{\bm{a}_1,…,\bm{a}_n\}$ と $\mathscr{B}: \{\bm{b}_1,…,\bm{b}_n\}$ を $V$ の基底とする。
+この時，以下を満たす行列が存在し，変換行列と呼ぶ。
+- $(\bm{b}_1,…,\bm{b}_n) = (\bm{a}_1,…,\bm{a}_n) C^T$ : $\mathscr{A} \to \mathscr{B}$ の変換行列 $C$
+- $(\bm{a}_1,…,\bm{a}_n) = (\bm{b}_1,…,\bm{b}_n) D^T$ : $\mathscr{B} \to \mathscr{A}$ の変換行列 $D$。もちろん $D = C^{-1}$ である
+
+<Toggle title="イメージ" open={false}>
+$$
+\begin{cases}
+\bm{b}_1 = c_{11} \bm{a}_1 + c_{12} \bm{a}_2 + \cdots + c_{1n} \bm{a}_n \\
+\bm{b}_2 = c_{21} \bm{a}_1 + c_{22} \bm{a}_2 + \cdots + c_{2n} \bm{a}_n \\
+\vdots \\
+\bm{b}_n = c_{n1} \bm{a}_1 + c_{n2} \bm{a}_2 + \cdots + c_{nn} \bm{a}_n
+\end{cases}
+$$
+</Toggle>
+
+:::note[基底変換行列の求め方]
+$(B | A)$ を行基本変形して，$(A^{-1}B | E) = (C | E)$ を得る
+:::
+<Toggle title="例" open={false}>
+$\mathscr{A}: \begin{pmatrix} -1 \\ 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 1 \\ -1 \\ 1 \end{pmatrix}, \begin{pmatrix} 1 \\ 1 \\ -1 \end{pmatrix}$，
+$\mathscr{B}: \begin{pmatrix} 2 \\ -1 \\ 0 \end{pmatrix}, \begin{pmatrix} -1 \\ 2 \\ -1 \end{pmatrix}, \begin{pmatrix} 0 \\ -1 \\ 2 \end{pmatrix}$ とする。
+- $(B | A) = \begin{pmatrix}2 & -1 & 0 & | & -1 & 1 & 1 \\-1 & 2 & -1 & | & 1 & -1 & 1 \\0 & -1 & 2 & | & 1 & 1 & -1\end{pmatrix}$
+- 行基本変形を行って，$\begin{pmatrix}-\frac{1}{2} & \frac{1}{2} & \frac{1}{2} & | & 1 & 0 & 0 \\1 & -1 & 1 & | & 0 & 1 & 0 \\\frac{1}{2} & \frac{1}{2} & -\frac{1}{2} & | & 0 & 0 & 1\end{pmatrix}$
+- よって，$C^T = \begin{pmatrix} -\frac{1}{2} & \frac{1}{2} & \frac{1}{2} \\1 & -1 & 1 \\ \frac{1}{2} & \frac{1}{2} & -\frac{1}{2}\end{pmatrix}$
+</Toggle>
+
+また，$\mathscr{A}: \{\bm{a}_1,…,\bm{a}_n\}$ をベクトル空間 $V$ の基底とする時，$\bm{v} \in V$ に対し，  
+$\bm{v} = \sum_{i=1}^n \lambda_i \bm{a}_i = (\lambda_1,…,\lambda_n) (\bm{a}_1,…,\bm{a}_n)^T$ の形で表せ，これを $\bm{v}$ の成分表示と呼ぶ。
+- $\bm{a}$ はあくまでベクトル空間の元であり，転置は定義されない (イメージするベクトルとは異なる場合があるため)
+- ブラケット表記は，$\lambda_i$ を取り出したイメージ
+- 例えば，$\mathscr{A}$ から $\mathscr{B}$ への変換行列を $C$ とすると，$\mathscr{A}$ の時の成分表示が 
+$(v_1, \cdots, v_n)$ の時，$\mathscr{B}$ の時の成分表示は $(v_1, \cdots, v_n) C^{-1}$ となる
+
+---
+## 行列の階数 (rank)
+行簡役行列の非零行ベクトルの個数を定義とするなど色々な定義があるが，以下のように定義することもできる
+
+:::tip[行列の階数]
+$A$ の階数 $\mathrm{rank}(A)$ を $A = (\bm{a}_1,…,\bm{a}_n)$ の列ベクトルの 1 次独立な個数とする
+:::
+- この時，$\dim \braket{\bm{a}_1,…,\bm{a}_n} = \mathrm{rank}~A$ である。もちろん先の定義とも一致する
+- $f: \mathbb{R}^n \to \mathbb{R}^m$ が線形写像 $f(\bm{x}) = A\bm{x}$ の時，$\text{Im} f = \braket{\bm{a}_1,…,\bm{a}_n}$ であり，
+$\mathrm{rank}~A = \dim \text{Im} f$ である
+- $\mathrm{rank}~(PAQ) \leq \mathrm{rank}~A$ である ($P: m \times m,~Q: n \times n,~A: m \times n$)
+    - また，$P, Q$ が正則行列の時，$\mathrm{rank}~(PAQ) = \mathrm{rank}~A$ である
+
+
+### その他
+- $\mathrm{rank}~A = \mathrm{rank}~A^T$ が成り立つ
+- $A\bm{x} = \bm{b}$ と $A^T A\bm{x} = \bm{b}$ の解空間は等しい。ここから， $\mathrm{rank}~A = \mathrm{rank}~A^TA$ が成り立つ

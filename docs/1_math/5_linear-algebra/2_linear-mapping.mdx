@@ -1,0 +1,30 @@
+---
+title: 2. 線形写像
+---
+## 線形写像
+:::tip[定義]
+$f: V \to W$ を同じスカラーを持つベクトル空間 $V$ と $W$ の間の写像とする。
+任意のベクトル $\bm{v}_1, \bm{v}_2 \in V$ と任意のスカラー $\lambda_1, \lambda_2$ に対して，
+$$
+f(\lambda_1 \bm{u} + \lambda_2 \bm{v}) = \lambda_1 f(\bm{u}) + \lambda_2 f(\bm{v})
+$$
+が成り立つとき，$f$ を $V$ から $W$ への **線形写像** という。またこの時，以下のように定義する。
+
+- $\text{Ker} f = \{\bm{v} \in V | f(\bm{v}) = \bm{0}_W\}$ : $f$ の **核**
+- $\text{Im} f = \{f(\bm{v}) | \bm{v} \in V\}$ : $f$ の **像**
+- $f$ が全単射である時，$f$ を **同型写像** という
+- $V = W$ のとき，$f$ を **線形変換** という
+:::
+このように定義すると，線型写像について以下のようなことが言える。
+- $f(\bm{0}_V) = \bm{0}_W$
+- $\text{Ker} f$ は $V$ の部分ベクトル空間，$\text{Im} f$ は $W$ の部分ベクトル空間
+- $f$ が単射 $\Leftrightarrow \text{Ker} f = \{\bm{0}_V\}$
+- $f$ が同型写像 $\Leftrightarrow$ $f^{-1}$ も同型写像
+- $f$ が全射 $\Rightarrow$ $\dim V \ge \dim W$
+- $f$ が単射 $\Rightarrow$ $\dim V \le \dim W$
+- $f$ が同型写像 (全単射) $\Rightarrow$ $\dim V = \dim W$
+- $X \subset V$ に対して，以下を満たすものが存在する
+    1. 直和分解 $V = X \oplus \text{Ker} f$
+    2. $f$ の制限写像 $f|_X : X \to \text{Im} f$ は同型写像である。  
+    特に， $\dim V = \dim X + \dim \text{Ker} f = \dim \text{Ker} f + \dim \text{Im} f$
+        - $\bm{w}_1,\cdots,\bm{w}_k$ を $\text{Im} f$ の基底，$f(\bm{x}_i) = \bm{w}_i$ として，$X = \braket{\bm{x}_1,\cdots,\bm{x}_k}$ とすれば良い

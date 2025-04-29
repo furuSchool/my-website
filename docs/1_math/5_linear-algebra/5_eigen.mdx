@@ -1,0 +1,20 @@
+---
+title: 5. 固有値と固有ベクトル
+---
+
+## 直交行列
+:::tip[直交行列]
+$n$ 次実正方行列 $A$ が，$A^T A = E$ をみたすとき，$A$ を直交行列という。
+
+$A = (\bm{a}_1, \cdots, \bm{a}_n)$ が直交行列 $\Leftrightarrow$ $\bm{a}_1, \cdots, \bm{a}_n$ が $\mathbb{R}$ 上の正規直交基底
+:::
+
+### Gram-Schmidt の正規直交化法
+:::tip[Gram-Schmidt の正規直交化法]
+一次独立なベクトル $\bm{a}_1, \cdots, \bm{a}_n$ を互いに直交する単位ベクトルであり，
+$\braket{\bm{a}_1, \cdots, \bm{a}_n} = \braket{\widetilde{\bm{b}}_1, \cdots, \widetilde{\bm{b}}_n}$ なるベクトル $\bm{\widetilde{b}}_1, \cdots, \bm{\widetilde{b}}_n$ にする方法。
+特に， **基底を正規直交基底に変換する** 時に使い，以下を $j = 1$ から繰り返す。
+
+1. 直交化 : $\displaystyle\bm{b}_j = \bm{a}_j - \sum_{i = 1}^{j-1} \frac{\bm{a}_j \cdot \bm{b}_i}{\| \bm{b}_i\|^2} \bm{b}_i$
+2. 正規化 : $\displaystyle\bm{\widetilde{b}}_j = \frac{1}{\| \bm{b}_j\|}\bm{b}_j$
+:::

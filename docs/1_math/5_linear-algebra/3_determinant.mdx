@@ -1,0 +1,149 @@
+---
+title: 3. 行列式
+---
+
+## 置換
+:::tip[置換]
+集合 $\{1, \cdots, n\}$ 上の全単射 $\sigma:\{1, \cdots, n\} \to \{1, \cdots, n\}$ を置換と呼ぶ。
+置換は以下のように表記する。
+$$
+\sigma = \begin{pmatrix}
+1 & 2 & 3 & \cdots & n \\
+\sigma(1) & \sigma(2) & \sigma(3) & \cdots & \sigma(n)
+\end{pmatrix}
+$$
+
+また，置換全体の集合を $n$ 次対称群 $S_n$ と呼び，恒等写像，逆写像 (逆置換) などを含む。
+:::
+- 恒等写像 $\text{id} \in S_n$ について，$\text{id} = \begin{pmatrix}1 & 2 & 3 & \cdots & n \\\sigma(1) & \sigma(2) & \sigma(3) & \cdots & \sigma(n)\end{pmatrix}$
+- 逆置換 $\sigma^{-1} \in S_n$ について，$\sigma \circ \sigma^{-1} = \text{id}$
+    - 例 $\sigma = \begin{pmatrix}1 & 2 & 3 \\2 & 3 & 1 \end{pmatrix}$ の場合，$\sigma^{-1} = \begin{pmatrix}1 & 2 & 3 \\3 & 1 & 2 \end{pmatrix}$
+- 互換 $(i,j) \in S_n$ : $i, j$ だけを入れ替える置換。 $\sigma^2 = \text{id}, \sigma^{-1} = \sigma$
+    - **任意の置換は互換の積で表せる**
+    - $\sigma = \begin{pmatrix}1 & \cdots & i & \cdots & j & \cdots & n \\1 & \cdots & j & \cdots & i & \cdots & n\end{pmatrix}$
+- 置換の符号 $\text{sgn}(\sigma)$ を定義する。(これは，互換の個数の偶奇が互換の表し方に依存しないことによる)
+    - $\sigma$ が偶置換 (互換の偶数個の積で表される) のとき $\text{sgn}(\sigma) = 1$
+    - $\sigma$ が奇置換 (互換の奇数個の積で表される) のとき $\text{sgn}(\sigma) = -1$
+
+---
+## 行列式
+:::tip[行列式]
+$n$ 次正方行列 $A = (a_{ij})$ に対して，行列式 $\det(A) = |A|$ を以下のように定義する。
+$$
+\det(A) = |A| = \sum_{\sigma \in S_n} \text{sgn}(\sigma) a_{1\sigma(1)} a_{2\sigma(2)} \cdots a_{n\sigma(n)}
+$$
+:::
+- $n=1$ の時，$\det(A) = a_{11}$
+- $n=2$ の時，$\det(A) = a_{11}a_{22} - a_{12}a_{21}$
+- $n=3$ の時，$\det(A) = a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} - a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}$
+    - $A = (\bm{a}_1, \bm{a}_2, \bm{a}_3)$ の場合，$\det(A)$ は $\bm{a}_1, \bm{a}_2, \bm{a}_3$ の張る平行六面体の体積に等しい
+- 上・下三角行列，対角行列の場合，$\det(A) = a_{11}a_{22}\cdots a_{nn}$
+
+### 行列式の性質
+$A = (\bm{a}_1, \bm{a}_2, \cdots, \bm{a}_n)$ とする。
+- $\det(A) = \det(A^T)$。よって，以下は行・列に関わらず成り立つ
+- $\bm{a}_i = \bm{0}$ となる列があれば $\det(A) = 0$
+- $\bm{a}_i = \bm{a}_j$ となる列があれば $\det(A) = 0$
+- 多重線形性 : $|\cdots, \lambda \bm{a}_i + \lambda^\prime \bm{a}_j, \cdots| = \lambda |\cdots, \bm{a}_i, \cdots| + \lambda^\prime |\cdots, \bm{a}_j, \cdots|$
+    - よって例えば，$\det(\lambda A) = \lambda^n \det(A)$
+- 交代性 : $|\cdots, \bm{a}_i, \cdots, \bm{a}_j, \cdots| = -|\cdots, \bm{a}_j, \cdots, \bm{a}_i, \cdots|$
+- **$\det(A + B) = \det(A) + \det(B)$ は成り立たない**
+
+
+:::note[行列式の求め方 1]
+行列を基本変形して，上三角行列を作る。その際に多重線形性と交代性を使う。
+- 特に，ある行の定数倍を別の行に加えても値は変わらないこと，行を入れ替えると符号が変わることに注意。
+:::
+
+### 積の行列式
+行列積の定義は既知のものとする
+:::tip[積の行列式]
+任意の $n$ 次正方行列 $A, B$ に対して，$\det(AB) = \det(A) \cdot \det(B)$ が成り立つ。
+:::
+系として，以下のような性質が成り立つ。
+- $\det(AB) =\det(BA),~\det(A^m) = (\det A)^m$
+- $A$ が正則ならば，$\det(A^{-1}) = \frac{1}{\det A}$
+- $\det A = \sqrt{(\det(AA^T))}$ を用いて計算することもある
+
+---
+## 余因子展開
+:::note[余因子]
+$A = (a_{ij})$ の $i$ 行 $j$ 列を除いた行列を考える。
+$$
+\begin{pmatrix}
+a_{11} & \cdots  & a_{1j-1} & a_{1j+1} & \cdots & a_{1n} \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+a_{i-1 1} & \cdots  & a_{i-1 j-1} & a_{i-1 j+1} & \cdots & a_{i-1 n} \\
+a_{i+1 1} & \cdots  & a_{i+1 j-1} & a_{i+1 j+1} & \cdots & a_{i+1 n} \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+a_{n1} & \cdots  & a_{nj-1} & a_{nj+1} & \cdots & a_{nn}
+\end{pmatrix}
+$$
+
+**この行列の行列式を $D_{ij}$ とし，余因子 $A_{ij} = (-1)^{i+j} D_{ij}$ と定義する。**
+:::
+
+:::tip[余因子展開]
+行列 $A = (a_{ij})$ の行列式は，以下のように余因子展開できる。
+$$
+\det(A) = \sum_{j=1}^n a_{ij} A_{ij} = \sum_{i=1}^n a_{ij} A_{ij}
+$$
+:::
+ある列 (行) を取り出してその列の要素ごとに余因子を掛け算して足し合わせるイメージ。よって，0 成分の多い列を取り出したい。
+
+---
+## 余因子行列
+:::tip[余因子行列]
+行列 $A = (a_{ij})$ の余因子行列 $\widetilde{A}$ を以下のように定義する。
+**$(i,j)$ 成分が $A_{ji}$ であることに注意**。
+$$
+\widetilde{A} = \begin{pmatrix}
+A_{11} & A_{21} & \cdots & A_{n1} \\
+A_{12} & A_{22} & \cdots & A_{n2} \\
+\vdots & \vdots & \ddots & \vdots \\
+A_{1n} & A_{2n} & \cdots & A_{nn}
+\end{pmatrix}
+$$
+
+この時，$\displaystyle A \widetilde{A} = (\det A) E_n$ が成り立つ。
+
+またここから，$A$ が正則行列 $\Leftrightarrow $ $\det A \neq 0$ であり，この時
+$\displaystyle A^{-1} = \frac{1}{\det A} \widetilde{A}$ となる。
+:::
+他に，以下のような性質がある。
+- $A$ が正方行列の時，$A$ が正則行列 $\Leftrightarrow \det A \neq 0$ $\Leftrightarrow$ $\mathrm{rank}(A) = n$
+- $A$ が正方行列の時，$AB = E$ $\Leftrightarrow$ $BA = E$
+- 成分が全て整数の $A$ が正則行列の時，$A^{-1}$ の成分も全て整数 $\Leftrightarrow$ $\det A = \pm 1$
+- $A$ が $n$ 次正方行列の時，$A\bm{x} = \bm{0}$ が非自明解を持つ $\Leftrightarrow \det A = 0$ $\Leftrightarrow$ $\mathrm{rank}(A) < n$
+
+---
+## その他
+### 行列の多項式
+$n$ 次正方行列 $A$ と多項式 $f(x) = a_mx^m + \cdots + a_1x + a_0$ に対して，$f(A) = a_m A^m + \cdots + a_1 A + a_0 E_n$ と定義する。
+- この時，$f(P^{-1}AP) = P^{-1}f(A)P$ である ( $A, P$ は $n$ 次正方行列 )
+
+### トレース
+$n$ 次正方行列 $A$ の対角成分の和をトレースという。 $\mathrm{Tr} A = \sum_i a_{ii}$
+:::note[トレースの性質]
+$A$ : $m\times n$ 行列，$B$ : $n\times m$ 行列とすると，$\mathrm{Tr} (AB) = \mathrm{Tr} (BA)$
+- よって，$\mathrm{Tr} (ABC) = \mathrm{Tr} (CAB) = \mathrm{Tr} (BCA)$
+:::
+
+### 相似
+$n$ 次正方行列 $A$, $B$ に対して，$n$ 次正則行列 $P$ が存在し，$B = P^{-1}AP$ が成り立つ時，$A$ と $B$ は **相似** であるという。
+相似は同値関係である。また，相似である時，以下が成り立つ。
+- $\det A = \det B$
+- $\mathrm{Tr} A = \mathrm{Tr} B$
+- 多項式 $f$ に対して，$\det f(A) = \det f(B)$
+
+### Cramer の公式
+:::note[Cramer の公式]
+連立一次方程式 $A\bm{x} = \bm{b}$ について，$A$ が $n$ 次正則行列の時，
+解は $\displaystyle\bm{x} = A^{-1}\bm{b} = \frac{1}{\det A} \widetilde{A} \bm{b}$ となる。
+
+すなわち，$A = (\bm{a}_1,\cdots,\bm{a}_n),~\bm{x} = (x_1,\cdots,x_n)^{T}$ に対して，  
+$$
+\displaystyle x_i = \frac{|\bm{a}_1,\cdots,\bm{b},\cdots,\bm{a}_n|}{|\bm{a}_1,\cdots,\bm{a}_i,\cdots,\bm{a}_n|}
+$$
+:::
+- この公式は，逆行列の公式 $\displaystyle A^{-1} = \frac{1}{\det A} \widetilde{A}$ と同様に計算量が多く実践的ではないが，証明などでは重要
