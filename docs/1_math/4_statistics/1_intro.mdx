@@ -1,0 +1,35 @@
+---
+title: 1. 記述統計の基礎
+---
+
+## 基本
+観測値 ( $\approx$ 標本 ) $x_1,\cdots, x_n$ について，以下のような量を定義する。($n$ は標本の大きさ)
+- **標本平均** : $\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i$
+- **標本分散** : $s^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^2$
+- 代わりに， $s^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2$ とすることもある。これを区別して，**不偏分散**と呼ぶことも
+- **標本標準偏差** : $s = \sqrt{\frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^2}$ もしくは， $s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2}$
+ ( 不偏標準偏差といったり )
+- **歪度** : $\mu_3 = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i - \bar{x}}{s} \right)^3$。分布の歪み具合（どれくらい非対称なのか）を表す
+- **尖度** : $\mu_4 = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i - \bar{x}}{s} \right)^4 - 3$。分布の尖り具合を表す
+    - 正規分布の場合，歪度は $0$，尖度は $0$ である。また，一次変換に関して不変である
+
+また，観測値が多変量の場合について，観測値 (観測ベクトル) $(x_1, y_1), \cdots, (x_n, y_n)$ について，以下のような量を定義する。
+- **共分散** : $s_{xy} = \frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})$。もしくは， $s_{xy} = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})$
+- **相関係数** : $r_{xy} = \frac{s_{xy}}{s_x s_y}$。$s_x$ は $x$ の標本標準偏差，$s_y$ は $y$ の標本標準偏差
+    - $-1 \leq r_{xy} \leq 1$ であり，$r_{xy} = \pm 1$ $\Leftrightarrow$ $x_i = a + b y_i$ ($i = 1, \cdots, n$)
+
+さらに，観測ベクトルが $(x_{11}, x_{12}, \cdots, x_{1p}), (x_{21}, x_{22}, \cdots, x_{2p}), \cdots, (x_{n1}, x_{n2}, \cdots, x_{np})$ のように $p$ 次元の場合について，
+- **分散共分散行列** : $S = \begin{pmatrix}
+    s_{11} & s_{12} & \cdots & s_{1p} \\
+    s_{21} & s_{22} & \cdots & s_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    s_{p1} & s_{p2} & \cdots & s_{pp}
+\end{pmatrix}$。$s_{ij} = \frac{1}{n} \sum_{k=1}^n (x_{ki} - \bar{x}_i)(x_{kj} - \bar{x}_j)$
+    - 対角成分は分散，非対角成分 $s_{ij}$ は $x_i$ と $x_j$ の共分散
+- **相関行列** : $R = \begin{pmatrix}
+    1 & r_{12} & \cdots & r_{1p} \\
+    r_{21} & 1 & \cdots & r_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    r_{p1} & r_{p2} & \cdots & 1
+\end{pmatrix}$。$r_{ij} = \frac{s_{ij}}{s_i s_j}$ ($i \neq j$)
+    - $s_{ij}$ は $x_i$ と $x_j$ の相関係数を表す
