@@ -2,6 +2,16 @@
 title: 2. 確率変数
 ---
 厳密には，確率論は測度論に基づく理論であるが，ここでは誤魔化して書いている。
+- 確率空間 $(\Omega, \mathcal{F}, P)$ を考える
+    - $\Omega$ は標本空間。起こりうる結果 (標本点) 全体の集合
+    - 事象 : $\Omega$ の部分集合で，確率を持つもの
+    - $\mathcal{F} \subset \Omega$ は $\sigma$ 加法族で，事象の全体
+    - $P : \mathcal{F} \to [0, 1]$ は確率測度で，各事象に確率を割り当てる関数
+- 確率変数 $X : \Omega \to \mathbb{R}$ であり，$X(\omega)$ を $X$ の実現値と呼ぶ
+
+例 (サイコロを振る)  
+$\Omega = \{1, 2, 3, 4, 5, 6\}$，$\mathcal{F} = 2^\Omega$，$P(\{i\}) = \frac{1}{6}$ ($i = 1, 2, 3, 4, 5, 6$)，
+出た目そのものを返す確率変数 $X(\omega) = \omega$
 
 ## 基本
 :::tip[基本]
@@ -76,3 +86,147 @@ $\displaystyle f(x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{-itx} \phi(t) dt
 - 特性関数はフーリエ変換と対応する。$\phi(t) = E[e^{itX}] = \int_{-\infty}^{\infty} e^{itx} f(x) dx$ であり，
 フーリエ変換では $F(t) = \int_{-\infty}^{\infty} e^{-itx} f(x) dx$ と複素共役の関係にある
     - 確率母関数は $z$ 変換，積率母関数はラプラス変換と近いらしい
+
+---
+## 多次元の確率変数
+ここでは 2 次元の確率変数を考えるが，$n$ 次元の確率変数も同様に考えることができる。
+:::tip[基本]
+$X, Y$ を確率変数とする時，$(X, Y)$ の分布を **同時分布** と呼ぶ。
+1. 実現値 $x$ が離散値の場合
+    - 確率関数 $p(x, y) = P(X = x, Y = y)$，累積分布関数 $F(x, y) = P(X \leq x, Y \leq y)$
+    - **周辺分布** : $X$ の周辺確率関数 $p_X(x) = \sum_{y} p(x, y)$
+    - **条件付き分布** : $X=x$ の時の $Y$ の分布 $p_{Y|X}(y) = P(Y = y | X = x) = \frac{p(x, y)}{p_X(x)}$
+
+2. 実現値 $x$ が連続値の場合
+    - 確率密度関数 $f(x, y) = \lim_{\Delta x \to 0, \Delta y \to 0} \frac{P(x < X < x + \Delta x, y < Y < y + \Delta y)}{\Delta x \Delta y}$，
+    累積分布関数 $F(x, y) = P(X \leq x, Y \leq y)$
+    - $\displaystyle f(x, y) = \frac{\partial^2 F(x, y)}{\partial x \partial y}$，
+    $\displaystyle P(a < X < b, c < Y < d) = \int_a^b \int_c^d f(x, y) dx dy$
+    - **周辺分布** : $X$ の周辺密度関数 $f_X(x) = \int_{-\infty}^{\infty} f(x, y) dy$，
+    $X$ の累積分布関数 $F_X(x) = \int_{-\infty}^x (\int_{-\infty}^{\infty} f(x', y) dy) dx'$
+    - **条件付き分布** : $X=x$ の時の $Y$ の分布 $f_{Y|X}(y) = P(Y = y | X = x) = \frac{f(x, y)}{f_X(x)}$
+        - これは，$z = f(x, y)$ を $X = x$ で切った断面である
+
+また，**$X$ と $Y$ が独立であるとは，$p(x, y) = p_X(x) p_Y(y)$ もしくは $f(x, y) = f_X(x) f_Y(y)$ である** ことをいう。
+:::
+$(X_1, \cdots, X_n)$ を $n$ 次元の確率変数とすると，
+$F(x_1, \cdots, x_n) = P(X_1 \leq x_1, \cdots, X_n \leq x_n),~
+f(x_1, \cdots, x_n) = \frac{\partial^n F(x_1, \cdots, x_n)}{\partial x_1 \cdots \partial x_n}$ となる。
+- $X_1, \cdots, X_n$ が独立 : $F(x_1, \cdots, x_n) = F_{X_1}(x_1) \cdots F_{X_n}(x_n)$
+- 条件付き独立 $(X, Y, Z)$ : $Z$ が与えられた時に，$X$ と $Y$ と独立 : 任意の $x, y, z$ に対して $f_{X|Z}(x|z) f_{Y|Z}(y|z) = f_{XY|Z}(x, y|z)$
+
+---
+## 多次元の変数変換
+$X = (X_1, \cdots, X_n)$ を $n$ 次元の確率ベクトルとし，変数変換 $Y = g(X)$ によって新しい確率ベクトル $Y$ を定義する。
+なお，$g : \mathbb{R}^n \to \mathbb{R}^n$ とし，連続微分可能で逆関数 $g^{-1} = h$ が存在するものとする。
+
+この時，$\displaystyle J = \left(\frac{\partial g_i}{\partial x_j}\right)_{i,j=1} = \begin{pmatrix}
+\frac{\partial g_1}{\partial x_1} & \cdots & \frac{\partial g_1}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial g_n}{\partial x_1} & \cdots & \frac{\partial g_n}{\partial x_n}
+\end{pmatrix}$ を **ヤコビ行列** と呼ぶ。
+また，$\det(J)$ を **ヤコビアン** と呼ぶ。
+
+このようにすれば，$Y$ の確率密度関数は以下のように表される。
+:::tip[変数変換]
+$f_Y(y) = f_X(g^{-1}(y)) \cdot |\det(J(\frac{\partial x}{\partial y}))|$ が成り立つ。
+
+また，$\displaystyle P(Y \in A) = P(X \in g^{-1}(A)) = \int_{g^{-1}(A)} f_X(x) dx = 
+\int_A f_X(g^{-1}(y)) \cdot |\det(J\left(\frac{\partial x}{\partial y}\right))| dy$ となる。
+
+- ここで，$J(\frac{\partial x}{\partial y}) = \begin{pmatrix}
+\frac{\partial x_1}{\partial y_1} & \cdots & \frac{\partial x_1}{\partial y_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial x_n}{\partial y_1} & \cdots & \frac{\partial x_n}{\partial y_n}
+\end{pmatrix} = \begin{pmatrix}
+\frac{\partial h_1(y)}{\partial y_1} & \cdots & \frac{\partial h_1(y)}{\partial y_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial h_n(y)}{\partial y_1} & \cdots & \frac{\partial h_n(y)}{\partial y_n}
+\end{pmatrix}$ である
+- $|\det(J(\frac{\partial x}{\partial y}))| = \frac{1}{|\det(J(\frac{\partial y}{\partial x}))|}$ である
+- 1 次元の変換の場合は，$f_Y(y)dy = f_X(x)dx$ と書くこともある
+:::
+
+- 例: $g : (x,y) \mapsto (r, \theta)$ で，$x = r \cos \theta, y = r \sin \theta$ の時
+    - $J(\frac{\partial x}{\partial y}) = \begin{pmatrix}
+    \cos \theta & -r \sin \theta \\
+    \sin \theta & r \cos \theta
+    \end{pmatrix}$ であり，$|\det(J(\frac{\partial x}{\partial y}))| = r$
+    - また，$J(\frac{\partial y}{\partial x}) = \begin{pmatrix}
+    \frac{\partial r}{\partial x} & \frac{\partial r}{\partial y} \\
+    \frac{\partial \theta}{\partial x} & \frac{\partial \theta}{\partial y}
+    \end{pmatrix} = \begin{pmatrix}
+    \frac{x}{r} & \frac{y}{r} \\
+    -\frac{y}{r^2} & \frac{x}{r^2}
+    \end{pmatrix}$ であり，$|\det(J(\frac{\partial y}{\partial x}))| = \frac{1}{r}$
+    - $P(r < 1) = P(x^2 + y^2 < 1) = \int_{x^2 + y^2 < 1} f(x, y) dx dy =
+    \int_0^{2\pi} \int_0^1 f(r \cos \theta, r \sin \theta) r dr d\theta$
+
+### 畳み込み
+:::tip[畳み込み]
+確率変数 $X, Y$ の和 $Z = X + Y$ の分布は，$X$ と $Y$ の分布の **畳み込み** と呼ばれる。
+
+$Z$ の確率密度関数は，$f_Z(z) = \int_{-\infty}^{\infty} f_X(x) f_Y(z - x) dx$ である。
+:::
+
+---
+## 多次元分布の性質を表す量
+:::tip[多次元分布の性質を表す量]
+- $g(X, Y)$ の期待値 : $E[g(X, Y)] = \begin{cases}
+\sum_{x, y} g(x, y) p(x, y)\\
+\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x, y) f(x, y) dx dy
+\end{cases}$
+    - $X$ の周辺分布に関する期待値 : $E[g(X)] = \begin{cases} \sum_{x} g(x) p_X(x)\\ \int_{-\infty}^{\infty} g(x) f_X(x) dx \end{cases}$ も定義できる
+- $X$ と $Y$ の共分散 : $\sigma_{XY} = \text{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y]$
+- $X$ と $Y$ の相関係数 : $\text{Corr}(X, Y) = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \text{Var}(Y)}} = \frac{\sigma_{XY}}{\sigma_X \sigma_Y}$
+- $X$ と $Y$ が独立 : $E[XY] = E[X]E[Y]$ 。特に，$\text{Cov}(X, Y) = 0$ となる
+    - 一般に，$X$ と $Y$ が独立ならば，$E[g(X)h(Y)] = E[g(X)]E[h(Y)]$ が成り立つ
+
+---
+また，$n$ 次元分布の期待値について，ベクトルで考える。すなわち，$E[X] = \begin{pmatrix}E[X_1] \\ \vdots \\ E[X_n] \end{pmatrix}$ とする。
+
+この時， $X$ の分散共分散行列 $\text{Var}[X] = \Sigma = (\sigma_{ij}) = 
+\begin{pmatrix}
+\text{Var}(X_1) & \text{Cov}(X_1, X_2) & \cdots & \text{Cov}(X_1, X_n) \\
+\text{Cov}(X_2, X_1) & \text{Var}(X_2) & \cdots & \text{Cov}(X_2, X_n) \\
+\vdots & \vdots & \ddots & \vdots \\
+\text{Cov}(X_n, X_1) & \text{Cov}(X_n, X_2) & \cdots & \text{Var}(X_n)
+\end{pmatrix}$ を定義する。
+
+- $\Sigma = E[(X - E[X])(X - E[X])^T]$ である。また，$\text{Var}[a + BX] = B \text{Var}[X] B^T$ である
+- 分散共分散行列は非負定値行列である。すなわち，$\forall a \in \mathbb{R}^n$ に対して $a^T \Sigma a = \text{Var}[\sum_{i=1}^n a_i X_i] \geq 0$ である
+:::
+さらに，$X$ と $Y$ が独立な $n$ 次元確率ベクトルの時について考えると
+- $X$ と $Y$ の共分散は $\text{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])^T]$ である
+- $X$ と $Y$ が独立な $n$ 次元確率ベクトルの時，$\text{Var}[X + Y] = \text{Var}[X] + \text{Var}[Y]$ である
+
+また，$n$ 次元の確率変数 $X$ の特性関数は $\phi(t_1, \cdots, t_n) = E[e^{i(t_1 X_1 + \cdots + t_n X_n)}] = E[e^{i t^T X}]$ と定義される。  
+特に，$X$ と $Y$ が独立な時，畳み込み $Z = X + Y$ の特性関数は $\phi_Z(t) = \phi_X(t) \phi_Y(t)$ となる。(もちろん，確率母関数や積率母関数も同様)
+
+:::note[畳み込みの性質]
+一次元分布の畳み込みから，確率母関数を用いて以下のようなことも言える。[代表的な確率分布](/docs/1_math/4_statistics/3_distribution.mdx)も参照。畳み込みを 「*」と書く
+- $Bin (n, p) * Bin(m, p) = Bin(n + m, p)$ : $Bin(n, p)$ は二項分布
+- $Po(\lambda_1) * Po(\lambda_2) = Po(\lambda_1 + \lambda_2)$ : $Po(\lambda)$ はポアソン分布
+- $N(\mu_1, \sigma_1^2) * N(\mu_2, \sigma_2^2) = N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$ : $N(\mu, \sigma^2)$ は正規分布
+- $NB(n, p) * NB(m, p) = NB(n + m, p)$ : $NB(n, p)$ は負の二項分布
+- $Ga(\nu_1, \alpha) * Ga(\nu_2, \alpha) = Ga(\nu_1 + \nu_2, \alpha)$ : $Ga(\nu, \alpha)$ はガンマ分布
+:::
+
+---
+## 回帰分析
+$X = x$ を与えた時の $g(X,Y)$ の **条件付き期待値** $E[g(X,Y)|X=x] = \int_{-\infty}^{\infty} g(x, y) f_{Y|X}(y) dy$ を定義する。
+- $Y$ の期待値は，$E[g(Y)] = \int_{-\infty}^{\infty} g(y) f_Y(y) dy$ だよ。また，$f_{Y|X}(y) = \frac{f(x, y)}{f_X(x)}$ だよ
+
+さらに，条件付き期待値を $x$ の関数としてみることもできる。すなわち，$h(x) = E[g(X,Y)|X=x]$。
+ここで，$E_X[E[g(X,Y)|X]] = E[g(X,Y)]$ : **全確率の公式** が成り立つ。
+- $E[g(X,Y)] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x, y) f(x, y) dy dx$
+- $E_X[E[g(X,Y)|X]] =\int_{-\infty}^{\infty} \left(\int_{-\infty}^{\infty} g(x, y) f_{Y|X}(y) dy\right) f_X(x) dx$
+
+同様にすれば，$Y$ の**条件付き分散** $\text{Var}[Y|X=x] = E[(Y - E[Y|X=x])^2|X=x]$ が定義できる。  
+この時，$\text{Var}[Y] = E_X[\text{Var}[Y|X]] + \text{Var}[E[Y|X]]$ が成り立つ。
+- すなわち，$Y$ の分散は，$Y$ の条件付き分散の期待値と，$Y$ の条件付き期待値の分散の和である
+
+さらに，確率変数を $(X_1, \cdots, X_n, Y) = (X, Y)$ の $n+1$ 次元として，$g : \mathbb{R}^n \to \mathbb{R}$ を用いて 
+$g(X) \approx Y$ を目標とする。近さの尺度として，MSPE(平均二乗誤差) : $E[(Y - g(X))^2]$ を用いる。  
+この時，MSPE の最小値は条件付き分散の期待値 $E_X[\text{Var}[Y|X]]$ に一致し，$g^*(X) = E[Y|X]$ となるらしい。
+- その中でも特に，$g(X) = \beta_0 + \beta_1 X_1 + \cdots + \beta_n X_n$ とするものを **線形回帰** と呼ぶ
