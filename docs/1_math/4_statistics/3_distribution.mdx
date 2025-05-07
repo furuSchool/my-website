@@ -105,6 +105,42 @@ $X = p X_1 + (1 - p) X_2$ ($0 < p < 1$) の分布関数は，$F(x) = p F_1(x) + 
 - 上記は，確率 $p$ で $X_1$，確率 $1 - p$ で $X_2$ を選ぶことを意味する
 - 一般には，$F(x) = \int_{-\infty}^{\infty} F(x, \theta) g(\theta) d\theta$ のように，累積分布関数の集合 $F(x, \theta)$ と確率密度関数 $g(\theta)$ を用いて表すことができる
 
+---
+## 多次元・離散分布
+### 多項分布
+:::tip[多項分布]
+多項分布は，$k$ 個の事象がそれぞれ $p_1, p_2, \cdots, p_k$ の確率で起こる試行を $n$ 回行った時，$k$ 個の事象がそれぞれ $x_1, x_2, \cdots, x_k$ 回起こる確率を表す分布である。
+- 確率関数 : $p(x_1, x_2, \cdots, x_k) = \frac{n!}{x_1! x_2! \cdots x_k!} p_1^{x_1} p_2^{x_2} \cdots p_k^{x_k}$
+- 期待値 : $E[X_i] = n p_i$
+- 分散 : $\text{Var}(X_i) = n p_i (1 - p_i)$
+- 共分散 : $\text{Cov}(X_i, X_j) = - n p_i p_j$ ($i \neq j$)
+- 多項分布の周辺分布も多項分布に従い，特に，$Y_i \sim \text{Bin}(n, p_i)$ となる
+- 多項分布の条件付き分布も多項分布に従う
+:::
+
+---
+## 多次元・連続分布
+### 多変量正規分布
+:::tip[多変量正規分布]
+$X_i \sim N(\mu_i, \sigma_i^2)$ ($i = 1, 2, \cdots, n$) であり互いに独立な時，$X = (X_1, X_2, \cdots, X_n)^T$ は多変量正規分布に従う。
+- 確率密度関数 : $f(x) = \frac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} e^{-\frac{1}{2} (x - \mu)^T \Sigma^{-1} (x - \mu)}$
+- 期待値 : $\mu = (\mu_1, \mu_2, \cdots, \mu_n)^T$
+- 分散共分散行列 : $\Sigma = \begin{pmatrix}
+        \sigma_1^2 & \sigma_{12} & \cdots & \sigma_{1n} \\
+        \sigma_{21} & \sigma_2^2 & \cdots & \sigma_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \sigma_{n1} & \sigma_{n2} & \cdots & \sigma_n^2
+    \end{pmatrix}$
+- 積率母関数 : $\phi(\theta) = \exp\left( \theta^T \mu + \frac{1}{2} \theta^T \Sigma \theta \right)$
+
+特に，$X_i \sim N(0, 1)$ であり互いに独立な時，$X = (X_1, X_2, \cdots, X_n)^T$ を **標準多変量正規分布** と呼ぶ。
+- 確率密度関数 : $f(x) = \frac{1}{(2\pi)^{n/2}} e^{-\frac{1}{2} x^T x}$
+:::
+$Z = a + BX$ のようにアフィン変換を行うと，$Z \sim N(a + B\mu, B \Sigma B^T)$ となる。
+- これは，積率母関数 $\phi_Z(\theta) = E[\exp (\theta^T (a + BX))] = \exp\left( \theta^T (a + B\mu) + \frac{1}{2} \theta^T B \Sigma B^T \theta \right)$ からわかる
+
+また，$X_i$ と $X_j$ が無相関である時，$X_i$ と $X_j$ は独立である。すなわち，多変量正規分布においては，**無相関と独立は同値** となる。
+- 二次元の場合，積率母関数 : $\phi(\theta) = \exp\left( \theta_1 \mu_1 + \frac{1}{2} \theta_1^2 \sigma_1^2 + \theta_2 \mu_2 + \frac{1}{2} \theta_2^2 \sigma_2^2 + \theta_1 \theta_2 \sigma_{12} \right)$ からわかる
 
 ---
 ## まとめ
