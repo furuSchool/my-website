@@ -2,19 +2,130 @@
 title: 5. 固有値と固有ベクトル
 ---
 
-## 直交行列
-:::tip[直交行列]
-$n$ 次実正方行列 $A$ が，$A^T A = E$ をみたすとき，$A$ を直交行列という。
+import Toggle from '/components/toggle.tsx'
 
-$A = (\bm{a}_1, \cdots, \bm{a}_n)$ が直交行列 $\Leftrightarrow$ $\bm{a}_1, \cdots, \bm{a}_n$ が $\mathbb{R}$ 上の正規直交基底
+## 固有値と固有ベクトル
+### 固有多項式
+:::tip[固有多項式と固有値]
+$n$ 次正方行列 $A$ の **固有多項式** を $\varphi_A(x) = \det(xE_n - A) = \left| \begin{array}{ccccc}
+x - a_{11} & -a_{12} & \cdots & -a_{1n} \\
+-a_{21} & x - a_{22} & \cdots & -a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+-a_{n1} & -a_{n2} & \cdots & x - a_{nn}
+\end{array} \right|$ と定義する。
+
+そして，$\varphi_A(x) = 0$ を **固有方程式** といい，その解を **$A$ の固有値** という。
+
+また，$A$ の相異なる固有値を $\alpha_1, \cdots, \alpha_k$ とし，それぞれの重複度を $\nu_1, \cdots, \nu_k$ とする。  
+このとき，$\varphi_A(x) = (x - \alpha_1)^{\nu_1} \cdots (x - \alpha_k)^{\nu_k}~~(\nu_1 + \cdots + \nu_k = n)$ と表せる。
 :::
 
-### Gram-Schmidt の正規直交化法
-:::tip[Gram-Schmidt の正規直交化法]
-一次独立なベクトル $\bm{a}_1, \cdots, \bm{a}_n$ を互いに直交する単位ベクトルであり，
-$\braket{\bm{a}_1, \cdots, \bm{a}_n} = \braket{\widetilde{\bm{b}}_1, \cdots, \widetilde{\bm{b}}_n}$ なるベクトル $\bm{\widetilde{b}}_1, \cdots, \bm{\widetilde{b}}_n$ にする方法。
-特に， **基底を正規直交基底に変換する** 時に使い，以下を $j = 1$ から繰り返す。
+成立する事柄
+- $n$ 次正方行列 $A, B$ が相似ならば，$\varphi_A(x) = \varphi_B(x)$。$A$ の固有値と $B$ の固有値は一致する
+- $\varphi_A(x) = \varphi_{A^T}(x)$
+- $\varphi_A(x) = x^n + c_1 x^{n-1} + \cdots + c_n$ の時，$c_1 = -\operatorname{tr}(A)$，$c_n = (-1)^n \det(A)$
+    - つまり，重複度を含めた固有値の和 $\sum_{i=1}^n \alpha_i = \operatorname{tr}(A)$，固有値の積 $\prod_{i=1}^n \alpha_i = \det(A)$
+- $f(x)$ を多項式とすると，$f(A)$ の固有値は，$f(\alpha_1), \cdots, f(\alpha_n)$ である
+    - 特に，$\operatorname{tr}(f(A)) = \sum_{i=1}^n f(\alpha_i)$，$\det(f(A)) = \prod_{i=1}^n f(\alpha_i)$
 
-1. 直交化 : $\displaystyle\bm{b}_j = \bm{a}_j - \sum_{i = 1}^{j-1} \frac{\bm{a}_j \cdot \bm{b}_i}{\| \bm{b}_i\|^2} \bm{b}_i$
-2. 正規化 : $\displaystyle\bm{\widetilde{b}}_j = \frac{1}{\| \bm{b}_j\|}\bm{b}_j$
+:::tip[固有値と固有ベクトル]
+また，$\alpha$ が $A$ の固有値であることは，$A\bm{v} = \alpha \bm{v}$ を満たす $\bm{v} \ne \bm{0}$ が存在することと同値である。
+この $\bm{v}$ を $\alpha$ に対する **固有ベクトル** という。
 :::
+
+### 固有空間
+:::tip[固有空間]
+$n$ 次正方行列 $A$ について，$\alpha$ が $A$ の固有値のとき，$A\bm{v} = \alpha \bm{v}$ を満たす $\bm{v}$ の全体を **固有空間** $V_\alpha$ という。
+- 特に，$m \in \mathbb{N}$ に対して，$A^m \bm{v} = \alpha^m \bm{v}$
+- 固有空間は $(\alpha E_n - A)\bm{x} = \bm{0}$ の解空間と一致する
+:::
+
+<Toggle title="例" open={false}>
+$A = \begin{pmatrix}
+    1 & 1 \\
+    -1 & -1
+\end{pmatrix}$ の固有空間を求める
+
+$\varphi_A(x) = \det(xE_2 - A) = … = x^2$ なので，固有値は $0$ (重複度 $2$)
+
+固有空間 $V_0$ は $(0E_2 - A)\bm{x} = \bm{0}$ の解空間と一致し，$0E_2 - A$ を基本変形すると，
+$\begin{pmatrix}
+    1 & 1 \\
+    0 & 0
+\end{pmatrix}$ となるので，
+
+$V_0$ の元は $\begin{pmatrix}
+    x \\
+    y
+\end{pmatrix} = y\begin{pmatrix}
+    -1 \\
+    1
+\end{pmatrix}$ ($y$ は任意の複素数) である。$V_0$ の基底は $\begin{pmatrix}
+    -1 \\
+    1
+\end{pmatrix}$ で，$\dim V_0 = 1$ 。
+
+</Toggle>
+
+成り立つ事柄
+- 固有値 $\alpha$ の重複度 $\nu$ として，$\dim V_\alpha \le \nu$
+- $\alpha_1, \cdots, \alpha_k$ が $A$ の相異なる固有値で，$\bm{v}_1, \cdots, \bm{v}_k$ がそれぞれの固有ベクトルとすると，
+$\bm{v}_1, \cdots, \bm{v}_k$ は一次独立である
+- $\alpha_1, \cdots, \alpha_k$ を $A$ の相異なる固有値とすると，$V_{\alpha_1}, \cdots, V_{\alpha_k}$ は互いに直交する
+    - すなわち，$V_{\alpha_1} + \cdots + V_{\alpha_k} = V_{\alpha_1} \oplus \cdots \oplus V_{\alpha_k}$ である
+
+
+---
+## 最小多項式
+### Cayley-Hamilton の定理
+:::tip[Cayley-Hamilton の定理]
+$n$ 次正方行列 $A$ の固有多項式 $\varphi_A(x)$ について，$\varphi_A(A) = O$ が成り立つ。
+:::
+<Toggle title="例" open={false}>
+$A = \begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix}$ のとき，
+
+$\varphi_A(x) = \det(xE_2 - A) = x^2 - (a + d)x + (ad - bc)$ であるので
+
+$\varphi_A(A) = \begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix}^2 - (a + d)\begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix} + \begin{pmatrix}
+    ad - bc & 0 \\
+    0 & ad - bc
+\end{pmatrix} = \begin{pmatrix}
+    0 & 0 \\
+    0 & 0
+\end{pmatrix}$ となる。
+</Toggle>
+
+成り立つ事柄
+- $n$ 次正方行列 $A$ がべき零行列 (ある自然数 $k$ に対し，$A^k = O$ ) $\Leftrightarrow$ $A$ の固有値がすべて $0$ $\Leftrightarrow$ $A^n = O$
+
+### 最小多項式
+:::tip[最小多項式]
+$n$ 次正方行列 $A$ に対し，以下の性質を満たす多項式 $m_A(x)$ を **最小多項式** という。
+1. $m_A(A) = O$
+2. $m_A(x)$ の最高次の係数は $1$
+3. $m_A(x)$ の次数は 1, 2 を満たす多項式の中で最小
+:::
+<Toggle title="例" open={false}>
+$A = \alpha E_n$ のとき，$A - \alpha E_n = O$ なので，$m_A(x) = x - \alpha$ が最小多項式である。
+</Toggle>
+
+- $f(A) = O$ の時，$m_A(x) | f(x)$ 。特に，$m_A(x) | \varphi_A(x)$。ここから，最小多項式が一意に定まることがわかる
+    - つまり，$m_A(x) = 0$ の解集合と $\varphi_A(x) = 0$ の解集合は一致する
+- $A$ の相異なる固有値を $\alpha_1, \cdots, \alpha_k$ とすると，$(x - \alpha_1)\cdots (x - \alpha_k) | m_A(x)$
+- $A$ と $B$ が相似なとき，$m_A(x) = m_B(x)$
+- $C = A \oplus B = \begin{pmatrix} A & O \\ O & B \end{pmatrix}$ のとき，$m_C(x) = LCM(m_A(x), m_B(x))$ である
+    - $LCM$ : 最高次の係数が $1$ で，$m_A(x)$ と $m_B(x)$ の公倍式の中で次数が最小なもの。最小公倍式
+- $C = A \oplus B$ の時，任意の多項式 $f(x)$ に対し，$f(C) = f(A) \oplus f(B)$
+
+**実際に最小多項式を求めるときは，固有値と重複度を求めた後に，次数が低い候補順に $m_A(A) = O$ を満たすものを探す。**
+- ちなみに，最小多項式は Jordan 標準形と深い関係がある。[参考](https://blog.goo.ne.jp/suuri-yh/e/cc843b8da4ad4152b23db8fb76097533)
+- $m_A(A) = 0$ の使い道に，例えば $A^n$ の次数下げができる。やってることは Jordan 標準形を作るのと同じ

@@ -121,28 +121,6 @@ $A = \begin{pmatrix}1 & 2 \\3 & 4\end{pmatrix}$
 - よって，$A^{-1} = \begin{pmatrix}-2 & 1 \\ \frac{3}{2} & -\frac{1}{2}\end{pmatrix}$
 </Toggle>
 
-### 対角行列など
-<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '0px' }}>
-    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
-        <h4>対角行列</h4>
-        <div>
-        $\begin{pmatrix} * & 0 & \cdots & 0 \\0 & * & \cdots & 0 \\\vdots & \vdots & \ddots & \vdots \\0 & 0 & \cdots & * \end{pmatrix}$
-        </div>
-    </div>
-    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
-        <h4>上三角行列</h4>
-        <div>
-        $\begin{pmatrix} * & * & \cdots & * \\0 & * & \cdots & * \\\vdots & \vdots & \ddots & \vdots \\0 & 0 & \cdots & * \end{pmatrix}$
-        </div>
-    </div>
-    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
-        <h4>下三角行列</h4>
-        <div>
-        $\begin{pmatrix}* & 0 & \cdots & 0 \\ * & * & \cdots & 0 \\\vdots & \vdots & \ddots & \vdots \\ * & * & \cdots & * \end{pmatrix}$
-        </div>
-    </div>
-</div>
-
 ---
 ## 基底
 ### 1 次独立・1 次従属
@@ -179,6 +157,7 @@ $\mathscr{A}: \{\bm{a}_1,…,\bm{a}_n\}$ と $\mathscr{B}: \{\bm{b}_1,…,\bm{b}
 この時，以下を満たす行列が存在し，変換行列と呼ぶ。
 - $(\bm{b}_1,…,\bm{b}_n) = (\bm{a}_1,…,\bm{a}_n) C^T$ : $\mathscr{A} \to \mathscr{B}$ の変換行列 $C$
 - $(\bm{a}_1,…,\bm{a}_n) = (\bm{b}_1,…,\bm{b}_n) D^T$ : $\mathscr{B} \to \mathscr{A}$ の変換行列 $D$。もちろん $D = C^{-1}$ である
+- なお，$\mathbb{R}^n$ 上の基底変換行列は必ず **直交行列** である
 
 <Toggle title="イメージ" open={false}>
 $$
@@ -210,7 +189,8 @@ $\bm{v} = \sum_{i=1}^n \lambda_i \bm{a}_i = (\lambda_1,…,\lambda_n) (\bm{a}_1,
 $(v_1, \cdots, v_n)$ の時，$\mathscr{B}$ の時の成分表示は $(v_1, \cdots, v_n) C^{-1}$ となる
 
 ---
-## 行列の階数 (rank)
+## その他
+### 行列の階数 (rank)
 行簡役行列の非零行ベクトルの個数を定義とするなど色々な定義があるが，以下のように定義することもできる
 
 :::tip[行列の階数]
@@ -222,6 +202,52 @@ $\mathrm{rank}~A = \dim \text{Im} f$ である
 - $\mathrm{rank}~(PAQ) \leq \mathrm{rank}~A$ である ($P: m \times m,~Q: n \times n,~A: m \times n$)
     - また，$P, Q$ が正則行列の時，$\mathrm{rank}~(PAQ) = \mathrm{rank}~A$ である
 
+### 対角行列など
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '0px' }}>
+    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>対角行列</h4>
+        <div>
+        $\begin{pmatrix} * & 0 & \cdots & 0 \\0 & * & \cdots & 0 \\\vdots & \vdots & \ddots & \vdots \\0 & 0 & \cdots & * \end{pmatrix}$
+        </div>
+        <div>
+        $\text{diag}(a_1, a_2, \cdots, a_n)$ とも書く
+        </div>
+    </div>
+    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>上三角行列</h4>
+        <div>
+        $\begin{pmatrix} * & * & \cdots & * \\0 & * & \cdots & * \\\vdots & \vdots & \ddots & \vdots \\0 & 0 & \cdots & * \end{pmatrix}$
+        </div>
+    </div>
+    <div style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }}>
+        <h4>下三角行列</h4>
+        <div>
+        $\begin{pmatrix}* & 0 & \cdots & 0 \\ * & * & \cdots & 0 \\\vdots & \vdots & \ddots & \vdots \\ * & * & \cdots & * \end{pmatrix}$
+        </div>
+    </div>
+</div>
+
+### べき零行列
+ある自然数 $k$ に対し，$A^k = O$ となる行列 $A$ を **べき零行列** という。
+
+### 行列の直和
+行列 $A$ を $m \times n$ 行列，$B$ を $k \times l$ 行列とする。
+
+この時，$A$ と $B$ の直和 $A \oplus B = \begin{pmatrix} A & O_{m \times l} \\ O_{k \times n} & B \end{pmatrix}$ を定義する。
+
+### 転置や随伴など
+詳細は必要な特に説明する
+- 行列 $A = (a_{ij})$ の転置行列 $A^T = (a_{ji})$
+    - $A$ が $m \times n$ 行列の時，$A^T$ は $n \times m$ 行列である
+- 行列 $A = (a_{ij})$ の随伴行列 $A^* = (\overline{a_{ji}})$
+- $n$ 次実正方行列 $A$ が直交行列 $\Leftrightarrow$ $A^T A = E$
+- $n$ 次複正方行列 $A$ がユニタリ行列 $\Leftrightarrow$ $A^* A = E$
+- 対称行列 : $A = A^T$
+- 反対称行列 : $A = -A^T$
+- エルミート行列 : $A = A^*$
+- 反エルミート行列 : $A = -A^*$
+- 実正規行列 : $A^T A = A A^T$
+- 正規行列 : $A^* A = A A^*$
 
 ### その他
 - $\mathrm{rank}~A = \mathrm{rank}~A^T$ が成り立つ

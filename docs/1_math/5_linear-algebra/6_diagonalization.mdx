@@ -1,0 +1,461 @@
+---
+title: 6. 対角化
+---
+
+import Toggle from '/components/toggle.tsx'
+
+:::warning[行列の対角化]
+ここはめちゃくちゃ重要！逆にここ以外はそんなに重要じゃないかも
+:::
+
+## 行列の対角化
+
+### 対角化可能
+:::tip[対角化可能]
+$n$ 次正方行列 $A$ に相似な対角行列が存在するとき，$A$ は **対角化可能** であるという。
+
+下記はそれぞれ，対角化可能であるための必要十分条件である。
+1. $A$ が 1 次独立な固有ベクトルを $n$ 個もつ。すなわち，$A$ の固有ベクトルからなる $\mathbb{C}^n$ 上の基底が存在する
+2. $A$ の相異なる固有値 $\alpha_1, \cdots, \alpha_k$ の重複度 $\nu_1, \cdots, \nu_k$ に対し，$\dim V_{\alpha_i} = \nu_i$ ($i = 1, \cdots, k$)
+3. 最小多項式 $m_A(x)$ が重解を持たない。$m_A(x) = (x - \alpha_1)\cdots (x - \alpha_k)$
+
+また，固有値 $\alpha_i$ と 固有ベクトル $\bm{p}_i$ に対して，$P = (\bm{p}_1, \cdots, \bm{p}_n)$ とすると，
+$P^{-1}AP = \text{diag}(\alpha_1, \cdots, \alpha_n)$ となる。
+:::
+
+### 対角化の手順
+:::tip[対角化の手順]
+1. 固有方程式 $|xE_n - A| = 0$ を解き，固有値 $\alpha_1, \cdots, \alpha_k$ と重複度 $\nu_1, \cdots, \nu_k$ を求める
+2. 固有値 $\alpha_i$ に対する固有空間 $V_{\alpha_i}$ とその基底を求める
+    - 固有空間の次元 $\dim V_{\alpha_i}$ が $\nu_i$ と一致しなければ，$A$ は対角化不可能
+3. $V_{\alpha_i}$ の基底を $\bm{p}_i$ とすると，$P = (\bm{p}_1, \cdots, \bm{p}_n)$ として，$P^{-1}AP = \text{diag}(\alpha_1, \cdots, \alpha_n)$ となる
+:::
+
+<Toggle title="例" open={false}>
+$A = \begin{pmatrix}
+   -5 & 1 & 1 \\
+    2 & -4 & 2 \\
+    3 & 3 & -3
+\end{pmatrix}$ について
+
+
+#### 1. 固有方程式 $|xE_3 - A| = 0$ を解く
+
+$|xE_3 - A| = \det(xE_3 - A) = x(x + 6)^2$
+
+固有値は $0$ (重複度 $1$)，$-6$ (重複度 $2$)
+
+#### 2. 固有値に対する固有空間を求める
+
+固有値 $0$ に対する固有空間 $V_0$ を求める
+$0E_3 - A = \begin{pmatrix}
+    5 & -1 & -1 \\
+    -2 & 4 & -2 \\
+    -3 & -3 & 3
+\end{pmatrix}$ を基本変形すると，
+$\begin{pmatrix}
+    1 & 0 & -\frac{1}{3} \\
+    0 & 1 & -\frac{2}{3} \\
+    0 & 0 & 0
+\end{pmatrix}$ となるので，
+
+$V_0$ の元は $\begin{pmatrix}
+    x \\
+    y \\
+    z
+\end{pmatrix} = \frac{z}{3}\begin{pmatrix}
+    1 \\
+    2 \\
+    3
+\end{pmatrix}$
+($z$ は任意の複素数) である。
+
+よって，$V_0$ の基底は $\begin{pmatrix}
+    1 \\
+    2 \\
+    3
+\end{pmatrix}$ で，$\dim V_0 = \dim \left(\braket{\begin{pmatrix}
+    1 \\
+    2 \\
+    3
+\end{pmatrix}}\right) = 1$ である
+
+また，固有値 $-6$ に対する固有空間 $V_{-6}$ を求める
+$-6E_3 - A = \begin{pmatrix}
+    -1 & -1 & -1 \\
+    -2 & -2 & -2 \\
+    -3 & -3 & -3
+\end{pmatrix}$ を基本変形すると，
+$\begin{pmatrix}
+    1 & 1 & 1 \\
+    0 & 0 & 0 \\
+    0 & 0 & 0
+\end{pmatrix}$ となるので，
+
+$V_{-6}$ の元は $\begin{pmatrix}
+    x \\
+    y \\
+    z
+\end{pmatrix} = y\begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix} + z\begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix}$
+($y, z$ は任意の複素数) である。
+
+よって，$V_{-6}$ の基底は $\begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix}, \begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix}$ で，$\dim V_{-6} = \dim \left(\braket{\begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix}, \begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix}}\right) = 2$ である
+
+#### 3. 正則行列 $P$ を求める
+
+以上より，$P = \begin{pmatrix}
+    1 & -1 & -1 \\
+    2 & 1 & 0 \\
+    3 & 0 & 1
+\end{pmatrix}$ とすると，
+$P^{-1}AP = \begin{pmatrix}
+    0 & 0 & 0 \\
+    0 & -6 & 0 \\
+    0 & 0 & -6
+\end{pmatrix}$ となる。
+
+実際，$AP = \begin{pmatrix}
+    -5 & 1 & 1 \\
+    2 & -4 & 2 \\
+    3 & 3 & -3
+\end{pmatrix}\begin{pmatrix}
+    1 & -1 & -1 \\
+    2 & 1 & 0 \\
+    3 & 0 & 1
+\end{pmatrix} = \begin{pmatrix}
+    1 & -1 & -1 \\
+    2 & 1 & 0 \\
+    3 & 0 & 1
+\end{pmatrix}\begin{pmatrix}
+    0 & 0 & 0 \\
+    0 & -6 & 0 \\
+    0 & 0 & -6
+\end{pmatrix} = P\text{diag}(0, -6, -6)$ となる。
+
+</Toggle>
+
+---
+## 直交変換とユニタリ変換
+### 直交行列
+:::tip[直交行列]
+$n$ 次実正方行列 $A$ が，$A^T A = E$ をみたすとき，$A$ を直交行列という。
+
+$A = (\bm{a}_1, \cdots, \bm{a}_n)$ が直交行列 $\Leftrightarrow$ $\bm{a}_1, \cdots, \bm{a}_n$ が $\mathbb{R}^n$ 上の正規直交基底
+:::
+- 実数空間上であることに注意
+- すなわち，$A^T = A^{-1}$ である
+- $A, B$ が直交行列のとき，$AB, A^T, A^{-1}$ も直交行列である
+- $\mathscr{A}, \mathscr{B}$ を $\mathbb{R}^n$ 上の正規直交基底とすると，$\mathscr{A}$ から $\mathscr{B}$ の基底変換行列 $P$ は直交行列である
+    - $(\bm{b}_1 \cdots \bm{b}_n) = (\bm{a}_1 \cdots \bm{a}_n)P^T$ である
+    - $\mathscr{A}$ の成分表示が $(v_1, \cdots, v_n)$ のとき，$\mathscr{B}$ の成分表示は $(v_1, \cdots, v_n)P^{-1} = (v_1, \cdots, v_n)P^T$ である
+- $A$ が直交行列のとき，$\det A = \pm 1$，$A$ の固有値は $\pm 1$ のみ
+- $A$ が $2$ 次直交行列のとき，$0 \le \theta < 2\pi$ に対し，
+$\begin{pmatrix}
+    \cos \theta & -\sin \theta \\
+    \sin \theta & \cos \theta
+\end{pmatrix}$ ( 回転行列， $\det A = 1$ ) または $\begin{pmatrix}
+    \cos \theta & \sin \theta \\
+    \sin \theta & -\cos \theta
+\end{pmatrix}$ (鏡映行列， $\det A = -1$ ) のいずれかで表せる
+
+### Gram-Schmidt の正規直交化法
+:::tip[Gram-Schmidt の正規直交化法]
+一次独立なベクトル $\bm{a}_1, \cdots, \bm{a}_n$ を互いに直交する単位ベクトルであり，
+$\braket{\bm{a}_1, \cdots, \bm{a}_n} = \braket{\widetilde{\bm{b}}_1, \cdots, \widetilde{\bm{b}}_n}$ なるベクトル $\bm{\widetilde{b}}_1, \cdots, \bm{\widetilde{b}}_n$ にする方法。
+特に， **基底を正規直交基底に変換する** 時に使い，以下を $j = 1$ から繰り返す。
+
+1. 直交化 : $\displaystyle\bm{b}_j = \bm{a}_j - \sum_{i = 1}^{j-1} \frac{\bm{a}_j \cdot \bm{b}_i}{\| \bm{b}_i\|^2} \bm{b}_i$
+2. 正規化 : $\displaystyle\bm{\widetilde{b}}_j = \frac{1}{\| \bm{b}_j\|}\bm{b}_j$
+:::
+
+### 直交変換
+:::tip[直交変換]
+線形変換 $f : \mathbb{R}^n \to \mathbb{R}^n$ が，内積を保存するとき，$f$ を **直交変換** という。
+- すなわち，任意の $\bm{x}, \bm{y} \in \mathbb{R}^n$ に対し，$f(\bm{x}) \cdot f(\bm{y}) = \bm{x} \cdot \bm{y}$ が成り立つ。
+
+以下は $f$ が直交変換であるための必要十分条件である。
+1. $n$ 次直交行列 $A$ が存在して，$f(\bm{x}) = A\bm{x}~~(\bm{x} \in \mathbb{R}^n)$ 
+2. $f$ がベクトルの長さを保存する。すなわち，任意の $\bm{x} \in \mathbb{R}^n$ に対し，$\| f(\bm{x}) \| = \| \bm{x} \|$ が成り立つ
+:::
+直交変換は角度を保存する。すなわち，任意の $\bm{x}, \bm{y} \in \mathbb{R}^n$ に対し，$\bm{x}, \bm{y}$ のなす角と $f(\bm{x}), f(\bm{y})$ のなす角は等しい
+- 角度は，$\bm{a} \cdot \bm{b} = \|\bm{a}\| \|\bm{b}\| \cos \theta$ で定義した
+
+### ユニタリ行列
+:::tip[ユニタリ行列]
+複素行列 $A$ に対して，$\overline{A^T} = (\overline{a_{ji}})$ を $A$ の **随伴行列** といい，これを $A^*$ と表す。
+
+$n$ 次複素正方行列 $A$ が，$A^* A = E$ をみたすとき，$A$ を **ユニタリ行列** という。
+
+$A = (\bm{a}_1, \cdots, \bm{a}_n)$ がユニタリ行列 $\Leftrightarrow$ $\bm{a}_1, \cdots, \bm{a}_n$ が $\mathbb{C}^n$ 上の正規直交基底
+:::
+- $A$ がユニタリ行列のとき，$A^* = A^{-1}$ である
+- $(AB)^* = B^* A^*,~~(A^*)^{-1} = (A^{-1})^*$ : 転置と同様の性質
+- $A, B$ がユニタリ行列のとき，$AB, A^T, A^*, A^{-1}$ もユニタリ行列である
+- $\mathscr{A}, \mathscr{B}$ を $\mathbb{C}^n$ 上の正規直交基底とすると，$\mathscr{A}$ から $\mathscr{B}$ の基底変換行列 $P$ はユニタリ行列である
+- $A$ がユニタリ行列のとき，$|\det A| = 1$，$A$ の固有値は $|z| = 1$ のみ
+
+### ユニタリ変換
+:::tip[ユニタリ変換]
+線形変換 $f : \mathbb{C}^n \to \mathbb{C}^n$ が，内積を保存するとき，$f$ を **ユニタリ変換** という。
+
+すなわち，任意の $\bm{x}, \bm{y} \in \mathbb{C}^n$ に対し，$f(\bm{x}) \cdot f(\bm{y}) = \bm{x} \cdot \bm{y}$ が成り立つ。
+
+以下は $f$ がユニタリ変換であるための必要十分条件である。
+1. $n$ 次ユニタリ行列 $A$ が存在して，$f(\bm{x}) = A\bm{x}~~(\bm{x} \in \mathbb{C}^n)$
+2. $f$ がベクトルの長さを保存する。すなわち，任意の $\bm{x} \in \mathbb{C}^n$ に対し，$\| f(\bm{x}) \| = \| \bm{x} \|$ が成り立つ
+:::
+- 複素数の内積の定義に注意。$\bm{x} \cdot \bm{y} = \bm{x}^T \overline{\bm{y}}$ である
+
+---
+## 直交対角化とユニタリ対角化
+### 直交対角化
+ここでは，$A$ が **実対称行列** のときを考える。すなわち，$A^T = A,~\overline{A} = A$ である。
+- $A$ が実対称行列 $\Leftrightarrow$ 任意の $\bm{x}, \bm{y} \in \mathbb{R}^n$ に対し，$\bm{x} \cdot A\bm{y} = A\bm{x} \cdot \bm{y}$ が成り立つ
+- $A$ が実対称行列のとき，$A$ の固有値は全て実数である
+- $A$ が実正規行列 $(A^T A = A A^T)$ で，$A$ が実固有値 $\alpha$ を持つとき，
+$\alpha$ の固有空間 $V_\alpha \in \mathbb{R}^n$ と $V_\alpha^\perp \in \mathbb{R}^n$ について，
+任意の $\bm{x} \in V_\alpha^\perp$ に対し，$A\bm{x} \in V_\alpha^\perp$ が成り立つ
+    - 特に，$A$ が実対称行列の時も成り立つ。実対称行列 $\Rightarrow$ 実正規行列
+    - $W^{\perp} = \{\bm{v} \in V | \bm{v} \cdot \bm{w} = 0,~\forall \bm{w} \in W\}$
+    - $\displaystyle V = W \oplus W^{\perp}$ が成り立つ
+
+:::tip[直交対角化]
+$n$ 次実正方行列 $A$ が **直交対角化可能** であるとは，
+$P^{-1}AP = P^T A P = \text{diag}(\alpha_1, \cdots, \alpha_n)~~(\alpha_i \in \mathbb{R})$ をみたすような直交行列 $P$ が存在することをいう。
+
+$A$ が直交対角化可能であるための必要十分条件は，**$A$ が実対称行列であること** である。
+:::
+- 実行列のみに定義することに注意
+- $A$ が $n$ 次実対称行列で相異なる固有値 $\alpha_1, \cdots, \alpha_k$ を持つとき，
+$A$ の固有空間 $V_{\alpha_i}$ について，$\mathbb{R}^n = V_{\alpha_1} \oplus \cdots \oplus V_{\alpha_k}$ が成り立つ
+    - つまり，任意の $\bm{v}_i \in V_{\alpha_i},~\bm{v}_j \in V_{\alpha_j}~(i \ne j)$ に対し，$\bm{v}_i \cdot \bm{v}_j = 0$ が成り立つ
+    - 特に，固有値に対応する固有ベクトル $\bm{p}_i$ は互いに直交する
+
+### 直交対角化の手順
+:::note[直交対角化の手順]
+1. $A$ が $A = A^T$ をみたすことを確認して，固有方程式 $|xE_n - A| = 0$ を解き，固有値 $\alpha_1, \cdots, \alpha_k$ と重複度 $\nu_1, \cdots, \nu_k$ を求める
+2. 固有値 $\alpha_i$ に対する固有空間 $V_{\alpha_i}$ とその基底を求める。基底の長さは $1$ とし，
+重複度 $\nu_i > 1$ の時は，**基底を求めた後，Gram-Schmidt の正規直交化法を用いて，正規直交基底に変換する**
+3. 正規直交基底 $\bm{p}_i$ とすると，$P = (\bm{p}_1, \cdots, \bm{p}_n)$ として，$P^{-1}AP = \text{diag}(\alpha_1, \cdots, \alpha_n)$ となる
+    - $PP^T = E_n$ であることに注意
+:::
+
+<Toggle title="例" open={false}>
+$A = \begin{pmatrix}
+    1 & 1 & 1 \\
+    1 & 1 & 1 \\
+    1 & 1 & 1
+\end{pmatrix}$ について
+
+#### 1. 固有方程式 $|xE_3 - A| = 0$ を解く
+$|xE_3 - A| = \det(xE_3 - A) = x^2(x - 3)$
+
+固有値は $0$ (重複度 $2$)，$3$ (重複度 $1$)
+
+#### 2. 固有値に対する固有空間を求める
+固有値 $0$ に対する固有空間 $V_0$ を求める。
+
+$0E_3 - A = \begin{pmatrix}
+    1 & 1 & 1 \\
+    1 & 1 & 1 \\
+    1 & 1 & 1
+\end{pmatrix}$ を基本変形すると，
+$\begin{pmatrix}
+    1 & 1 & 1 \\
+    0 & 0 & 0 \\
+    0 & 0 & 0
+\end{pmatrix}$ となるので，
+$V_0$ の元は $\begin{pmatrix}
+    x \\
+    y \\
+    z
+\end{pmatrix} = y\begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix} + z\begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix}$
+($y, z$ は任意の複素数) である。
+
+よって，$V_0$ の基底は $\begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix}, \begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix}$ であり，Gram-Schmidt の正規直交化法を用いて，
+
+$\bm{p}_1 = \begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix},~
+\bm{\widetilde{p}}_1 = \frac{1}{\sqrt{2}}\begin{pmatrix}
+    -1 \\
+    1 \\
+    0
+\end{pmatrix}, \bm{p}_2 = \begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix} - \frac{\bm{p}_1 \cdot \begin{pmatrix}
+    -1 \\
+    0 \\
+    1
+\end{pmatrix}}{\|\bm{p}_1\|^2}\bm{p}_1 = \frac{1}{2}\begin{pmatrix}
+    -1 \\
+    -1 \\
+    2
+\end{pmatrix},~
+\bm{\widetilde{p}}_2 = \frac{1}{\sqrt{6}}\begin{pmatrix}
+    -1 \\
+    -1 \\
+    2
+\end{pmatrix}$ となる。
+
+また，固有値 $3$ に対する固有空間 $V_{3}$ を求める。
+
+$3E_3 - A = \begin{pmatrix}
+    2 & -1 & -1 \\
+    -1 & 2 & -1 \\
+    -1 & -1 & 2
+\end{pmatrix}$ を基本変形すると，
+$\begin{pmatrix}
+    1 & 0 & -1 \\
+    0 & 1 & -1 \\
+    0 & 0 & 0
+\end{pmatrix}$ となるので，
+$V_{3}$ の元は $\begin{pmatrix}
+    x \\
+    y \\
+    z
+\end{pmatrix} = z\begin{pmatrix}
+    1 \\
+    1 \\
+    1
+\end{pmatrix}$
+($z$ は任意の複素数) である。
+
+よって，$V_{3}$ の基底は $\bm{\widetilde{p}}_3 = \frac{1}{\sqrt{3}}\begin{pmatrix}
+    1 \\
+    1 \\
+    1
+\end{pmatrix}$ である。
+
+#### 3. 正則行列 $P$ を求める
+以上より，$P = \begin{pmatrix}
+    -\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\
+    \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\
+    0 & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{3}}
+\end{pmatrix}$ とすると，
+
+$P^{-1}AP = \begin{pmatrix}
+    0 & 0 & 0 \\
+    0 & 0 & 0 \\
+    0 & 0 & 3
+\end{pmatrix}$ となる。
+
+実際，$P^T AP = \begin{pmatrix}
+    -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\
+    -\frac{1}{\sqrt{6}} & -\frac{1}{\sqrt{6}} & \frac{2}{\sqrt{6}} \\
+    \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}
+\end{pmatrix}\begin{pmatrix}
+    1 & 1 & 1 \\
+    1 & 1 & 1 \\
+    1 & 1 & 1
+\end{pmatrix}\begin{pmatrix}
+    -\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\
+    \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\
+    0 & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{3}}
+\end{pmatrix} = \text{diag}(0, 0, 3)$ となる。
+
+</Toggle>
+
+### ユニタリ対角化
+ここでは，$A$ が **正規行列** のときを考える。すなわち，$A^* A = A A^*$ である。
+- $A$ が正規行列 $(A^* A = A A^*)$ で，$A$ が固有値 $\alpha$ を持つとき，
+$\alpha$ の固有空間 $V_\alpha \in \mathbb{C}^n$ と $V_\alpha^\perp \in \mathbb{C}^n$ について，
+任意の $\bm{x} \in V_\alpha^\perp$ に対し，$A\bm{x} \in V_\alpha^\perp$ が成り立つ
+
+:::tip[ユニタリ対角化]
+$n$ 次複素正方行列 $A$ が **ユニタリ対角化可能** であるとは，
+$P^{-1}AP = P^* A P = \text{diag}(\alpha_1, \cdots, \alpha_n)~~(\alpha_i \in \mathbb{C})$ をみたすようなユニタリ行列 $P$ が存在することをいう。
+
+$A$ がユニタリ対角化可能であるための必要十分条件は，**$A$ が正規行列であること** である。
+:::
+- $A$ が $n$ 次正規行列，$P$ が $n$ 次ユニタリ行列のとき，$B = P^{-1}AP$ は $B^* B = B B^*$ をみたすので，$B$ も正規行列である
+- $P$ が $n$ 次ユニタリ行列のとき，$P^{-1} \text{diag}(\alpha_1, \cdots, \alpha_n) P$ は正規行列である
+- $A$ が $n$ 次正規行列で相異なる固有値 $\alpha_1, \cdots, \alpha_k$ を持つとき，
+$A$ の固有空間 $V_{\alpha_i}$ について，$\mathbb{C}^n = V_{\alpha_1} \oplus \cdots \oplus V_{\alpha_k}$ が成り立つ
+    - つまり，任意の $\bm{v}_i \in V_{\alpha_i},~\bm{v}_j \in V_{\alpha_j}~(i \ne j)$ に対し，$\bm{v}_i \cdot \bm{v}_j = 0$ が成り立つ
+    - 特に，固有値に対応する固有ベクトル $\bm{p}_i$ は互いに直交する
+
+:::note[エルミート行列]
+また，エルミート行列 $(A^* = A)$ はユニタリ行列 $(A^* A = A A^*)$ であるが，エルミート行列の固有値は実数となる。
+:::
+- 量子力学で死ぬほど出てくるやつ
+
+---
+## まとめ
+:::tip[まとめ]
+#### 定義
+- $A^T A = A A^T$ : 実正規行列 ($A$ は $n$ 次実正方行列)
+- $A^* A = A A^*$ : 正規行列 ($A$ は $n$ 次複素正方行列)
+- $A^T A = E$ : 直交行列 ($A$ は $n$ 次実正方行列)
+- $A^* A = E$ : ユニタリ行列 ($A$ は $n$ 次複素正方行列)
+- $A^T = A$ : 実対称行列 ($A$ は $n$ 次実正方行列)
+- $A^* = A$ : エルミート行列 ($A$ は $n$ 次複素正方行列)
+
+#### 対角化
+- 対角化可能 $\Leftrightarrow$ 
+    1. 1 次独立な固有ベクトルを $n$ 個持つ
+    2. $\dim V_{\alpha_i} = \nu_i$ ($i = 1, \cdots, k$)
+    3. $m_A(x) = (x - \alpha_1)\cdots (x - \alpha_k)$
+- 直交対角化可能 $\Leftrightarrow$ **実対称行列** $(A^T = A)$
+    - 直交行列 $P$ が存在して，$P^{-1}AP = P^T A P = \text{diag}(\alpha_1, \cdots, \alpha_n)~~(\alpha_i \in \mathbb{R})$
+    - $A$ の固有値は実数である
+- ユニタリ対角化可能 $\Leftrightarrow$ **正規行列** $(A^* A = A A^*)$
+    - ユニタリ行列 $P$ が存在して，$P^{-1}AP = P^* A P = \text{diag}(\alpha_1, \cdots, \alpha_n)$
+    - $A$ がエルミート行列のとき，$A$ の固有値は実数である
+
+
+#### その他
+- Gram-Schmidt の正規直交化法 : **基底を正規直交基底に変換する** 時に使う
+    1. 直交化 : $\displaystyle\bm{b}_j = \bm{a}_j - \sum_{i = 1}^{j-1} \frac{\bm{a}_j \cdot \bm{b}_i}{\| \bm{b}_i\|^2} \bm{b}_i$
+    2. 正規化 : $\displaystyle\bm{\widetilde{b}}_j = \frac{1}{\| \bm{b}_j\|}\bm{b}_j$
+- 直交変換 : $A$ を直交行列として，$f(\bm{x}) = A\bm{x}~~(\bm{x} \in \mathbb{R}^n)$ 。内積を保存する : $f(\bm{x}) \cdot f(\bm{y}) = \bm{x} \cdot \bm{y}$
+    - $\mathbb{R}^n$ 上の正規直交基底 $\mathscr{A}$ から $\mathscr{B}$ の基底変換行列 $P$ は直交行列である
+- ユニタリ変換 : $A$ をユニタリ行列として，$f(\bm{x}) = A\bm{x}~~(\bm{x} \in \mathbb{C}^n)$ 。内積を保存する : $f(\bm{x}) \cdot f(\bm{y}) = \bm{x} \cdot \bm{y}$
+    - $\mathbb{C}^n$ 上の正規直交基底 $\mathscr{A}$ から $\mathscr{B}$ の基底変換行列 $P$ はユニタリ行列である
+:::
+- 直交対角化可能 $\Leftrightarrow$ **実対称行列** なのは，固有値が実数であるためには，実対称行列である必要があるためである。
+それ以外は実正規行列であればよい。実際，実正規行列の固有値が実数 $\Rightarrow$ 実対称行列である
