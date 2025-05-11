@@ -1,0 +1,95 @@
+---
+title: 7. 実二次形式
+---
+
+## 実二次形式
+:::tip[実二次形式]
+実数 $a_1,…,a_n$ に対して，以下の形で表される二次式を **実二次形式** と呼ぶ。
+
+$$
+f(x_1,…,x_n) = \sum_{i=1}^n a_{ii} x_i^2 + 2\sum_{1 \leq i < j \leq n} a_{ij} x_i x_j = 
+(x_1,…,x_n)
+\begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{pmatrix}
+\begin{pmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_n
+\end{pmatrix}
+~~(a_{ij} \in \mathbb{R},~a_{ij} = a_{ji})
+$$
+
+よって，実対称行列 $A = (a_{ij})$ を用いて，
+$f_A(x_1,…,x_n) = \bm{x}^T A \bm{x} = \sum_{i=1}^n a_{ii} x_i^2 + 2\sum_{1 \leq i < j \leq n} a_{ij} x_i x_j$ と表せる。
+:::
+- 例えば，$A = \begin{pmatrix} 1 & 2 \\ 2 & 3 \end{pmatrix}$ の時，$f_A(x_1,x_2) = x_1^2 + 4x_1x_2 + 3x_2^2$ となる
+
+---
+## 直交標準形
+:::tip[直交標準形]
+実二次形式 $f_A(x_1,…,x_n)$ を，直交変換を用いて二乗の項のみを持つ **直交標準形** に変換することができる。
+1. 実対称行列 $A$ を直交対角化する直交行列 $P$ を見つける。この時，$P^{T}AP = P^{-1}AP = \text{diag}(\lambda_1,…,\lambda_n)$ となる
+2. 直交変換 $\bm{y} = P\bm{x}$ を行う。すると，$f_A(x_1,…,x_n) = \bm{y}^T \text{diag}(\lambda_1,…,\lambda_n) \bm{y} = f_{P^{-1}AP}(\bm{y})$ となる
+
+すなわち，直交標準形は $f_A(x_1,…,x_n) = \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2$ となる。
+:::
+例えば，$f_A(\bm{x}) = x^2 + y^2 + z^2 + 2xy + 2xz + 2yz$ の場合，
+$A = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{pmatrix}$ として，
+$P = \begin{pmatrix} -\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\ 0 & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{3}} \end{pmatrix}$ を用いると，
+$P^TAP = \text{diag}(0,0,3)$ となるので，
+
+$x = -\frac{1}{\sqrt{2}}u - \frac{1}{\sqrt{6}}v + \frac{1}{\sqrt{3}}w,~ y = \frac{1}{\sqrt{2}}u - \frac{1}{\sqrt{6}}v + \frac{1}{\sqrt{3}}w,~ z = \frac{2}{\sqrt{6}}v + \frac{1}{\sqrt{3}}w$ として，
+$f_A(x,y,z) = f_{P^{-1}AP}(u,v,w) = 0u^2 + 0v^2 + 3w^2$ となる。
+
+---
+## Sylvesterの慣性法則
+:::tip[Sylvesterの慣性法則]
+$f_A(\bm{x})$ を $n$ 次実対称行列 $A$ の定める実二次形式とする。
+この時，実正則座標変換 $\bm{x} = S\bm{z}$ を用いて，
+$$
+f_A(\bm{x}) = f_{S^TAS}(\bm{z}) = z_1^2 + \cdots + z_p^2 - z_{p+1}^2 - \cdots - z_{p+q}^2
+$$ 
+という直交標準形で表すことができる。また，$p + q = \text{rank}(A)$ であり，直交標準形は一意的に定まる。
+:::
+これは，$P$ を直交標準形に変換する直交行列
+$$
+P^TAP = \text{diag}(\lambda_1,…,\lambda_p, \lambda_{p+1},…,\lambda_{p+q}, 0,…,0)~~(\lambda_1,…,\lambda_p > 0,~\lambda_{p+1},…,\lambda_{p+q} < 0)
+$$
+とした時，$S$ を以下のように定めることで実現できる。
+$$
+S = P(\text{diag}(\frac{1}{\sqrt{\lambda_1}},…,\frac{1}{\sqrt{\lambda_p}}, \frac{1}{\sqrt{-\lambda_{p+1}}},…,\frac{1}{\sqrt{-\lambda_{p+q}}}, 1,…,1))
+$$
+
+
+- すなわち，$S^TAS = \text{diag}(1,…,1,-1,…,-1,0,…,0)$ である
+- $(p,q)$ を 実対称行列 $A$ の **符号数** と呼ぶ
+
+:::note[正定値]
+さらに，実対称行列 $A$ の固有値が全て正である時，**正定値** と呼ぶ。(すなわち，符号数が $(n,0)$ )
+
+つまり，任意の $\bm{x} \in \mathbb{R}^n$ に対して $f_A(\bm{x}) = \bm{x}^T A \bm{x} \geq 0$ であり，$f(\bm{x}) = 0$ となるのは $\bm{x} = \bm{0}$ の時のみである。
+
+- また，実対称行列 $A$ の固有値が全て非負である時，**半正定値** と呼ぶ。(すなわち，符号数が $(p,0)$ )
+    - この時，任意の $\bm{x} \in \mathbb{R}^n$ に対して $f_A(\bm{x}) = \bm{x}^T A \bm{x} \geq 0$
+:::
+- より一般には，エルミート行列に対しても同様のことが成り立つ。この時は，二次形式は $\bm{x}^* A \bm{x}$ と定義する
+
+
+### 直交標準形を平方完成で求める
+直交標準形は，$A$ を直交対角化した後に $S$ を用いて求める他に，平方完成を用いて求めることもできる。
+
+例えば，$f(x,y) = x^2 + 2y^2 + 5xy$ の場合，$A = \begin{pmatrix} 1 & \frac{5}{2} \\ \frac{5}{2} & 2 \end{pmatrix}$ であり，
+$f(x,y) = (x + \frac{5}{2}y)^2 - \frac{17}{4}y^2$ であるので，
+
+$u = x + \frac{5}{2}y,~ v = \frac{\sqrt{17}}{2}y$ とすると，$f(x,y) = u^2 - v^2$ となる。
+
+変換行列 $S$ は，$\begin{pmatrix} x \\ y \end{pmatrix} = S \begin{pmatrix} u \\ v \end{pmatrix}$ が成り立つので，
+$S = \begin{pmatrix} 1 & \frac{5}{2} \\ 0 & \frac{2}{\sqrt{17}} \end{pmatrix}^{-1} = 
+\frac{2}{\sqrt{17}} \begin{pmatrix} \frac{\sqrt{17}}{2} & -\frac{5}{2} \\ 0 & 1 \end{pmatrix}$ となる。
+
+- この時実際，$S^TAS = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$ となる

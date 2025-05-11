@@ -1,0 +1,114 @@
+---
+title: 8. ジョルダン標準形
+---
+
+## Jondan 標準形
+### Jordan 細胞 (Jordan ブロック)
+:::tip[Jordan 細胞 (Jordan ブロック)]
+$\alpha$ を複素数，$n$ を自然数とする。対角成分が全て $\alpha$ で，$(1,2), \cdots, (n-1,n)$ の成分が全て $1$ である $n \times n$ 行列を **Jordan 細胞** と呼び，$J_n(\alpha)$ と表す。
+
+すなわち，$J_n(\alpha) = \begin{pmatrix} \alpha & 1 & 0 & \cdots & 0 \\ 0 & \alpha & 1 & \cdots & 0 \\ \vdots & \vdots & \ddots & \ddots & \vdots \\ 0 & 0 & \cdots & \alpha & 1 \\ 0 & 0 & \cdots & 0 & \alpha \end{pmatrix}$ と表される。
+:::
+成り立つ事柄
+- $J_n(\alpha) - \alpha E_n = J_n(0) = (\bm{0}, \bm{e}_1, \cdots, \bm{e}_{n-1})$
+- $J_n(\alpha)$ の固有値は $\alpha$ のみ
+- $J_n(\alpha)$ の固有ベクトル空間 $V_\alpha = \braket{\bm{e}_1}$ で $\text{dim} V_\alpha = 1$
+- $\text{rank} J_n(\alpha) = \begin{cases} n & (\alpha \neq 0) \\ n - 1 & (\alpha = 0) \end{cases}$
+
+特に，$J_n(0)$ の性質
+- $J_n(0)^n = O$ 。すなわち，べき零行列である
+- $A = (\bm{a}_1, \cdots, \bm{a}_n)$ に対して，$AJ_n(0) = (\bm{0}, \bm{a}_1, \cdots, \bm{a}_{n-1})$ となる
+
+### Jordan 標準形
+:::tip[Jordan 標準形]
+正方行列 $A$ が Jordan 細胞の直和 (**Jordan 分解**)
+$$
+J = J_{n_1}(\alpha_1) \oplus J_{n_2}(\alpha_2) \oplus \cdots \oplus J_{n_k}(\alpha_k)
+$$
+と相似である時，$J$ を $A$ の **Jordan 標準形** と呼ぶ。また，$J = P^{-1}AP$ なる正則行列 $P$ を変換行列と呼ぶ。
+
+なおこの時，以下が成り立つ。
+- $\det A = \det J = \alpha_1^{n_1} \cdots \alpha_k^{n_k}$
+- 任意の正方行列は Jordan 標準形を持ち，Jordan 細胞を並べる順序を問わなければ，一意的に定まる (ただし，変換行列は一意的に定まらない)
+- $A^{m-1}\bm{v} \neq \bm{0},~A^m\bm{v} = \bm{0}$ である時，$\bm{v}, A\bm{v}, \cdots, A^{m-1}\bm{v}$ は $1$ 次独立である
+:::
+- $\bm{v}$ を始点とする **$A$ -軌道** : $n$ 次正方行列 $A$ と $\bm{v} \in \mathbb{C}^n$ に対して，列 $(\bm{v}, A\bm{v}, \cdots, A^{m}\bm{v})$ のこと。$m = \infty$ の時もある
+    - 例えば，$(\bm{e}_n, \bm{e}_{n-1}, \cdots, \bm{e}_1)$ は $\bm{e}_n$ を始点とする $J_n(0)$ -軌道であり，$\mathbb{C}^n$ の基底を成す
+- $V$ は **$A$ -不変** : $V \subset \mathbb{C}^n$ のベクトル空間に対して，$AV = \{ A\bm{v} | \bm{v} \in V \} \subset V$ であること
+- $A$ の固有値が $\alpha$ のみの時，$A$ の Jordan 標準形の Jordan 細胞の個数は $n - \text{rank}(A - \alpha E_n)$ である
+    - Jordan 標準形を作る時は基本的にこれを用いる
+
+---
+## Jordan 標準形の求め方
+:::tip[Jordan 標準形の求め方]
+#### $1$ 次正方行列 : それ自体が Jordan 標準形
+
+#### $2$ 次正方行列 : 
+1. $A$ の固有値が $2$ つある時 $(\alpha_1, \alpha_2)$ : Jordan 標準形は 
+$J = J_1(\alpha_1) \oplus J_1(\alpha_2) = \begin{pmatrix} \alpha_1 & 0 \\ 0 & \alpha_2 \end{pmatrix}$
+2. $A$ の固有値が $1$ つのみである時 $(\alpha)$ 
+    - $\alpha E_2 - A$ の rank が $1$， すなわち対角化不可能なら $J = J_2(\alpha) = \begin{pmatrix} \alpha & 1 \\ 0 & \alpha \end{pmatrix}$
+    - $\alpha E_2 - A$ の rank が $0$， すなわち対角化可能なら $J = \alpha E_2 = \begin{pmatrix} \alpha & 0 \\ 0 & \alpha \end{pmatrix}$
+
+#### $3$ 次正方行列 :
+1. $A$ の固有値が $3$ つある時 $(\alpha_1, \alpha_2, \alpha_3)$ : Jordan 標準形は
+$J = J_1(\alpha_1) \oplus J_1(\alpha_2) \oplus J_1(\alpha_3) = \begin{pmatrix} \alpha_1 & 0 & 0 \\ 0 & \alpha_2 & 0 \\ 0 & 0 & \alpha_3 \end{pmatrix}$
+2. $A$ の固有値が $2$ つある時 ( $\alpha_1, \alpha_2$ で $\alpha_2$ の重複度が $2$ ) 
+    - $m_A(x) = (x - \alpha_1)(x - \alpha_2)$，すなわち $A$ が対角化可能な時，
+    $J = \begin{pmatrix} \alpha_1 & 0 & 0 \\ 0 & \alpha_2 & 0 \\ 0 & 0 & \alpha_2 \end{pmatrix}$
+    - $m_A(x) = (x - \alpha_1)(x - \alpha_2)^2$，すなわち $A$ が対角化不可能な時，
+    $J = J_1(\alpha_1) \oplus J_2(\alpha_2) = \begin{pmatrix} \alpha_1 & 0 & 0 \\ 0 & \alpha_2 & 1 \\ 0 & 0 & \alpha_2 \end{pmatrix}$
+3. $A$ の固有値が $1$ つのみである時 $(\alpha)$
+    - $\alpha E_3 - A$ の rank が $2$ : $J = J_3(\alpha) = \begin{pmatrix} \alpha & 1 & 0 \\ 0 & \alpha & 1 \\ 0 & 0 & \alpha \end{pmatrix}$
+    - $\alpha E_3 - A$ の rank が $1$ : $J = J_1(\alpha) \oplus J_2(\alpha) = \begin{pmatrix} \alpha & 0 & 0 \\ 0 & \alpha & 1 \\ 0 & 0 & \alpha \end{pmatrix}$
+    - $\alpha E_3 - A$ の rank が $0$， すなわち対角化可能なら : $J = \alpha E_3 = \begin{pmatrix} \alpha & 0 & 0 \\ 0 & \alpha & 0 \\ 0 & 0 & \alpha \end{pmatrix}$
+:::
+- つまり，「対角化できるか」と「最小多項式が何か = 固有空間の次元は何か」を確認すればよい
+- 実際に最小多項式 $m_A(x)$ を求めるときは，固有値と重複度を求めた後に，次数が低い候補順に $m_A(A) = O$ を満たすものを探す
+
+- 画像は[こちら](https://takataninote.com/linear-algebra/jordan.html)より引用
+<img src="/img/math/jordan.png" alt="Jordan 標準形" style={{ width: '50%' }} />
+
+### 変換行列の求め方
+:::tip[変換行列の求め方]
+1. 対角化できる場合はもちろん固有ベクトルをならべて $P = (\bm{p}_1, \cdots, \bm{p}_n)$ とする
+2. 対角化不可能で，固有値が $1$ つのみである時 $(\alpha)$ : $P = (\bm{p}_1, \cdots, \bm{p}_n)$ として，
+    $(A - \alpha E_n) (\bm{p}_1, \cdots, \bm{p}_n) = (\bm{p}_1 \cdots, \bm{p}_{n})(\alpha E_n - J)$ から，
+    - $(A - \alpha E_n) \bm{p}_1 = \bm{0},~ (A - \alpha E_n) \bm{p}_2 = \bm{p}_1 \text{or}~\bm{0}, \cdots, (A - \alpha E_n) \bm{p}_n = \bm{p}_{n-1} \text{or}~\bm{0}$ となるので，
+    順に解を求める $\rightarrow$ 次に代入 を繰り返せば良い
+    - 例えば， $\bm{p}_1 = \begin{pmatrix} \alpha + 2\beta \\ \alpha \\ \beta \end{pmatrix}$ がわかり，$(A - \alpha E_n) \bm{p}_2 = \bm{p}_1$ となるような $\bm{p}_2$ を求める，という流れになる。
+    - 特に，$\alpha, \beta$ に関係性がある場合は，勝手に $A$ の固有ベクトルを取ってしまってはいけないことに注意
+    - 変換行列は一意には定まらない
+3. 対角化不可能で，固有値が $2$ つ以上ある時，一般に $AP = PJ$ となるような $P$ を求める
+    - 例えば，$J = J_1(\alpha_1) \oplus J_2(\alpha_2)$ の場合，
+    $AP = PJ = (\alpha_1 \bm{p}_1, \alpha_2 \bm{p}_2, \bm{p}_2 + \alpha_2 \bm{p}_3)$ となるので，
+    - $A\bm{p}_1 = \alpha_1 \bm{p}_1,~ A\bm{p}_2 = \alpha_2 \bm{p}_2,~ A\bm{p}_3 = \bm{p}_2 + \alpha_2 \bm{p}_3$ となるような $\bm{p}_1, \bm{p}_2, \bm{p}_3$ を求める
+    - つまり，重複度 = 固有空間の次元の固有値は固有ベクトルを並べれば良い
+:::
+- 一般固有空間の一次独立なベクトルを並べて変換行列を作るイメージ (固有ベクトルは一般固有ベクトルに含まれる)
+    - ただ，適当に選ぶだけではダメで，Jordan chains を作る必要がある。[wiki](https://ja.wikipedia.org/wiki/%E5%BA%83%E7%BE%A9%E5%9B%BA%E6%9C%89%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB) も参照
+        - $\text{rank}(A - \alpha E_n)^{m-1} - \text{rank}(A - \alpha E_n)^{m}$ 個分だけ，
+        $(A - \alpha E_n)^m\bm{v} = \bm{0},~(A - \alpha E_n)^{m-1}\bm{v} \neq \bm{0}$ を満たす $\bm{v}$ を基底に取る。
+        広義固有ベクトルの標準基底というらしい。
+    - でも，それさえできれば結構適当に選んで良い。並べ方は注意
+- 変換行列の各ベクトルは **一次独立** である必要がある
+
+---
+## 一般固有空間
+:::tip[一般固有空間]
+複素 $n$ 次正方行列 $A$ に対して，固有多項式 $\varphi_A(x) = (x - \alpha_1)^{\nu_1} \cdots (x - \alpha_k)^{\nu_k}$，
+最小多項式 $m_A(x) = (x - \alpha_1)^{\mu_1} \cdots (x - \alpha_k)^{\mu_k}$ とする。
+この時，固有値 $\alpha_i$ に対して，
+- 固有空間 $V_{\alpha_i} = \{ \bm{v} | A\bm{v} = \alpha_i \bm{v} \} = \{ \bm{v} | (A - \alpha_i E_n)\bm{v} = \bm{0} \}$
+- **一般固有空間**，**広義固有空間** $Z_{\alpha_i} = \{ \bm{v} | \exists m \in \mathbb{N} : (A - \alpha_i E_n)^m \bm{v} = \bm{0} \}$
+
+と定義する。また，以下のように定義する。
+- $Z_{\alpha_i}^{\prime} = \{ \bm{v} | (A - \alpha_i E_n)^{\mu_i} \bm{v} = \bm{0} \}$
+
+この時，$Z_{\alpha_i} = Z_{\alpha_i}^{\prime}$ が成り立つ。よって，後者を一般固有空間の定義としても良い。
+:::
+- $Z_i, Z_i^{\prime}$ は $A$ -不変である
+- この時，$\mathbb{C}^n = Z_{\alpha_1} \oplus \cdots \oplus Z_{\alpha_k} = Z_{\alpha_1}^{\prime} \oplus \cdots \oplus Z_{\alpha_k}^{\prime}$
+- $\dim Z_{\alpha_i} = \dim Z_{\alpha_i}^{\prime} = \nu_i$
+
+なお，実際に一般固有空間を求める際は，$(A - \alpha_i E_n)^{\nu_1} \bm{v} = \bm{0}$ を満たす $\bm{v}$ を求めることになる。
