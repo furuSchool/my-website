@@ -26,9 +26,63 @@ import Toggle from '/components/toggle.tsx'
 さらに，$\bm{a}_1,…,\bm{a}_n \in V$ の 1 次結合全体の集合を $ \braket{\bm{a}_1,…, \bm{a}_n}$ と書く。
 これは，$\bm{a}_1,…,\bm{a}_n \in V$ によって張られる部分ベクトル空間となる。
 - なお，$V$ 自身が有限個の元で張られる場合 $V$ は有限次元ベクトル空間，そうでない場合は無限次元ベクトル空間である
+---
+## 行列の積
+### 行列積
+:::tip[行列積]
+$A = (a_{ij})$ を $m \times n$ 行列，$B = (b_{ij})$ を $n \times p$ 行列とする。
+この時，$A$ と $B$ の積 $AB = (c_{ij}),~c_{ij} = \sum_{k=1}^n a_{ik} b_{kj}$
+$$
+\begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\a_{21} & a_{22} & \cdots & a_{2n} \\\vdots & \vdots & \ddots & \vdots \\a_{m1} & a_{m2} & \cdots & a_{mn}\end{pmatrix}
+\begin{pmatrix}
+b_{11} & b_{12} & \cdots & b_{1p} \\b_{21} & b_{22} & \cdots & b_{2p} \\\vdots & \vdots & \ddots & \vdots \\b_{n1} & b_{n2} & \cdots & b_{np}\end{pmatrix}
+=
+\begin{pmatrix}
+\sum_{k=1}^n a_{1k} b_{k1} & \sum_{k=1}^n a_{1k} b_{k2} & \cdots & \sum_{k=1}^n a_{1k} b_{kp} \\
+\sum_{k=1}^n a_{2k} b_{k1} & \sum_{k=1}^n a_{2k} b_{k2} & \cdots & \sum_{k=1}^n a_{2k} b_{kp} \\\vdots & \vdots & \ddots & \vdots \\ \sum_{k=1}^n a_{mk} b_{k1} & \sum_{k=1}^n a_{mk} b_{k2} & \cdots & \sum_{k=1}^n a_{mk} b_{kp}\end{pmatrix}
+$$
+:::
+- 一般に $AB \neq BA$ である
+
+### Kronecker 積 (直積)
+:::tip[ Kronecker 積 (直積)]
+$A = (a_{ij})$ を $m \times n$ 行列，$B = (b_{ij})$ を $p \times q$ 行列とする。
+この時，$A$ と $B$ の Kronecker 積 $A \otimes B$ を以下のように定義する。
+$$
+A \otimes B = \begin{pmatrix}
+a_{11}B & a_{12}B & \cdots & a_{1n}B \\
+a_{21}B & a_{22}B & \cdots & a_{2n}B \\\vdots & \vdots & \ddots & \vdots \\a_{m1}B & a_{m2}B & \cdots & a_{mn}B\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11}b_{11} & \cdots & a_{11}b_{1q} & a_{12}b_{11} & \cdots & a_{1n}b_{1q} \\
+\vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\a_{m1}b_{11} & \cdots & a_{m1}b_{1q} & a_{m2}b_{11} & \cdots & a_{mn}b_{1q} \\\vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\a_{m1}b_{p1} & \cdots & a_{m1}b_{pq} & a_{m2}b_{p1} & \cdots & a_{mn}b_{pq}\end{pmatrix}
+$$
+- $A \otimes B$ は $mp \times nq$ 行列である
+:::
+- $(A \otimes B) \otimes C = A \otimes (B \otimes C)$
+- $A \otimes (B + C) = A \otimes B + A \otimes C$
+- $(A + B) \otimes C = A \otimes C + B \otimes C$
+- $AB \otimes CD = (A \otimes C)(B \otimes D)$
+
+### Hadamard 積
+:::tip[Hadamard 積]
+$A = (a_{ij})$ を $m \times n$ 行列，$B = (b_{ij})$ を $m \times n$ 行列とする。
+この時，$A$ と $B$ の Hadamard 積 $A \circ B = (c_{ij}),~c_{ij} = a_{ij}b_{ij}$
+$$
+\begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\a_{21} & a_{22} & \cdots & a_{2n} \\\vdots & \vdots & \ddots & \vdots \\a_{m1} & a_{m2} & \cdots & a_{mn}\end{pmatrix}
+\circ
+\begin{pmatrix}
+b_{11} & b_{12} & \cdots & b_{1n} \\b_{21} & b_{22} & \cdots & b_{2n} \\\vdots & \vdots & \ddots & \vdots \\b_{m1} & b_{m2} & \cdots & b_{mn}\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11}b_{11} & a_{12}b_{12} & \cdots & a_{1n}b_{1n} \\a_{21}b_{21} & a_{22}b_{22} & \cdots & a_{2n}b_{2n} \\\vdots & \vdots & \ddots & \vdots \\a_{m1}b_{m1} & a_{m2}b_{m2} & \cdots & a_{mn}b_{mn}\end{pmatrix}
+$$
+:::
 
 ---
-## 行列の基本
+## 行列の基本性質
 行基本変形（列基本変形もある）は以下の三つであり，**いずれも左から行列をかけることで表される**。（これらの行列は基本行列とよぶらしい）
 1. $1$ つの行を $\lambda(\neq 0)$ 倍する
 2. $2$ つの行を入れ替える
@@ -245,7 +299,7 @@ $\mathrm{rank}~A = \dim \text{Im} f$ である
 - 対称行列 : $A = A^T$
 - 反対称行列 : $A = -A^T$
 - エルミート行列 : $A = A^*$
-- 反エルミート行列 : $A = -A^*$
+- 歪エルミート行列 : $A = -A^*$
 - 実正規行列 : $A^T A = A A^T$
 - 正規行列 : $A^* A = A A^*$
 

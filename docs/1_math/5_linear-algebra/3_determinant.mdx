@@ -57,7 +57,6 @@ $A = (\bm{a}_1, \bm{a}_2, \cdots, \bm{a}_n)$ とする。
 :::
 
 ### 積の行列式
-行列積の定義は既知のものとする
 :::tip[積の行列式]
 任意の $n$ 次正方行列 $A, B$ に対して，$\det(AB) = \det(A) \cdot \det(B)$ が成り立つ。
 :::
@@ -129,13 +128,18 @@ $n$ 次正方行列 $A$ の対角成分の和をトレースという。 $\mathr
 $A$ : $m\times n$ 行列，$B$ : $n\times m$ 行列とすると，$\mathrm{Tr} (AB) = \mathrm{Tr} (BA)$
 - よって，$\mathrm{Tr} (ABC) = \mathrm{Tr} (CAB) = \mathrm{Tr} (BCA)$
 :::
+他に成り立つ性質
+- $\mathrm{Tr} (A + B) = \mathrm{Tr} A + \mathrm{Tr} B$
+- $\mathrm{Tr} (cA) = c \mathrm{Tr} A$
 
 ### 相似
+:::note[相似]
 $n$ 次正方行列 $A$, $B$ に対して，$n$ 次正則行列 $P$ が存在し，$B = P^{-1}AP$ が成り立つ時，$A$ と $B$ は **相似** であるという。
 相似は同値関係である。また，相似である時，以下が成り立つ。
 - $\det A = \det B$
 - $\mathrm{Tr} A = \mathrm{Tr} B$
 - 多項式 $f$ に対して，$\det f(A) = \det f(B)$
+:::
 
 ### Cramer の公式
 :::note[Cramer の公式]

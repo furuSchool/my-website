@@ -42,6 +42,45 @@ $\theta \in [0,\pi]$ が一意に定まる。この時， $\theta$ を $\bm{a}$ 
 - この時，$\bm{a} \in V$ について，$\bm{a} = (\bm{a} \cdot \bm{a}_1) \bm{a}_1 + \cdots + (\bm{a} \cdot \bm{a}_n) \bm{a}_n = 
 (\bm{a} \cdot \bm{a}_1, \cdots, \bm{a} \cdot \bm{a}_n)^{T}$ となる。これは量子力学などでもよく使う
 
+### 一般のノルム
+:::note[$L_p$ ノルム]
+$\mathbb{R}^n$ 上のベクトル $\bm{x} = (x_1, x_2, \cdots, x_n)$ に対して，以下のように定義する。
+$$
+\|\bm{x}\|_p = \left( \sum_{i=1}^n |x_i|^p \right)^{\frac{1}{p}}
+$$
+- 特に，$p = \infty$ の時，$\|\bm{x}\|_\infty = \max_{1 \le i \le n} |x_i|$ となる
+
+また，以下が成り立つ。
+- $\|\bm{x}\|_p \ge 0$，$\|\bm{x}\|_p = 0$ ならば $\bm{x} = \bm{0}$
+- $\|\bm{x} + \bm{y}\|_p \le \|\bm{x}\|_p + \|\bm{y}\|_p$ (三角不等式)
+- $\|\lambda \bm{x}\|_p = |\lambda| \|\bm{x}\|_p$
+:::
+
+また，行列のノルムは，以下のように定義される。
+:::note[行列ノルム]
+$A$ を $m \times n$ 行列として，$A$ のノルム $\|A\|_p$ を以下のように定義する。このノルムの定義は，誘導ノルムと呼ばれる。
+$$
+\|A\|_p = \max_{\bm{x} \ne \bm{0}} \frac{\|A\bm{x}\|_p}{\|\bm{x}\|_p} = \max_{\|\bm{x}\|_p = 1} \|A\bm{x}\|_p~~(\bm{x} \in \mathbb{R}^n)
+$$
+- $p = 1$ の時，$\|A\|_1 = \max_{1 \le j \le n} \sum_{i=1}^m |a_{ij}|$ : 各列の絶対値の和の最大値
+- $p = \infty$ の時，$\|A\|_\infty = \max_{1 \le i \le m} \sum_{j=1}^n |a_{ij}|$ : 各行の絶対値の和の最大値
+:::
+以下が成り立つ。
+- $\|A\bm{x}\|_p \le \|A\|_p \|\bm{x}\|_p$
+- $\|A\|_p \ge 0$，$\|A\|_p = 0$ ならば $A = O$
+- $\|A + B\|_p \le \|A\|_p + \|B\|_p$ (三角不等式)
+- $\|\lambda A\|_p = |\lambda| \|A\|_p$
+- $\|AB\|_p \le \|A\|_p \|B\|_p$
+
+また，Frobenius ノルムは，$\|A\|_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2}$ で定義される。この時，以下が成り立つ。
+- $\|A\|_F = \sqrt{\sum_{i=1}^n \|\bm{a}_i\|^2}~~(A = (\bm{a}_1, \cdots, \bm{a}_n))$
+- $\|A\|_F = \sqrt{\mathrm{Tr}(A^*A)}$
+- $\|A\bm{x}\|_2 \le \|A\|_F \|\bm{x}\|_2,~\|A\|_2 \le \|A\|_F$
+- $\|A\|_F \ge 0$，$\|A\|_F = 0$ ならば $A = O$
+- $\|A + B\|_F \le \|A\|_F + \|B\|_F$
+- $\|\lambda A\|_F = |\lambda| \|A\|_F$
+- $\|AB\|_F \le \|A\|_F \|B\|_F$
+
 ### 直交補空間
 :::note[直交補空間]
 $W \subset V$ : 内積空間に対して， $W^{\perp} = \{\bm{v} \in V | \bm{v} \cdot \bm{w} = 0,~\forall \bm{w} \in W\}$ を定義し，

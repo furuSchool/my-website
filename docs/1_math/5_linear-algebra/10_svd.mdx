@@ -1,0 +1,23 @@
+---
+title: 10. 特異値分解
+---
+
+## 特異値分解
+:::tip[特異値分解]
+$\text{rank}(A) = r$ の $m \times n$ 行列 $A$ について，$m$ 次ユニタリ行列 $U$，$n$ 次ユニタリ行列 $V$，
+$m \times n$ 行列 $\Sigma$ を用いて次のように表すことができる。これを **特異値分解**という。
+$$
+A = U \Sigma V^*
+$$
+
+ただし，$\Sigma = \begin{pmatrix}
+\text{diag}(\sigma_1, \sigma_2, \ldots, \sigma_r) & O \\
+O & O
+\end{pmatrix}$ であり，$\sigma_1, \sigma_2, \ldots, \sigma_r$ は $A$ の特異値と呼ばれる。
+- 特異値を定める $\Sigma$ は一意に定まるが，$U$ と $V$ は一意に定まらない
+:::
+- $A^TA$ が半正定値行列であり，$\text{rank}(A) = r$ であることから，
+$A^TA = V \text{diag}(\lambda_1, \lambda_2, \ldots, \lambda_r, 0, \ldots, 0)V^*$ と表せる
+- したがって，$\sigma_i = \sqrt{\lambda_i},~U = AV\Sigma^{-1} = A V \text{diag}(\sigma_1^{-1}, \sigma_2^{-1}, \ldots, \sigma_r^{-1})
+ = (\frac{A\bm{v}_1}{\sigma_1}, \frac{A\bm{v}_2}{\sigma_2}, \ldots, \frac{A\bm{v}_r}{\sigma_r})$
+- または，$AA^* = U \text{diag}(\sigma_1^2, \sigma_2^2, \ldots, \sigma_r^2, 0, \ldots, 0)U^*$ とも表せるので，ここからも $U$ を求めるられる

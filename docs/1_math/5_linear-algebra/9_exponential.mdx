@@ -1,0 +1,39 @@
+---
+title: 9. 行列の指数関数
+---
+## 定義
+:::tip[行列の指数関数]
+$n$ 次正方行列 $A$ に対して，行列の指数関数 $e^{tA}$ を次のように定義する。
+$$
+e^{tA} = \sum_{k=0}^{\infty} \frac{(tA)^k}{k!} = E_n + tA + \frac{(tA)^2}{2!} + \frac{(tA)^3}{3!} + \cdots
+$$
+:::
+- ただし，行列の各成分の級数は収束する
+- $A\exp(tA) = \exp(tA)A$ が成り立つ
+- $A = \text{diag}(\alpha_1, \alpha_2, \cdots, \alpha_n)$ の時，$e^{tA} = \text{diag}(e^{\alpha_1 t}, e^{\alpha_2 t}, \cdots, e^{\alpha_n t})$
+- $J_n(\alpha)^k = (\alpha E_n + J_n(0))^k = \sum_{i=0}^{k} \binom{k}{i} \alpha^{k-i} J_n(0)^i = \begin{pmatrix}
+\alpha^k & k\alpha^{k-1} & \cdots & \binom{k}{n-1}\alpha^{k-n+1} \\
+0 & \alpha^k & \cdots & \binom{k}{n-2}\alpha^{k-n+2} \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \alpha^k
+\end{pmatrix}$
+- 上記より，$e^{tJ_n(\alpha)} = e^{\alpha t} \begin{pmatrix}
+1 & t & \frac{t^2}{2!} & \cdots & \frac{t^{n-1}}{(n-1)!} \\
+0 & 1 & t & \cdots & \frac{t^{n-2}}{(n-2)!} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & 0 & \cdots & 1
+\end{pmatrix}$
+- $P$ を $n$ 次正則行列とすると，$e^{tPAP^{-1}} = Pe^{tA}P^{-1}$ 。したがって、$A$ を対角化 or Jordan 化すれば、$e^{tA}$ を求めることができる
+
+### 連立線形微分方程式
+:::tip[連立線形微分方程式]
+$A$ を $n$ 次正方行列とし，$\bm{x}(t)$ を $n$ 次ベクトルとし，次の連立線形微分方程式を考える。
+$$
+\frac{d\bm{x}(t)}{dt} = A\bm{x}(t)~~\left( \text{or} \begin{cases}
+\frac{d}{dt}x_1(t) = a_{11}x_1(t) + a_{12}x_2(t) + \cdots + a_{1n}x_n(t) \\
+\frac{d}{dt}x_2(t) = a_{21}x_1(t) + a_{22}x_2(t) + \cdots + a_{2n}x_n(t) \\
+\vdots \\
+\frac{d}{dt}x_n(t) = a_{n1}x_1(t) + a_{n2}x_2(t) + \cdots + a_{nn}x_n(t)
+\end{cases}\right)
+$$
+この時，$\bm{x}(t) = e^{tA}\bm{x}(0)$ が成り立つ
