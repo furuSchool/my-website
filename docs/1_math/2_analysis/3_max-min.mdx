@@ -1,0 +1,219 @@
+---
+title: 3. 関数の最大・最小
+---
+
+## 関数の極大・極小
+:::note[極大値・極小値]
+関数 $f(\bm{x})$ が点 $\bm{x_0}$ で **(広義の) 極大値** をとる $\\\Leftrightarrow$ 
+$\exists \delta >0, \forall \bm{x} \in B(\bm{x_0}, \delta) = \{\bm{x} \in \mathbb{R}^n | ||\bm{x} - \bm{x_0}|| < \delta\}$ で $f(\bm{x}) \leq f(\bm{x_0})$ となる
+- 特に，$f(\bm{x}) < f(\bm{x_0})$ となる場合，**狭義の極大値** をとるという
+:::
+- **極小値** は逆に $f(\bm{x}) \geq f(\bm{x_0})$ となるもの
+- 極小値か極大値をとることを，**極値** をとるという
+
+:::note[$C^1$ 級と勾配]
+関数 $f(\bm{x})$ が $C^1$ 級であるとは，全ての点で $f$ が偏微分可能で $\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \cdots, \frac{\partial f}{\partial x_n}$ が連続であることをいう。
+
+また，$f$ の勾配は $\nabla f(\bm{x}) = \begin{pmatrix}
+\frac{\partial f}{\partial x_1} \\
+\vdots \\
+\frac{\partial f}{\partial x_n}
+\end{pmatrix}$ と表す。
+:::
+
+:::tip[定理]
+$f \in C^1$ 級とする。点 $\bm{x_0}$ で $f(\bm{x})$ が極値をとる $\Leftrightarrow$ $\nabla f(\bm{x_0}) = \bm{0}$
+- 特に，$\nabla f(\bm{x_0}) = \bm{0}$ となる点 $\bm{x_0}$ を **停留点，臨界点** という
+- $\bm{x_0}$ が停留点であるが極値をとらない場合，**鞍点** という
+:::
+
+まずは，$2$ 変数関数について考える。
+:::note[$2$ 変数関数の二次形式の極値]
+二次形式 $f(x,y) = ax^2 + 2bxy + cy^2 = \begin{pmatrix}
+x & y \end{pmatrix} \begin{pmatrix}
+a & b \\
+b & c
+\end{pmatrix} \begin{pmatrix}
+x \\
+y
+\end{pmatrix}$ を考える。
+
+$f(x,y)$ が $(0,0)$ で極値をとる $\Leftrightarrow$ $\det M \geq 0$。さらに以下が成り立つ。
+
+1. $\det M > 0, a > 0 \Rightarrow$ $(0,0)$ で狭義の極小値をとる
+2. $\det M > 0, a < 0 \Rightarrow$ $(0,0)$ で狭義の極大値をとる
+3. $\det M < 0 \Rightarrow$ $(0,0)$ で極値をとらない
+:::
+
+:::tip[ $2$ 変数関数の極値]
+$f: \mathbb{R}^2 \to \mathbb{R}$ が $(x_0, y_0)$ で 2 階微分可能であるとする。
+この時，ヘッセ行列 $H(x_0, y_0) = \begin{pmatrix}
+\frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\
+\frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2}
+\end{pmatrix}$ を考える。
+1. $\det H(x_0, y_0) > 0, \frac{\partial^2 f}{\partial x^2} > 0 (\Leftrightarrow$ $H(x_0, y_0)$ が正定値 $)\Rightarrow$ $(x_0, y_0)$ で狭義の極小値をとる
+2. $\det H(x_0, y_0) > 0, \frac{\partial^2 f}{\partial x^2} < 0 (\Leftrightarrow$ $H(x_0, y_0)$ が負定値 $)\Rightarrow$ $(x_0, y_0)$ で狭義の極大値をとる
+3. $\det H(x_0, y_0) < 0 \Rightarrow$ $(x_0, y_0)$ で極値をとらない
+:::
+- なお，$\det H(x_0, y_0)$ を **ヘッセ行列式, へッシアン** という ($H$ 自体をヘッシアンと呼ぶこともある)
+
+さらに，$n$ 変数関数について考える。
+:::note[二次形式の極値]
+二次形式 $f(\bm{x}) = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j = \bm{x}^T A \bm{x}$ を考える。($A = (a_{ij})$ は対称行列とする)
+
+この時，以下が成り立つ。
+1. $A$ が正定値 $\Rightarrow$ $\bm{0}$ で狭義の極小値をとる
+2. $A$ が負定値 $\Rightarrow$ $\bm{0}$ で狭義の極大値をとる
+3. $A$ が正負両方の固有値を持つ $\Rightarrow$ $\bm{0}$ で極値をとらない
+:::
+
+:::tip[ヘッセ行列]
+さらに，$f : \mathbb{R}^n \to \mathbb{R}$ が $\bm{x_0}$ で 2 階微分可能であるとする。
+
+この時，ヘッセ行列 $H(\bm{x_0}) = \begin{pmatrix}
+\frac{\partial^2 f(\bm{x_0})}{\partial x_1^2} & \cdots & \frac{\partial^2 f(\bm{x_0})}{\partial x_1 \partial x_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial^2 f(\bm{x_0})}{\partial x_n \partial x_1} & \cdots & \frac{\partial^2 f(\bm{x_0})}{\partial x_n^2}
+\end{pmatrix}$ を考えると，以下が成り立つ。
+1. $H(\bm{x_0})$ が正定値 $\Rightarrow$ $\bm{x_0}$ で狭義の極小値をとる
+2. $H(\bm{x_0})$ が負定値 $\Rightarrow$ $\bm{x_0}$ で狭義の極大値をとる
+3. $H(\bm{x_0})$ が正負両方の固有値を持つ $\Rightarrow$ $\bm{x_0}$ で極値をとらない
+:::
+
+---
+## 関数の最大・最小
+ただ，極値が最大値・最小値をとるとは限らない。しかし，以下が成り立つ。
+:::tip[最大値・最小値]
+$D \subset \mathbb{R}^n$ を有界閉集合とすると，任意の $f : D \to \mathbb{R}$ は最大値・最小値をとる。
+
+さらに，$f$ が $C^1$ 級であるとき以下のいずれかが成り立つ。 (最大値も同様)
+1. $f$ は $\text{int} D$ の点 $\bm{x}$ で最小値をとる (この時，$\nabla f(\bm{x}) = \bm{0}$ )
+2. $f$ は $\partial D$ の点 $\bm{x}$ で最小値をとる
+
+---
+一方で，$f: \mathbb{R}^n \to \mathbb{R}$ が $C^1$ 級であるとき，以下のいずれかが成り立つ。 (最大値も同様)
+1. $f$ は $\mathbb{R}^n$ の点 $\bm{x}$ で最小値をとる (この時，$\nabla f(\bm{x}) = \bm{0}$ )
+2. $\lim_{n \to \infty} \| \bm{x}_n\| = \infty$ なる点列 $(\bm{x}_n)_{n=1}^\infty$ が存在して，
+$\forall \bm{x} \in \mathbb{R}^n, f(\bm{x}) \geq \lim_{n \to \infty} f(\bm{x}_n)$
+:::
+- $\text{int} D = \{\bm{x} \in D | \exists \delta > 0, B(\bm{x}, \delta) \subset D\}$ は $D$ の内部
+- $\partial D = D \setminus \text{int} D$ は $D$ の境界
+
+**したがって，$f$ が $C^1$ 級で，定義域が有界閉集合であるとき，最大値・最小値求めるには，$\partial D$ の点と $\nabla f(\bm{x}) = \bm{0}$ となる点を調べれば良い。**
+
+**一方で，$f$ が $C^1$ 級で，定義域が $\mathbb{R}^n$ であるとき，最大値・最小値求めるには，$\nabla f(\bm{x}) = \bm{0}$ となる点と $\|\bm{x}\| \to \infty$ を調べれば良い。**
+
+---
+## 条件付き最大・最小
+### 陰関数定理
+:::note[陰関数定理]
+$f: \mathbb{R}^2 \to \mathbb{R}$ およびその零点 $f(a,b) = 0$ を考える。
+$f$ が $(a,b)$ の十分近くで $C^1$ 級であり，$\frac{\partial f(a,b)}{\partial y} \neq 0$ の時，
+$C^1$ 級関数 $\varphi(x) : \mathbb{R} \to \mathbb{R}$ がただ一つ存在して，$a$ に十分近い $x$ に対して，
+$f(x, \varphi(x)) = 0$ が成り立つ。
+
+またこの時，$\displaystyle\varphi^{\prime}(x) = -\left(\frac{\partial f(x,y)}{\partial y}\right)^{-1} \frac{\partial f(x,y)}{\partial x} = -\frac{f_x}{f_y}$ が成り立つ。
+
+---
+さらに，$f : \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^m$ およびその零点 $f(\bm{a}, \bm{b}) = \bm{0}$ を考える。
+$f$ が $(\bm{a}, \bm{b})$ の十分近くで $C^1$ 級であり，
+$D_{\bm{y}} f(\bm{a}, \bm{b}) = 
+\frac{\partial f(\bm{a}, \bm{b})}{\partial \bm{y}} = \begin{pmatrix}
+\frac{\partial f_1(\bm{a}, \bm{b})}{\partial y_1} & \cdots & \frac{\partial f_1(\bm{a}, \bm{b})}{\partial y_m} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial f_m(\bm{a}, \bm{b})}{\partial y_1} & \cdots & \frac{\partial f_m(\bm{a}, \bm{b})}{\partial y_m}
+\end{pmatrix}$ が正則の時 ( $\det \frac{\partial f(\bm{a}, \bm{b})}{\partial \bm{y}} \neq 0$ )，  
+$C^1$ 級関数 $\varphi : \mathbb{R}^n \to \mathbb{R}^m$ がただ一つ存在して，$\bm{a}$ に十分近い $\bm{x}$ に対して，
+$f(\bm{x}, \varphi(\bm{x})) = \bm{0}$ が成り立つ。
+
+またこの時，$\displaystyle D\varphi(\bm{x}) = -D_{\bm{y}} f(\bm{x}, \varphi(\bm{x}))^{-1} D_{\bm{x}} f(\bm{x}, \varphi(\bm{x}))$ が成り立つ。
+:::
+- つまり，$(a,b)$ の近くでは，$f(x,y) = 0$ を $y = \varphi(x)$ の形で表せる
+- $D\varphi(\bm{x}) = \begin{pmatrix}
+\frac{\partial \varphi_1(\bm{x})}{\partial x_1} & \cdots & \frac{\partial \varphi_1(\bm{x})}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial \varphi_m(\bm{x})}{\partial x_1} & \cdots & \frac{\partial \varphi_m(\bm{x})}{\partial x_n}
+\end{pmatrix},~
+D_{\bm{x}} f(\bm{x}, \varphi(\bm{x})) = \begin{pmatrix}
+\frac{\partial f_1(\bm{x}, \varphi(\bm{x}))}{\partial x_1} & \cdots & \frac{\partial f_1(\bm{x}, \varphi(\bm{x}))}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial f_m(\bm{x}, \varphi(\bm{x}))}{\partial x_1} & \cdots & \frac{\partial f_m(\bm{x}, \varphi(\bm{x}))}{\partial x_n}
+\end{pmatrix},~
+D_{\bm{y}} f(\bm{x}, \varphi(\bm{x})) = \begin{pmatrix}
+\frac{\partial f_1(\bm{x}, \varphi(\bm{x}))}{\partial y_1} & \cdots & \frac{\partial f_1(\bm{x}, \varphi(\bm{x}))}{\partial y_m} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial f_m(\bm{x}, \varphi(\bm{x}))}{\partial y_1} & \cdots & \frac{\partial f_m(\bm{x}, \varphi(\bm{x}))}{\partial y_m}
+\end{pmatrix}$
+- 証明は，縮小写像定理と逆関数定理を使う
+
+### ラグランジュの未定乗数法
+陰関数定理を用いて，以下のようなことがわかる。
+:::tip[ラグランジュの未定乗数法]
+$C^1$ 級関数 $f : \mathbb{R}^n \to \mathbb{R}$ と $g : \mathbb{R}^n \to \mathbb{R}^m$ を考える。
+束縛条件 $g(\bm{x}) = \bm{0}$ のもとで $\bm{x} = \bm{a}$ が $f$ で極値を取るとする。
+この時，$\text{rank} Dg(\bm{a}) = m$ であれば，定数 $\lambda_1, \cdots, \lambda_m \in \mathbb{R}$ が存在して，以下が成り立つ。
+$$
+\nabla f(\bm{a}) = \sum_{i=1}^m \lambda_i \nabla g_i(\bm{a})~~(g = (g_1, \cdots, g_m))
+$$
+
+よって，ラグランジアン $F : \mathbb{R}^{n+m} \to \mathbb{R}$ を以下のように定義すると，$(\bm{a}, *, \cdots, *)$ は $F$ の停留点となる。
+$$
+F(\bm{x}, \bm{\lambda}) = f(\bm{x}) - \sum_{i=1}^m \lambda_i g_i(\bm{x})
+$$
+:::
+- なお，$\nabla f(\bm{a}) = \sum_{i=1}^m \lambda_i \nabla g_i(\bm{a})~
+\Leftrightarrow$ $Dg(\bm{a})^T \bm{\lambda} = \begin{pmatrix}
+\nabla g_1(\bm{a})^T & \cdots & \nabla g_m(\bm{a})^T
+\end{pmatrix} \bm{\lambda} = \nabla f(\bm{a})$ である
+    - つまり，$\nabla f(\bm{x})$ が $\nabla g_i(\bm{x})$ で張られる空間上にある
+- 束縛条件が 1 つの時は，以下のようになる。  
+点 $\bm{x} = \bm{a}$ が $g(\bm{x}) = 0$ のもとで $f$ の極値をとり，$\nabla g(\bm{a}) \neq \bm{0}$ の時，
+$(\bm{a}, \lambda)$ が $F(\bm{x}, \lambda) = f(\bm{x}) - \lambda g(\bm{x})$ の停留点となる
+
+ここから，条件付きの最大値・最小値を求める方法が分かる。
+:::tip[条件付きの最小値]
+$C^1$ 級関数 $f : \mathbb{R}^n \to \mathbb{R}$ と $g : \mathbb{R}^n \to \mathbb{R}^m$ と 
+$F(\bm{x}, \bm{\lambda}) = f(\bm{x}) - \sum_{i=1}^m \lambda_i g_i(\bm{x})$ を考える。  
+
+この時，$g$ の零点集合 $\{\bm{x} \in \mathbb{R}^n | g(\bm{x}) = \bm{0}\}$ が有界であって，$\text{rank} Dg(\bm{x}) = m$ であれば，以下が成り立つ。
+
+**$\bm{x} = \bm{a}$ が $g(\bm{x}) = \bm{0}$ のもとで $f$ の最小値をとる $\\\Leftrightarrow$
+$\bm{x} = \bm{a}$ で $f$ は $F$ の停留点の全体集合 $\{\bm{x} \in \mathbb{R}^n | \nabla F(\bm{x}, \bm{\lambda}) = \bm{0}\}$ 上で最小値をとる**
+
+---
+また，$g$ の零点集合 $Z = \{\bm{x} \in \mathbb{R}^n | g(\bm{x}) = \bm{0}\}$ が非有界な場合も，
+$\text{rank} Dg(\bm{x}) = m$ であって，任意の点列 $(\bm{x}_n)_{n=1}^\infty \subset Z$ について，
+$\lim_{n \to \infty} ||\bm{x}_n|| = \infty~\Rightarrow \exists \bm{x} \in Z, \lim_{n \to \infty} f(\bm{x}_n) \geq f(\bm{x})$ ならば，
+同様のことが成り立つ。
+:::
+
+なお，もし $f : K \to \mathbb{R}$ と定義域が 閉集合 $K$ である場合は，以下が成り立つ。
+- **$\bm{x} = \bm{a} \in \text{int} K$ が $g(\bm{x}) = \bm{0}$ のもとで $f$ の最小値をとる $\\\Leftrightarrow$
+$\bm{x} = \bm{a}$ で $f$ は $F$ の停留点の全体集合 $\{\bm{x} \in \mathbb{R}^n | \nabla F(\bm{x}, \bm{\lambda}) = \bm{0}\}$ 上で最小値をとる**
+- $\bm{x} = \bm{a} \in \text{int} K$ または $\bm{x} = \bm{a} \in \partial K$ で $f$ は $g(\bm{x}) = \bm{0}$ のもとで最小値をとる
+
+---
+## 関数の極値と最大・最小の求め方
+:::warning[関数の極値と最大・最小の求め方]
+以下は，$f : D \to \mathbb{R}$ が $C^1$ 級であれば成り立つ。
+#### 1. 条件付きでない最大値・最小値
+1. $\nabla f(\bm{x}) = \bm{0}$ となる点 (停留点) を調べる
+2. ヘッセ行列 $H(\bm{x})$ を調べる
+    - $H(\bm{x}_0)$ が正定値 $\Rightarrow$ $\bm{x}_0$ で狭義の極小値をとる
+    - $H(\bm{x}_0)$ が負定値 $\Rightarrow$ $\bm{x}_0$ で狭義の極大値をとる
+    - $H(\bm{x}_0)$ が正負両方の固有値を持つ $\Rightarrow$ $\bm{x}_0$ で極値をとらない
+3. 最大値・最小値を求める
+    - $f$ の定義域が有界閉集合の場合，$\partial D$ の点を調べ，極値と比較して最大値・最小値を求める
+    - $f$ の定義域が $\mathbb{R}^n$ の場合，$\|\bm{x}\| \to \infty$ の時 $f(\bm{x})$ がどこに行くかを調べ，極値と比較して最大値・最小値を求める
+        - 例えば極小値より大きい値に収束する場合，$f$ は最小値を持つ
+
+#### 2. 条件付きの最大値・最小値
+1. $g(\bm{x}) = \bm{0}$ のもとで $F = f - \sum_{i=1}^m \lambda_i g_i$ の停留点を調べる
+2. ヘッセ行列 $H(\bm{x})$ の首座小行列式を調べて，停留点が極値をとるかを調べる (あまり使わない)
+3. 最大値・最小値を求める
+    1. まず，$\text{rank} Dg(\bm{x}) = m$ (束縛条件が 1 つならば $\nabla g(\bm{x}) \neq \bm{0}$) であることを確認する
+    2. その後、$g$ の零点集合 $\{\bm{x} \in \mathbb{R}^n | g(\bm{x}) = \bm{0}\}$ が有界であるかを調べる
+        - 有界であれば，停留点か ( $f$ の定義域が閉集合であれば ) $\partial D$ の中に最大値・最小値がある 
+        - 非有界で $f$ の定義域が $\mathbb{R}^n$ あれば，零点集合上の点列 $(\bm{x}_n)_{n=1}^\infty$ が $\|\bm{x}_n\| \to \infty$ の時，$\lim_{n \to \infty} f(\bm{x}_n)$ が
+        どこに行くかを調べ，停留点と比較して最大値・最小値を求める
+:::

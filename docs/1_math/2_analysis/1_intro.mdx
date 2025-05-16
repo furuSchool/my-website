@@ -15,97 +15,37 @@ title: 1. 微積の基礎
     - 実数の連続性より，$\mathbb{R}$ の空でない部分集合は上に有界ならば上限が存在する (上に有界でない場合は $\sup A = \infty$)
 
 ---
-## 関数の連続性と微分
+## 関数の性質
+### 関数の極限
+:::note[極限]
+関数 $f(\bm{x})$ について，$\lim_{\bm{x} \to \bm{x_0}} f(\bm{x})$ を関数 $f(\bm{x})$ の $\bm{x_0}$ における **極限** と呼ぶ。
+これが存在する時，$f(\bm{x})$ は $\bm{x_0}$ で $\lim_{\bm{x} \to \bm{x_0}} f(\bm{x}) = L$ に **収束** するという。
+
+$\lim_{\bm{x} \to \bm{x_0}} f(\bm{x}) = L$ $\Leftrightarrow$ $\forall \epsilon > 0, \exists \delta > 0$ で
+$\forall \bm{x} \in B(\bm{x_0}, \delta) = \{\bm{x} \in \mathbb{R}^n | ||\bm{x} - \bm{x_0}|| < \delta\}$ $\Rightarrow$
+$||f(\bm{x}) - L|| < \epsilon$
+- $f(\bm{x})$ が $\bm{x_0}$ で定義されている必要はない
+:::
+極限の性質 ( $\lim_{\bm{x} \to \bm{x_0}} f(\bm{x}) = \alpha, \lim_{\bm{x} \to \bm{x_0}} g(\bm{x}) = \beta$ とする )
+- $\lim_{\bm{x} \to \bm{x_0}} (f(\bm{x}) + g(\bm{x})) = \alpha + \beta$
+- $\lim_{\bm{x} \to \bm{x_0}} (f(\bm{x}) g(\bm{x})) = \alpha \beta$
+- $\lim_{\bm{x} \to \bm{x_0}} (\frac{f(\bm{x})}{g(\bm{x})}) = \frac{\alpha}{\beta}$ ($\beta \neq 0$)
+
+### 関数の連続性
 :::note[連続性]
-関数 $f(\bm{x})$ が点 $\bm{x_0}$ で連続 $\Leftrightarrow$ $\forall \epsilon > 0, \exists \delta > 0$ で 
+関数 $f(\bm{x})$ が点 $\bm{x_0}$ で連続 $\\\Leftrightarrow$ $\forall \epsilon > 0, \exists \delta > 0$ で 
 $\forall \bm{x} \in B(\bm{x_0}, \delta) = \{\bm{x} \in \mathbb{R}^n | ||\bm{x} - \bm{x_0}|| < \delta\}$ 
 $\Rightarrow ||f(\bm{x}) - f(\bm{x_0})|| < \epsilon$
 - つまり，$\lim_{\bm{x} \to \bm{x_0}} f(\bm{x}) = f(\bm{x_0})$
 :::
 
+### 関数の微分
 :::tip[微分]
 関数 $f(\bm{x})$ が点 $\bm{x_0}$ で微分可能 $\Leftrightarrow$
 $\lim_{\bm{h} \to \bm{0}} \frac{f(\bm{x_0} + \bm{h}) - f(\bm{x_0})}{||\bm{h}||}$ が存在する。
 
 この時，$f^{\prime}(\bm{x}_0) = \lim_{\bm{h} \to \bm{0}} \frac{f(\bm{x_0} + \bm{h}) - f(\bm{x_0})}{||\bm{h}||}$ と表す。
+
+また，$f$ が定義域全体で微分可能な時，$f$ は **微分可能** といい，$f^{\prime}(\bm{x})$ を **導関数** と呼ぶ。
 :::
 
-
----
-## 関数の極大・極小
-:::note[極大値・極小値]
-関数 $f(\bm{x})$ が点 $\bm{x_0}$ で **(広義の) 極大値** をとる $\Leftrightarrow$ 
-$\exists \delta >0, \forall \bm{x} \in B(\bm{x_0}, \delta) = \{\bm{x} \in \mathbb{R}^n | ||\bm{x} - \bm{x_0}|| < \delta\}$ で $f(\bm{x}) \leq f(\bm{x_0})$ となる
-- 特に，$f(\bm{x}) < f(\bm{x_0})$ となる場合，**狭義の極大値** をとるという
-:::
-- **極小値** は逆に $f(\bm{x}) \geq f(\bm{x_0})$ となるもの
-- 極小値か極大値をとることを，**極値** をとるという
-
-:::note[$C^1$ 級と勾配]
-関数 $f(\bm{x})$ が $C^1$ 級であるとは，全ての点で $f$ が偏微分可能で $\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \cdots, \frac{\partial f}{\partial x_n}$ が連続であることをいう。
-
-また，$f$ の勾配は $\nabla f(\bm{x}) = \begin{pmatrix}
-\frac{\partial f}{\partial x_1} \\
-\vdots \\
-\frac{\partial f}{\partial x_n}
-\end{pmatrix}$ と表す。
-:::
-
-:::tip[定理]
-$f \in C^1$ 級とする。点 $\bm{x_0}$ で $f(\bm{x})$ が極値をとる $\Leftrightarrow$ $\nabla f(\bm{x_0}) = \bm{0}$
-- 特に，$\nabla f(\bm{x_0}) = \bm{0}$ となる点 $\bm{x_0}$ を **停留点，臨界点** という
-- $\bm{x_0}$ が停留点であるが極値をとらない場合，**鞍点** という
-:::
-
-まずは，$2$ 変数関数について考える。
-:::note[$2$ 変数関数の二次形式の極値]
-二次形式 $f(x,y) = ax^2 + 2bxy + cy^2 = \begin{pmatrix}
-x & y \end{pmatrix} \begin{pmatrix}
-a & b \\
-b & c
-\end{pmatrix} \begin{pmatrix}
-x \\
-y
-\end{pmatrix}$ を考える。
-
-$f(x,y)$ が $(0,0)$ で極値をとる $\Leftrightarrow$ $\det M \geq 0$。さらに以下が成り立つ。
-
-1. $\det M > 0, a > 0 \Rightarrow$ $(0,0)$ で狭義の極小値をとる
-2. $\det M > 0, a < 0 \Rightarrow$ $(0,0)$ で狭義の極大値をとる
-3. $\det M < 0 \Rightarrow$ $(0,0)$ で極値をとらない
-:::
-
-:::tip[ $2$ 変数関数の極値]
-$f: \mathbb{R}^2 \to \mathbb{R}$ が $(x_0, y_0)$ で 2 階微分可能であるとする。
-この時，ヘッセ行列 $H(x_0, y_0) = \begin{pmatrix}
-\frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\
-\frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2}
-\end{pmatrix}$ を考える。
-1. $\det H(x_0, y_0) > 0, \frac{\partial^2 f}{\partial x^2} > 0 (\Leftrightarrow$ $H(x_0, y_0)$ が正定値 $)\Rightarrow$ $(x_0, y_0)$ で狭義の極小値をとる
-2. $\det H(x_0, y_0) > 0, \frac{\partial^2 f}{\partial x^2} < 0 (\Leftrightarrow$ $H(x_0, y_0)$ が負定値 $)\Rightarrow$ $(x_0, y_0)$ で狭義の極大値をとる
-3. $\det H(x_0, y_0) < 0 \Rightarrow$ $(x_0, y_0)$ で極値をとらない
-:::
-- なお，$\det H(x_0, y_0)$ を **ヘッセ行列式, へッシアン** という ($H$ 自体をヘッシアンと呼ぶこともある)
-
-さらに，$n$ 変数関数について考える。
-:::note[二次形式の極値]
-二次形式 $f(\bm{x}) = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j = \bm{x}^T A \bm{x}$ を考える。($A = (a_{ij})$ は対称行列とする)
-
-この時，以下が成り立つ。
-1. $A$ が正定値 $\Rightarrow$ $\bm{0}$ で狭義の極小値をとる
-2. $A$ が負定値 $\Rightarrow$ $\bm{0}$ で狭義の極大値をとる
-3. $A$ が正負両方の固有値を持つ $\Rightarrow$ $\bm{0}$ で極値をとらない
-:::
-
-:::tip[ヘッセ行列]
-さらに，$f : \mathbb{R}^n \to \mathbb{R}$ が $\bm{x_0}$ で 2 階微分可能であるとする。
-
-この時，ヘッセ行列 $H(\bm{x_0}) = \begin{pmatrix}
-\frac{\partial^2 f(\bm{x_0})}{\partial x_1^2} & \cdots & \frac{\partial^2 f(\bm{x_0})}{\partial x_1 \partial x_n} \\
-\vdots & \ddots & \vdots \\
-\frac{\partial^2 f(\bm{x_0})}{\partial x_n \partial x_1} & \cdots & \frac{\partial^2 f(\bm{x_0})}{\partial x_n^2}
-\end{pmatrix}$ を考えると，以下が成り立つ。
-1. $H(\bm{x_0})$ が正定値 $\Rightarrow$ $\bm{x_0}$ で狭義の極小値をとる
-2. $H(\bm{x_0})$ が負定値 $\Rightarrow$ $\bm{x_0}$ で狭義の極大値をとる
-3. $H(\bm{x_0})$ が正負両方の固有値を持つ $\Rightarrow$ $\bm{x_0}$ で極値をとらない
-:::
