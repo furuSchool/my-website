@@ -1,7 +1,7 @@
 ---
-title: 9. 行列の指数関数
+title: 9. 行列の指数や微分積分
 ---
-## 定義
+## 行列の指数
 :::tip[行列の指数関数]
 $n$ 次正方行列 $A$ に対して，行列の指数関数 $e^{tA}$ を次のように定義する。
 $$
@@ -37,3 +37,14 @@ $$
 \end{cases}\right)
 $$
 この時，$\bm{x}(t) = e^{tA}\bm{x}(0)$ が成り立つ
+:::
+
+---
+## 行列の微分と積分
+:::note[行列の微分と積分]
+行列 $A(t) = (a_{ij}(t))$ の微分と積分は，成分ごとに行う。
+$$
+\frac{d}{dt} A(t) = \left( \frac{da_{ij}(t)}{dt} \right),~~\int A(t) dt = \left( \int a_{ij}(t) dt \right)
+$$
+- $\lim_{t \to t_0} A(t) = \left( \lim_{t \to t_0} a_{ij}(t) \right)$ と定義すれば，$\frac{d}{dt} A(t) = \lim_{h \to 0} \frac{A(t+h) - A(t)}{h}$ が成り立つ
+:::

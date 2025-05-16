@@ -1,0 +1,62 @@
+---
+title: 2. テイラー展開
+---
+
+## テイラー展開
+
+### 平均値の定理
+1 変数関数 $f:\mathbb{R} \to \mathbb{R}$ が区間 $[a,b]$ で連続かつ $(a,b)$ で微分可能なとき，$c \in (a,b)$ が存在して以下の式が成り立つ。
+$$
+f'(c) = \frac{f(b) - f(a)}{b-a}
+$$
+
+### コーシーの平均値定理
+
+
+### テイラーの定理
+:::note[テイラーの定理]
+1 変数関数 $f:\mathbb{R} \to \mathbb{R}$ が点 $x=a$ で $n$ 回微分可能である時，以下を満たす $\lim_{x \to a} h(x) = 0$ なる $h(x)$ が存在する。
+$$
+f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \cdots + \frac{f^{(n)}(a)}{n!}(x-a)^n + h(x)(x-a)^n
+$$
+
+さらに，$x=a$ を含む閉区間で導関数が連続かつ，開区間で $n+1$ 回微分可能であるとき，以下のように表せる。(大雑把には，$C^{n+1}$ 級)
+$$
+f(x) = f(a) + f'(a)(x-a) + \cdots + \frac{f^{(n)}(a)}{n!}(x-a)^n + \frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}~~(c \in (a,x) \text{ or } (x,a))
+$$
+
+---
+また，$f(x,y)$ が $C^{n+1}$ 級である時，以下を満たす $\theta \in (0,1)$ が存在する。
+$$
+f(x, y) = f(a,b) + (hD_x + kD_y)f(a,b) + \cdots + \frac{(hD_x + kD_y)^{n}}{n!}f(a,b) + \frac{(hD_x + kD_y)^{n}}{n!}f(a + \theta h, b + \theta k)
+$$
+- $x = a + h, y = b + k$
+- $(hD_x + kD_y)^n f = \sum_{i=0}^n \binom{n}{i} h^{n-i} k^i D_x^{n-i}D_y^i f$
+:::
+
+### テイラー展開
+:::tip[テイラー展開]
+1 変数関数 $f:\mathbb{R} \to \mathbb{R}$ が $C^\infty$ 級であり，$\lim_{n \to \infty} \frac{f^{(n)}(a)}{n!} = 0$ であるとき，以下のように **テイラー展開** できる。
+$$
+f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!}(x-a)^n
+$$
+
+また，2 変数関数 $f:\mathbb{R}^2 \to \mathbb{R}$ が $C^\infty$ 級であり，
+$\lim_{n \to \infty} \frac{(hD_x + kD_y)^{(n)}f(a + \theta h, b + \theta k)}{n!} = 0$ であるとき，以下のように **テイラー展開** できる。
+$$
+f(x,y)  = \sum_{n=0}^\infty \frac{(hD_x + kD_y)^{(n)}f(a, b)}{n!} = f(a,b) + (hD_x + kD_y)f(a,b) + \frac{(hD_x + kD_y)^{2}}{2!}f(a,b) + \cdots
+$$
+- $x = a + h, y = b + k$
+- つまり，$x^my^n$ の係数は $\frac{D_x^mD_y^n}{m!n!}f(a,b)$
+- 特に，原点周りのテイラー展開は **マクローリン展開** と呼ばれる。
+:::
+- 2 変数関数のテイラー展開を求める時は，$D_x^mD_y^n f(x,y)$ を求める他に，1 変数の結果を用いることもできる。
+    - 例 : $e^{x+y} = \sum_{n=0}^\infty \frac{(x+y)^n}{n!}$
+
+#### 代表的なマクローリン展開
+- $\displaystyle e^x = 1 + x + \frac{x^2}{2!} + \cdots = \sum_{n=0}^\infty \frac{x^n}{n!}$
+- $\displaystyle \sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots = \sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}$
+- $\displaystyle \cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots = \sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}$
+- $\displaystyle \log(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots = \sum_{n=1}^\infty (-1)^{n+1} \frac{x^n}{n}~~(-1 < x \leq 1$)
+- $\displaystyle (1+x)^\alpha = 1 + \alpha x + \frac{\alpha(\alpha-1)}{2!}x^2 + \cdots = \sum_{n=0}^\infty \frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{n!}x^n~~(|x| < 1)$
+    - $\alpha = -1$ の時，$\frac{1}{1+x} = 1 - x + x^2 - \cdots = \sum_{n=0}^\infty (-1)^n x^n$
