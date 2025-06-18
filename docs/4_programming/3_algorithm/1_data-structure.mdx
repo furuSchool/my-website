@@ -1,0 +1,160 @@
+---
+title: 1. データ構造
+---
+import CodeToggle from '/components/CodeToggle.tsx';
+
+## 基本
+- リングバッファ : 配列の先頭と末尾をつなげたもの。配列のサイズを固定しておき，先頭と末尾を指すポインタを持つ
+- スタック (LIFO) : 一番上に積む or 一番上を取る。後入れ先出し
+- キュー (FIFO) : 一番上に積む or 一番下を取る。先入れ先出し
+- デック (deque) : 先頭・末尾の両方から積む・取ることができる。配列の左右どちらも追加、削除が可能というイメージ
+- 連結リスト : データと次のデータへのポインタを持つ。空間効率が良い。追加・削除は $O(n)$ (スタックなどは $O(1)$)
+
+<CodeToggle language="python" title="連結リストの例">
+```python
+class LinkedListCell:
+	def __init__(self, value):
+		self.value = value # データ
+		self.next = None # 次のデータへのポインタ
+		
+# 連結リストを表すクラス
+class LinkedList:
+	def __init__(self):
+		# 先頭にダミーデータをいれておく
+		 self.head = LinkedListCell(None)
+		 
+	def append(self, value): # 要素の追加
+		###
+	def pop(self, value): # 要素の削除
+		###
+	def show(self): # 要素の表示
+        ###
+```
+</CodeToggle>
+
+---
+## 木構造
+- 木構造 (ツリー) : 根ノード (root, 一番上の節点) から下に枝分かれしていく
+    - 一番下のノード : 葉
+    - 高さ : あるノードから葉ノードに至るまでの最大のエッジ数。葉ノードの高さは 0
+    - 深さ : 根ノードからそのノードに至るまでのエッジ数。根ノードの深さは 0
+- 二分木 (binary tree) : 各ノードが最大2つの子ノードを持つ木構造
+- 完全二分木 (full binary tree) : すべてのノードが2つの子ノードを持つ二分木
+- 完全二分木 (complete binary tree) : ⼀番下以外は完全に埋まっていて，葉の部分のみ左から順に埋まっている二分木
+
+<CodeToggle language="python" title="ノードの定義">
+```python
+class Node:
+	def __init__(self, data):
+		self.data = data # このノードの値
+		self.parent = None # 親ノードのポインタ
+		self.left = None # 左の子ノードのポインタ
+		self.right = None # 右の子ノードのポインタ
+```
+</CodeToggle>
+
+---
+## ヒープ
+- ヒープ : 親ノードは子ノードよりも常に同じか小さい (or 大きい) ツリー
+    - 根ノードは常に最小値 (or 最大値)
+    - たくさんのデータがあり，頻繁に追加・削除が行われる場合に有効
+- 二分ヒープ :  親ノードは子ノードよりも常に同じか小さい complete binary tree
+    - ヒープは，[0, 一番上，二段目左，二段目右, 三段目左, 三段目の隣, ...] の順に配列として表現できる
+    - 追加 : 埋まっている葉の隣を追加し，親と比較して交換を繰り返す (計算量 $O(\log n)$)
+    - 削除 : 根ノードを削除し，一番右下のデータを根ノードに移動，子ノードと比較して交換を繰り返す (計算量 $O(\log n)$)
+
+<CodeToggle language="python" title="二分ヒープの実装">
+```python
+class Heap:
+    def __init__(self, size):
+        self.inf = 0 # ⼗分に小さい数
+        self.size = size + 1
+        # ヒープを構成する配列
+        self.array = [self.inf]*self.size
+        self.last = 0 # 現在までに⼊っているデータ数
+
+    # 一番右の葉を追加 → その葉から親子を順次比較・交換
+    def add(self, value):
+        if self.last != self.size:
+            self.last += 1
+            self.array[self.last] = value
+            self.check_after_add(self.last)
+            
+    # 追加した葉から親の比較・交換を行う (i: 子, i//2: 親)
+    def check_after_add(self, i):
+        if i < 2: return
+        if self.array[i] > self.array[i // 2]:
+            self.array[i], self.array[i // 2] = self.array[i//2], self.array[i]
+            return self.check_after_add(i // 2)
+    
+    # 根ノードを削除 → 一番右下の葉を根ノードに移動，子ノードと比較して交換を繰り返す
+    def remove(self):
+        if self.last != 0:
+            removed = self.array[1]
+            self.array[1] = self.array[self.last]
+            self.array[self.last] = self.inf
+            self.last -= 1
+            self.check_after_remove(1)
+            return removed
+            
+    # 根から子と親の比較・交換を行う (i: 親, 2i・2i+1: 子)
+    def check_after_remove(self, i: int):
+        if 2*i > self.last: return
+        big_index = 2*i
+        if self.array[2*i]<self.array[2*i+1]:
+            big_index = 2*i+1
+        if self.array[big_index]>self.array[i]:
+            self.array[i], self.array[big_index] = self.array[big_index], self.array[i]
+        return self.check_after_remove(big_index)
+```
+</CodeToggle>
+
+---
+## セグメント木
+<img src="/img/programming/segment-tree.png" alt="エントロピーの可視化" style={{ width: '50%' }} />
+- 各ノードが⼦ノードの区間に関するある情報を保持する⼆分⽊
+    - ある区間の和や最⼤値などを求めるのに使われる
+    - 例えば，その区間の合計を木にするなど
+    - 二分木と同じように配列で表現できる
+- 完全⼆分⽊（full binary tree）を利⽤して実装されることが多い
+- 構築の計算量は $O(n)$
+- 計算結果の取得は $O(\log n)$
+
+<CodeToggle language="python" title="区間和のセグメント木の実装例">
+```python
+# 区間和
+class CSumSegTree:
+	# seq: ⼀番最初に与えられる配列
+	def __init__(self, seq):
+		# 完全⼆分⽊として実装
+		size = self.get_2pow(len(seq))
+		# 0番⽬は使わない
+		self.array = [0 for i in range(2*size)]
+		self.leaf_start = size
+		
+		# 葉ノードに与えられた配列を格納
+		for i in range(self.leaf_start, self.leaf_start + len(seq)):
+		self.array[i] = seq[i - self.leaf_start]
+		self.initialize() # セグメント⽊の構築
+		
+	def initialize(self): # セグメント⽊の構築。ここでは区間和
+		start_i = self.leaf_start
+		# 下の層から順に値を計算し格納
+		while start_i > 1:
+		for i in range(start_i, start_i * 2, 2):
+			parent_i = i // 2
+			self.array[parent_i] = self.array[i] +
+			self.array[i+1]
+		start_i = start_i // 2
+		
+	def update(self, i, val): # 配列の要素の更新
+		# 影響するのは, 直系の親のみ
+		node_i = i + self.leaf_start
+		self.array[node_i] = val # 葉ノードの更新
+		while node_i > 1: # 上に遡って更新
+			parent_i = node_i // 2
+			self.array[parent_i] = self.array[parent_i*2] +
+			self.array[parent_i*2+1]
+			node_i = parent_i	
+```
+</CodeToggle>

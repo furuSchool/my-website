@@ -13,9 +13,7 @@ export default function Toggle({ title, children }) {
       </h4>
       {open && (
         <div className="ml-5 mt-1 border-l border-gray-300 pl-4">
-          <div className="mb-2">
-            {children}
-          </div>
+          <div className="mb-2">{children}</div>
           <hr className="border-t border-gray-100 mt-2" />
         </div>
       )}

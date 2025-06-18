@@ -1,0 +1,161 @@
+---
+title: 2. 探索
+---
+
+import CodeToggle from '/components/CodeToggle.tsx';
+
+:::warning[目標]
+あるデータ集合から目的のデータを見つけること !
+:::
+
+## 線形探索
+: 最も単純な方法
+- 番兵を付け加えることで，探索の終了条件を簡単にすることができる
+- 計算量は $O(n)$
+```python
+def linear_search(sequence, key):
+    i = 0
+    sequence.append(key) # 番兵をつける
+    while sequence[i] != key: # 比較が一回で済む (while(len)-> if(keyと一致)でするより早い)
+        i += 1
+    if i == len(sequence) - 1:
+        return -1
+    return i
+```
+---
+## 二分探索
+:::tip[二分探索]
+配列がソートされている時，非常に高速に探索する手法。一般的には，可能性のある値の範囲を効率良く絞る⽅法。
+:::
+- 計算量は $O(\log n)$
+- 配列でなくても，単調増加関数 $f$ に対して，$f(n) \ge y$ となる最小の自然数 $n$ を同じように求めることができる
+```python
+def binary_search(sequence, key):
+    left, right = 0, len(sequence) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if sequence[mid] == key:
+            return mid
+        elif sequence[mid] < key:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+```
+
+---
+## 二分木
+### 作成方法
+<img src="/img/programming/make-binary-tree.png" alt="二分木の作成方法" width="400px"/>
+1. 根ノードを作成
+2. 追加する値について根ノードの値と比較し，大きければ右へ，小さければ左へ進む
+3. 進んだノードでも同様のことを繰り返し，空いていればその場所に追加する
+4. 上記を全ての値について繰り返す
+
+### 問題点と解決方法
+右や左に偏った木ができる可能性がある。
+- 木の構成は，要素数 $n$ で $O(\log(n!)) \approx O(n \log n)$
+- 探索・探索・削除は，だいたい $O(\log n)$，偏った木だと $O(n)$
+- **回転操作** を行うことで，木のバランスを保つことができる
+    - **平衡二分木 (AVL 木)** : 左右の部分木の高さの差が 1 以下
+        - 各ノードに balance factor (高さの差) を持たせる。2 以上になったら回転操作を行う ( balance factor の更新自体は $O(\log n)$)
+- 多分木 : 各ノードが 2 つ以上の子を持つ木
+- Treap : 二分木とヒープの性質を持つ木
+
+### 探索
+探したい値について，根ノードから順に比較していき，大きければ右へ，小さければ左へ進むことを繰り返す
+
+### ノードの削除
+<img src="/img/programming/delete-node-in-binary-tree.png" alt="二分木ノードの削除方法" width="400px"/>
+- 葉なら削除するだけ。子が 1 つなら，その子を親に繋ぎ替える
+- 子が二つなら，右の部分木の最小値か左の部分木の最大値を親に繋ぎ替える
+- 下の場合は、28 (次節点) か 18 (前節点)
+
+### 実装
+<CodeToggle language="python" title="二分木の実装">
+```python
+# ノードの構造体
+class Node:
+    def __init__(self, value):
+        self.data = value # ⾃分⾃⾝の値
+        self.left = None  # 左ノードの値
+        self.right = None # 右ノードの値
+
+# ⼆分⽊のクラス
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None # 根ノード
+    
+    # リストから⽊を⼀気に作るメソッド
+    def createTree(self, array):
+        for i in range(len(array)):
+            self.insert(array[i])
+    
+    def insert(self, value): # 挿入
+        if not self.root: self.root = Node(value)
+        else: self._insertRec(self.root, value)
+
+    def _insertRec(self, node, value):
+        # valueが今のノードの値より⼩さい場合、左⼦ノードへ
+        if value < node.data:
+            if node.left: self._insertRec(node.left, value)
+            else: node.left = Node(value)
+        # valueが今のノードの値より大きい場合、右⼦ノードへ
+        else:
+            if node.right: self._insertRec(node.right, value)
+            else: node.right = Node(value)
+            
+    def search(self, value): # 探索
+        node = self.root
+        while node:
+            node.print()
+            if node.data == value: print("found!"); return
+            elif: node = node.left # 左⼦ノードへ⾏く
+            else: node = node.right # 右⼦ノードへ⾏く
+        print("not found")
+        
+    def delete(self, value): # 削除
+        self.root = self._deleteRec(self.root, value)
+        
+    def _findSuccessor(self, node): # 次節点を探す
+        while node.left:
+            node = node.left
+        return node
+        
+    def _deleteRec(self, node, value):
+        if not node: return node # 見つからない
+
+        if value < node.data: # 値一致せず左⼦ノードへ
+            node.left = self._deleteRec(node.left, value)
+        elif value > node.data: # 値一致せず右⼦ノードへ
+            node.right = self._deleteRec(node.right, value)
+        else: # 値が一致
+            # ⼦ノード 0 or 1
+            if not node.left: return node.right
+            elif not node.right: return node.left
+            else:
+                # ⼦ノード 2
+                sucNode = self._findSuccessor(node.right) # 右の部分木の最小値を探す
+                node.data = sucNode.data # 親ノードの値を次節点の値に置き換える
+                node.right = self._deleteRec(node.right, sucNode.data) # 次節点を削除
+        return node
+```
+</CodeToggle>
+
+---
+## ハッシュ法
+:::tip[ハッシュ法]
+空間計算量を犠牲にして，時間計算量を稼ぐ方法。探索時間は $O(1)$。ただし，空間計算量は$O(n)$。
+:::
+
+何らかの方法でデータを数値に変換し，その数値をインデックスとして配列に格納する。
+- ハッシュ関数 : データを数値に変換する関数 (例えば mod とか)
+- 探索・削除・追加は値をハッシュ関数に通して，そのインデックスの配列を参照するだけ (計算量 $O(1)$)
+- ハッシュの構築は $O(n)$
+- 辞書 : ハッシュの例。キーと値のペアを格納するデータ構造
+
+#### ハッシュ被り対策
+- チェーン法 : ハッシュ値が同じデータを連結リストで管理する方法
+- オープンアドレス法 : ハッシュ値が同じデータを配列の空いている場所に格納する方法 (全部埋まっていればエラー)
+    - 探索 : ハッシュ値を見る → 空いていなければ次の場所を見ていく (空いている場所 or 目的の値が見つかるまで)
+    - 削除 : オープンアドレス法の場合，フラグを用意する，移動させたデータを戻す，などの方法がある
