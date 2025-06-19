@@ -1,0 +1,164 @@
+---
+title: 4. 文字列照合
+---
+import CodeToggle from '/components/CodeToggle.tsx';
+
+:::warning[目標]
+ある文字列から，所望の文字列を探し出す !
+:::
+- 文字列の長さ $n$，照合する文字列 (パターン) の長さ $l$ とする
+
+## 力任せ法
+前から順に探していくだけ。$O(nl)$。(現実的にはもっと速い)
+
+<CodeToggle language="python" title="力任せ法の実装">
+```python
+def brute_force(text, pattern):
+    t_len = len(text)
+    p_len = len(pattern)
+    t_i = 0 # text の pattern と合っているか確認する位置
+    p_i = 0 # pattern の合っている長さ
+    while t_i < t_len and p_i < p_len:
+        if text[t_i] == pattern[p_i]: # i 番目一致
+            t_i += 1
+            p_i += 1
+        else:
+            t_i = t_i - p_i + 1 # 試していない先頭まで戻る
+            p_i = 0
+        if p_i == p_len: # ⾒つかった場合
+            return t_i - p_i
+        return -1 # ⾒つからなかった場合
+```
+</CodeToggle>
+
+---
+## KMP 法（ Knuth-Morris-Pratt 法）
+:::tip[KMP 法]
+照合が失敗した時に，表 (スキップテーブル) を作成しておくことで後戻りしなくてもよいようにする。
+スキップテーブルの作成 $O(l)$，照合 $O(n)$ で $O(n + l)$。
+:::
+<img src="/img/programming/skip-table.png" alt="スキップテーブルのイメージ" style={{ width: '50%' }}/>
+1. スキップテーブルを作成する
+   - 照合する文字列について一つだけ作り，ある文字で照合失敗した時，**その文字まででどこまで照合できているか**を記録しておく
+   - 例 : "AABAAABACA" なら，skip = [0, 1, 0, 1, 2, 2, 3, 4, 0]
+   - "AABAAA" まで同じで次の "B" で照合失敗したなら (text : ……AABAAAC……)，"AA" の 2 文字は照合できているので，その次の "B" と一致するかを調べる (今回は明らかに一致しないが)
+2. 照合する文字列の先頭から順に照合していく
+3. 照合が失敗した時，スキップテーブルを参照してどこまで照合できているかを決定し，照合する文字列の途中から再開する$\\$
+    <img src="/img/programming/kmp.png" alt="KMP 法のイメージ" style={{ width: '30%' }}/>
+
+<CodeToggle language="python" title="KMP 法の実装">
+```python
+def create_table(pattern):
+    table = [0] * (len(pattern) - 1)
+    j = 0 # これまで何文字一致しているか
+    for i in range(1, len(pattern)-1):
+        if pattern[i] == pattern[j]: # ⽂字が⼀致している時
+            j += 1
+            table[i] = j
+        else: # ⽂字が⼀致しない時
+            while not (pattern[i] == pattern[j] or j == 0):
+                j = table[j - 1]
+            if pattern[i] == pattern[j]: 
+                j += 1
+            table[i] = j
+    return table
+    
+# t_i は後戻りしない
+def kmp(text, pattern):
+    skip = create_table(pattern) # スキップテーブルを作る
+    t_len = len(text)
+    p_len = len(pattern)
+    t_i = p_i = 0 # t_i は text の照合する文字の位置, p_i は pattern の照合する文字の位置
+    while t_i < t_len and p_i < p_len:
+        if text[t_i] == pattern[p_i]:
+            t_i += 1
+            p_i += 1
+        elif p_i == 0:
+            t_i += 1 # 先頭の文字が合わない場合は t_i を一つ進める
+        else:
+            p_i = skip[p_i - 1] # スキップテーブルを参照して pattern の文字のどこまでを照合できているか決定。t_i は変えない
+        if p_i == p_len: # ⾒つかった場合
+            return t_i - p_i
+    return -1 # ⾒つからなかった場合
+```
+</CodeToggle>
+
+---
+## BM 法 (Boyer-Moore 法)
+:::tip[ BM 法 (Boyer-Moore 法)]
+照合する文字列の後ろから照合していく。一気にジャンプできるのが特徴。
+:::
+1. スキップテーブルを作成する
+    - 文字としてあり得るもの全てについて一つだけ作る
+    - 各文字について，照合する文字列の末尾から何文字目にあるかを記録する (ただし末尾は除く)。なければ，照合する文字列の長さを記録する
+    - 例 : 照合する文字列 "ABABD" であり得る文字が [A, B, C, D, E] なら，skip = [2, 1, 5, 5, 5]
+2. 後ろから順に文字を照合し，失敗した際，text の文字のスキップテーブル分だけ照合を進める
+    - text 内の文字が照合する文字列の最も右に入る場合に移動するイメージ$\\$
+        <img src="/img/programming/bm-law.png" alt="BM 法のイメージ" style={{ width: '30%' }}/>
+    - ただし，パターンの途中で照合が失敗した場合は，後戻りしないように制限する
+- 現実的には，$O(\frac{n}{l})$ (text 内の文字が pattern にない場合)。最悪の場合 $O(nl)$ (pattern の先頭文字だけ毎回違う場合)。
+- **BMH 法 (Boyer-Moore-Horspool)** : 照合に失敗した時，
+
+<CodeToggle language="python" title="BM 法の実装">
+```python
+def bm_search(text, pattern):
+    t_len = len(text)
+    p_len = len(pattern)
+    # アルファベット⼩⽂字のみの想定で照合パターンの⻑さで初期化
+    skip = [p_len]*26
+
+    for i in range(p_len - 1): # 照合パターンの先頭からスキップテーブルを更新
+        skip[ord(pattern[i])-97] = p_len - i - 1
+        
+    t_i = p_len - 1 # t_i は text の照合する文字の位置
+    while t_i < t_len:
+        p_i = p_len - 1 # p_i は pattern の照合する文字の位置
+        while text[t_i] == pattern[p_i]:
+            if p_i == 0: return t_i
+            t_i -= 1; p_i -= 1
+        t_i += max(skip[ord(text[t_i])-97], p_len - p_i) # スキップテーブルで t_i を更新
+    return -1 # ⾒つからなかった場合
+```
+</CodeToggle>
+
+---
+## ラビン・カープ法
+:::tip[ラビン・カープ法]
+部分文字列をハッシュに変換し，ハッシュ値の一致を調べる。比較の計算量が $O(1)$ となる。
+:::
+### ローリングハッシュ
+照合する文字列のハッシュ値を以下で計算する。
+- 文字列の文字達 $p_0, p_1, \ldots, p_{l-1}$
+- $1$ ~ $l$ 文字目の文字列のハッシュ値 $H(1,l) ≡ a^{l-1}p_0 + a^{l-2}p_1 + \ldots + a^0p_{l-1}~\mod h$
+    - $a,h$ は互いに素な定数で，$h$ は十分大きい数，$a~(< h)$ は基数
+- 二つの文字列のハッシュ値が等しいなら，文字列は等しい
+- pattern のハッシュの作成 : $O(l)$，text のハッシュの作成 : $O(l) + O(1)$，照合回数 $O(n - l)$ なので，$O(n + l)$
+
+<CodeToggle language="python" title="ローリングハッシュの実装">
+```python
+mod = 998244353
+
+def power(x, n): # x^n を mod で割った余り。再帰で計算
+    if n == 0: return 1
+    if n == 1: return x
+    elif n % 2 == 0: return power(x, int(n/2))**2 % mod
+    else: return (power(x, int((n-1)/2))**2)*x % mod
+
+def RollingHashMatch(text, pattern):
+    base = 31 # 基数
+    t_len = len(text)
+    p_len = len(pattern)
+    t_hash = 0
+    p_hash = 0
+
+    for i in range(p_len): # text と pattern のハッシュ値を計算
+        t_hash = (t_hash + power(base, p_len - 1 - i) * ord(text[i])) % mod
+        p_hash = (p_hash + power(base, p_len - 1 - i) * ord(pattern[i])) % mod
+    if t_hash == p_hash:
+        print("0")
+    for i in range(t_len - p_len):
+        t_hash = (base * t_hash - ord(text[i]) * power(base, p_len) + ord(text[i + p_len]) )% mod
+        if t_hash == p_hash:
+            print(i + 1)
+```
+</CodeToggle>

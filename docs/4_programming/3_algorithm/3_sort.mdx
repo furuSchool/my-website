@@ -1,0 +1,316 @@
+---
+title: 3. ソート
+---
+
+import CodeToggle from '/components/CodeToggle.tsx';
+
+:::warning[目標]
+順序を持つデータ集合を，その順序に従って並べ替える !
+:::
+- 今回は，小さい順に並べ替えることとする。また，データ数は $n$ とする
+
+## 基本
+- 内部ソート : 必要な記憶容量が入力データサイズ以下 ( $O(1), O(\log n)$ など)
+- 外部ソート : 必要な記憶容量が入力データサイズを超える
+- 安定ソート : 同じ値の要素がある際，ソート前後で順序が変わらない
+
+---
+## ソートの種類
+### ボゴソート
+ランダムに並び替え，ソートされているか確認する (並び替え，比較，何回やるか，で $O(n \times (e-1) \times n!)$)
+
+---
+### 挿入ソート
+$1$ ~ $i$ 番目の要素までソート済みとし，$i+1$ 番目の要素を適切な位置に挿入する
+- $j$ と $j+1$ の要素を比較し，$j+1$ の要素の方が小さければ交換。これを $j = i, i-1, \ldots$ と交換できるまで繰り返す
+- 計算量は $O(n^2)$，追加の記憶容量がほとんどいらない，安定ソート
+- **二分挿入ソート** : 挿入位置を探す際に二分探索を用いる。探索は $O(\log (n!))$ だが，挿入 (移動) は $O(n)$ なので，計算量は $O(n^2)$
+
+---
+### ツリーソート
+配列を二分探索木に変換し，最も左のノードから順に取り出す。([二分木](/docs/4_programming/3_algorithm/2_search.mdx#二分木)を参照)
+- 大体 $O(n \log n)$。偏っていると $O(n^2)$
+- 取り出すのは，「左の部分木を辿る $\rightarrow$ 右の部分木を辿る」ことを再帰的に行う
+
+<CodeToggle language="python" title="ツリーソートの実装">
+```python
+# ノードの構造体
+class Node:
+    def __init__(self, value):
+        self.data = value # ⾃分⾃⾝の値
+        self.left = None  # 左ノードの値
+        self.right = None # 右ノードの値
+
+# ⼆分⽊のクラス
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None # 根ノード
+    
+    # リストから⽊を⼀気に作るメソッド
+    def createTree(self, array):
+        for i in range(len(array)):
+            self.insert(array[i])
+    
+    def insert(self, value): # 挿入
+        if not self.root: self.root = Node(value)
+        else: self._insertRec(self.root, value)
+
+    def _insertRec(self, node, value):
+        # valueが今のノードの値より⼩さい場合、左⼦ノードへ
+        if value < node.data:
+            if node.left: self._insertRec(node.left, value)
+            else: node.left = Node(value)
+        # valueが今のノードの値より大きい場合、右⼦ノードへ
+        else:
+            if node.right: self._insertRec(node.right, value)
+            else: node.right = Node(value)
+            
+    def search(self, value): # 探索
+        node = self.root
+        while node:
+            node.print()
+            if node.data == value: print("found!"); return
+            elif: node = node.left # 左⼦ノードへ⾏く
+            else: node = node.right # 右⼦ノードへ⾏く
+        print("not found")
+        
+    def delete(self, value): # 削除
+        self.root = self._deleteRec(self.root, value)
+        
+    def _findSuccessor(self, node): # 次節点を探す
+        while node.left:
+            node = node.left
+        return node
+        
+    def _deleteRec(self, node, value):
+        if not node: return node # 見つからない
+
+        if value < node.data: # 値一致せず左⼦ノードへ
+            node.left = self._deleteRec(node.left, value)
+        elif value > node.data: # 値一致せず右⼦ノードへ
+            node.right = self._deleteRec(node.right, value)
+        else: # 値が一致
+            # ⼦ノード 0 or 1
+            if not node.left: return node.right
+            elif not node.right: return node.left
+            else:
+                # ⼦ノード 2
+                sucNode = self._findSuccessor(node.right) # 右の部分木の最小値を探す
+                node.data = sucNode.data # 親ノードの値を次節点の値に置き換える
+                node.right = self._deleteRec(node.right, sucNode.data) # 次節点を削除
+        return node
+
+    # 中間順巡回    
+    def inOrderTraversal(self):
+        return self._inOrderRec(self.root, [])
+
+    # 再帰を使って中間順巡回
+    def _inOrderRec(self, node, array):
+        if node:
+            self._inOrderRec(node.left, array)
+            array.append(node.data)
+            self._inOrderRec(node.right, array)
+    return array
+```
+</CodeToggle>
+
+---
+### バブルソート
+しめじソート。配列の後ろから順に，隣り合う要素を比較し，順序が逆であれば交換する。こうすれば最初の要素が最小値となるので，これを繰り返す。
+- 計算量は $O(n^2)$，安定ソート
+
+<CodeToggle language="python" title="バブルソートの実装">
+```python
+def bubblesort(seq):
+    size = len(seq)
+    for i in range(size):
+        for j in range(size-1, i, -1):
+            if seq[j] < seq[j-1]:
+                seq[j], seq[j-1] = seq[j-1], seq[j]
+    return seq
+```
+</CodeToggle>
+
+---
+### シェーカーソート
+バブルソートの改良版。前後両方向に走査する。
+- 計算量は $O(n^2)$，安定ソート。バブルソートよりは早いことが期待される
+- 最後にスワップが起きた場所を記録すれば，逆順で走査する際に省略できる
+- [3, 5, 2, 1, 6, 4] -> [3, 2, 5, 1, 6, 4] -> [3, 2, 1, 5, 6, 4] -> [3, 2, 1, 5, 4, 6] (前から走査。最後のスワップは index = 4)
+    - 次は，[3, 2, 1, 5, 4, 6] -> [3, 2, 1, 4, 5, 6] -> [3, 1, 2, 4, 5, 6] -> [1, 3, 2, 4, 5, 6] (index = 4 から逆順で走査)
+
+<CodeToggle language="python" title="シェーカーソートの実装">
+```python
+def shakersort(seq):
+    # ソート済みの左端，右端を保持する変数
+    right = len(seq) - 1
+    left = 0
+    # 最後にスワップが起きた場所を格納する変数
+    swapped = 0
+
+    while left < right:
+        for i in range(left, right): # 先頭からチェック
+            if seq[i+1] < seq[i]:
+                seq[i], seq[i+1] = seq[i+1], seq[i]
+                swapped = i
+        # 最後のスワップの場所でrightを更新
+        right = swapped
+        for i in range(right, left, -1): # 後ろからチェック
+            if seq[i] < seq[i-1]:
+                seq[i], seq[i-1] = seq[i-1], seq[i]
+                swapped = i
+        left = swapped
+    return seq
+```
+</CodeToggle>
+
+---
+### シェルソート
+間隔の離れた要素の組に対して挿入ソートを行う。
+- 例えば，[5,4,9,1,8,6] の場合，間隔 $3$ で走査すると [5,1] と [2,5] と [9,6] の組に分けられる。よって，ソートして [1, 4, 6, 5, 8, 9]
+- この間隔を徐々に狭めていき，最終的に $1$ でソートすれば完成
+    - 間隔は $2^k - 1~(…,15,7,3,1)$ や $\frac{3^k - 1}{2}~(…,40,13,4,1)$ などが使われる
+- 計算量の正確な計算は難しいが，$O(n^{\frac{3}{2}})$ や $O(n^{\frac{4}{3}})$ などが知られている
+
+<CodeToggle language="python" title="シェルソートの実装">
+```python
+def shellsort(seq):
+    h = 1
+    while h < len(seq) / 3:
+        h = h * 3 + 1
+    # 間隔 h の最大値が決定
+
+    while h > 0:
+        for i in range(h, len(seq)): # 間隔 h で挿⼊ソート
+            j = i
+            while j >= h and seq[j-h] > seq[j]:
+                seq[j-h], seq[j] = seq[j], seq[j-h]
+            j -= h
+        h //= 3
+    return seq
+```
+</CodeToggle>
+
+---
+## 分割統治法
+:::tip[分割統治法]
+大きな問題を小さな問題に分割し，それぞれを処理して，それらを組み合わせて元の問題を解決する手法。
+:::
+
+### クイックソート
+1. 基準値を選ぶ (pivot)
+2. 基準値より小さい値を左側に，大きい値を右側に分ける
+3. 左右の部分配列に対して再帰的にクイックソートを適用する
+- 安定ソートではないが，平均計算量は $O(n \log n)$，最悪計算量は $O(n^2)$ (毎回片方の配列が空になる場合 $M_n = M_{n-1} + (n-1)$)
+
+<CodeToggle language="python" title="クイックソートの実装">
+```python
+def qsort(seq, left, right):
+    if left >= right: 
+        return seq
+    pivot = seq[right] # 最も右にある要素を pivot にする
+    j = left
+
+    # j <= i である。j より左側の要素は必ず pivot 以下となるように j を更新していく
+    # i は左から右へ進むだけ
+    for i in range(left, right):
+        if seq[i] <= pivot:
+            seq[i], seq[j] = seq[j], seq[i] # pivot 以下の要素を j より左側に移動
+            j += 1
+    seq[right], seq[j] = seq[j], seq[right]
+    seq = qsort(seq, left, j-1)
+    seq = qsort(seq, j+1, right)
+    return seq
+```
+</CodeToggle>
+
+### マージソート
+1. 配列を要素が 1 つになるまで分割する
+2. 分割した配列を順にマージしていく (小さい順に結合するだけ)
+- 安定ソートで，計算量は $O(n \log n)$。ただ，マージ部分でクイックソートより一般的には遅い
+    - 最悪でも，マージに必要な比較回数は $n-1$ 回 $\rightarrow$ $M_n = (n - 1) + 2M_{n/2}$
+- メモリを食いやすい
+
+<CodeToggle language="python" title="マージソートの実装">
+```python
+def mergesort(seq):
+    if len(seq) <= 1: return seq
+
+    # 分割
+    left = mergesort(seq[:len(seq)//2])
+    right = mergesort(seq[len(seq)//2:])
+
+    merged = []
+    cur_l = cur_r = 0
+    # ⼩さい⽅から順にmergedに⼊れるだけ
+    while cur_l < len(left) and cur_r < len(right):
+        if left[cur_l] <= right[cur_r]: # 安定性を確保
+            merged.append(left[cur_l])
+            cur_l += 1
+        else:
+            merged.append(right[cur_r])
+            cur_r += 1
+    # 片方の配列が終わってしまった場合、残りの要素を追加
+    if cur_l < len(left):
+        merged.extend(left[cur_l:])
+    elif cur_r < len(right):
+        merged.extend(right[cur_r:])
+    return merged
+```
+</CodeToggle>
+
+---
+## ヒープを使う
+### ヒープソート
+1. 配列をヒープに変換する
+2. ヒープから最小値を取り出し，削除を繰り返す
+- [ヒープ](/docs/4_programming/3_algorithm/1_data-structure.mdx#ヒープ)を参照
+- 計算量は $O(n \log n)$。安定ソートではない
+- 記憶容量は $O(n)$ 必要 (ヒープを配列で表現するため)
+
+### イントロソート
+クイックソートとヒープソートを組み合わせたもの。
+- クイックソートを行い，深さ (再帰の回数) が $O(\log n)$ を超えた場合はヒープソートに切り替える
+- 計算量は $O(n \log n)$
+
+### TimSort
+Python や Java の組み込みソートで使われているアルゴリズム。
+
+---
+## 比較に基づくソートの計算量
+比較に基づくソートの計算量は $O(n \log n)$ が下限である。
+- $n$ 個の要素をソートするためには，少なくとも $n!$ 通りの順列を考慮する必要がある。
+比較によるソートは，二分木の決定木を作っていく過程となるため，$h$ 回の比較で $2^h \geq n!$ である必要がある
+
+---
+## その他
+### バケットソート (計数ソート)
+:::tip[バケットソート (計数ソート)]
+データの取りうる値が $k$ 個とわかっている場合に有効。$O(n + k)$ でソートできる。
+:::
+- データを $k$ 個のバケットに分ける $\rightarrow$ 各バケットから小さい順に値を取り出す
+- 不安定でもよければ，バケット内の値の個数を記録すれば良い
+
+<CodeToggle language="python" title="バケットソートの実装">
+```python
+# 0 から max_value までの整数値のみと想定
+def countsort(seq, max_value):
+    count = [0]*(max_value+1) # バケツ
+    sorted = [] # ソート済み配列
+    # 出現回数をカウント
+    for i in range(len(seq)):
+        count[seq[i]] += 1
+        
+    # 出現回数からソート済み配列を⽣成
+    for i in range(len(count)):
+        for j in range(count[i]):
+            sorted.append(i)
+    return sorted
+```
+</CodeToggle>
+
+### まとめ
+<div style={{ display: 'flex', justifyContent: 'left', gap: '40px' }}>
+  <img src="/img/programming/sort-conclusion1.png" style={{ width: '45%' }} />
+  <img src="/img/programming/sort-conclusion2.png" style={{ width: '45%' }} />
+</div>
