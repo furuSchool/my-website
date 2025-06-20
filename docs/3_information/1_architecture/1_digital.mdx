@@ -1,0 +1,200 @@
+---
+title: 1. デジタル回路の基礎
+---
+
+## 基本
+### ブール代数
+論理計算のために作られた代数。
+:::tip[ブール代数]
+- 変数は 0 または 1 の値をとる
+- 演算は論理和 (OR, $+$)、論理積 (AND, $\cdot$)、否定 (NOT, $\overline{\cdot}$) のみ
+- 公理 : $A = 0~\text{if}~A \neq 1,~\overline{0} = 1,~0 \cdot 0 = 0 \cdot 1 = 1 \cdot 0 = 0,~1 \cdot 1 = 1$
+- 上記と対応した公理として，$A = 1~\text{if}~A \neq 0,~\overline{1} = 0,~1 + 1 = 1 + 0 = 0 + 1 = 1,~0 + 0 = 0$
+:::
+またここから，様々な定理が導出される。複雑だがよく使うのは以下。
+- 双対性 : ある式が成り立つならば，その式の $+,\cdot$ を入れ替え，$0,1$ を入れ替えた式も成り立つ
+    - 例 : $A + \overline{A} = 1$ は成り立つ。よって，$A \cdot \overline{A} = 0$ も成り立つ
+- 分配則 ( + も分配することに注意) : $A + BC = (A + B)(A + C),~A(B + C) = AB + AC$
+    - $AB + A\overline{B} = A,~(A+B)\cdot(A + \overline{B}) = A$ も成り立つ
+- ド・モルガンの法則 : $\overline{A + B} = \overline{A} \cdot \overline{B},~\overline{AB} = \overline{A} + \overline{B}$
+
+---
+### 論理ゲート
+- 一入力ゲート：NOT $(Y = \overline{X})$, BUF $(Y = X)$
+- 二入力ゲート：AND $(Y = AB)$, OR $(Y = A + B)$, XOR $(Y = A \oplus B)$, NAND $(Y = \overline{AB})$, NOR $(Y = \overline{A + B})$, XNOR $(Y = \overline{A \oplus B})$
+- 多入力ゲート：AND $(Y = A_1 A_2 \cdots A_n)$, OR $(Y = A_1 + A_2 + \cdots + A_n)$, XOR $(Y = A_1 \oplus A_2 \oplus \cdots \oplus A_n)$
+
+---
+### デジタル表現
+- 0 と 1 で情報を表現する。一般には電圧を信号として用いる。単純にはグランドと電源電圧。
+    - 電源電圧 $(V_{DD}) = 5V$ とか
+    - トランジスタで，閾値を決めて，$0 \leq V < V_{OL}$ のとき 0，$V_{OH} < V \leq V_{DD}$ のとき 1 のようにする
+- ビット(bit)：0 か 1，バイト(byte)：8 ビット，(nibble: 4 ビット)
+- MSB（most significant bit）：最上位ビット，LSB（least significant bit）：最下位ビット
+
+---
+### 2進数表現
+一般に，$A = a_{n-1} (-2^{n-1}) + a_{n-2} 2^{n-2} + \cdots + a_1 2^1 + a_0 2^0~~(a_i \in \{0, 1\})$。
+- 1000, 1001, ……, 1111, 0000, 0001, ……, 0111 という風に表現 → $[-2^{N-1}, 2^{N-1}-1]$
+- 2の補数表現：ビットを反転させて 1 を足す。(例) $3_{10} = 0011_{2},~-3_{10} = 1101_{2}$
+- 和は，2 進数の加算と同じで，オーバーフローは無視。
+
+---
+### 浮動小数点形式
+IEEE754：浮動小数点数規格を定める。 
+デコード：$(-1)^s \times 2^{e} \times 1.f$。仮数↑で精度↑，指数↑で範囲↑。
+
+- 単精度 (32bit)：s[1], e[8]（指数）, f[23]（仮数）
+- 倍精度 (64bit)：s[1], e[11]（指数）, f[52]（仮数）
+- 半精度 (16bit)：s[1], e[5]（指数）, f[10]（仮数）
+- Bfloat16 (16bit)：s[1], e[8]（指数）, f[7]（仮数）
+
+---
+### 文字コード
+- ASCII：7bit，128文字
+- JISX0201：8bit，半角カナも
+- JIS, Shift-JIS：2byte，漢字も
+- Unicode：UTF-8, UTF-16, UTF-32
+
+---
+## ロジック
+基本的にトランジスタを用いて論理ゲートを実現する。
+- トランジスタは 3 端子素子 $(V_S, V_G, V_D)$ で，$V_S$ がソース，$V_G$ がゲート，$V_D$ がドレイン (厳密には $V_{TH}$ (閾値電圧) も含めた 4 端子素子)
+- FET (電界効果トランジスタ) が一般的。MOSFET がよく使われる
+- nMOS (n型) ：$V_G > V_{TH}$ のとき S - D が接続される。pMOS (p型) ：$V_G < V_{TH}$ のとき S - D が接続される
+    - **nMOS は G が高いときに on，pMOS は G が低いときに on**
+    - nMOS は GND (グランド) に，pMOS は VDD (電源) に接続されることが多い
+- CMOS : nMOS と pMOS を相補的に組み合わせた回路全般を指す。ほとんどのデジタル回路は CMOS で実現される
+    - スイッチング以外で電流が流れないため，消費電力が少ない
+
+<img src="https://semi-journal.jp/wp-content/uploads/2022/02/CMOS.png" alt="CMOS" style={{ width: '50%' }} />
+画像は [CMOSとは何か](https://semi-journal.jp/basics/device/transistor/what.html) より引用
+
+
+### 基本的な論理ゲート
+プルアップ (nMOS で構成されるグランドへの接続) とプルダウン (pMOS で構成される電源への接続) の組み合わせで論理ゲートを実現する。この際，並列と直列が対応する。
+- NOT $(Q = \overline{A})$ : nMOS と pMOS を直列に接続，入力 = G，出力 = S - D の接続
+- NAND $(Q = \overline{AB})$ : nMOS を直列に接続，pMOS を並列に接続
+    - AND = NAND + NOT で実現する
+- NOR $(Q = \overline{A + B})$ : nMOS を並列に接続，pMOS を直列に接続
+    - OR = NOR + NOT で実現する
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+  <img src="https://ushitora.net/wp-content/uploads/2018/12/240px-CMOS_Inverter.svg_.png" alt="NOTゲート"  style={{ width: '20%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="https://ushitora.net/wp-content/uploads/2018/12/CMOS_AND_Layout.svg_-300x200.png" alt="ANDゲート" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="https://ushitora.net/wp-content/uploads/2018/12/640px-CMOS_OR.svg_-300x200.png" alt="ORゲート" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+- 左から，NOT, AND, OR ゲートの回路。画像は [知能デバイス研究所](https://ushitora.net/archives/category/engineering/silicon) より引用
+
+回路は，基本的に入力 = G，出力 = S - D を直列に接続する。ただ，伝送ゲートと呼ばれる接続方法もあるらしい。
+
+---
+## ディジタル回路
+論理ゲートを組み合わせて構成する回路のこと。**入力・出力・機能仕様 (入力と出力の関係)・タイミング仕様 (入力が出力に反映されるまでの時間)** を定義する。
+**組み合わせ回路** と **順序回路** に分けられる。
+
+## 組み合わせ回路
+### 組み合わせ回路の機能仕様
+- 真理値表 (Truth Table) : 入力と出力の関係を表にしたもの
+- ブール関数 (Boolean Function) $f : \{0, 1\}^n \to \{0, 1\}$ : 真理値表を関数で表現したもの。 **組み合わせ回路の機能仕様そのもの**
+- 用語
+    - リテラル : 入力変数またはその否定 $(A, \overline{A}, B, \overline{B}, \ldots)$
+    - 和項 : リテラルの和 $(A + B, A + \overline{B}, A + B + C, \ldots)$
+    - 積項 : リテラルの積 $(AB, A\overline{B}, AB\overline{C}, \ldots)$
+    - 最小項 (minterm) : 全ての入力変数を含む積項。 $(ABC, A\overline{B}C, \overline{A}BC, \ldots)$
+    - 最大項 (maxterm) : 全ての入力変数を含む和項。 $(A + B + C, A + \overline{B} + C, \overline{A} + B + C, \ldots)$
+    - ドントケア (X) : 真理値表で出力が定義されていない値
+    - ハイ・インピーダンス (Z) : 出力が回路から切り離されている状態
+ 
+#### 組み合わせ回路の実装方法
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '50%' }}>
+        - **加法標準形** : 真理値表の出力が 1 になる入力の最小項を論理和で結ぶ
+            - 例 : $f(A, B) = \overline{A}B + AB$
+        - **乗法標準形** : 真理値表の出力が 0 になる入力の最大項を論理積で結ぶ
+            - 例 : $f(A, B) = (A + B)(\overline{A} + B) ~ ( = \overline{A}B + AB)$
+        - 理想 : $f(A, B) = B$ (簡略化するためには，ブール代数の定理を使う，カルノー図を使うなどがある)
+    </div>
+    <table style={{ width: '45%' }}>
+        <thead>
+            <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>出力</th>
+                <th>最大項</th>
+                <th>最小項</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>$A + B$</td>
+                <td>$\overline{A}\overline{B}$</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>$A + \overline{B}$</td>
+                <td>$\overline{A}B$</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>$\overline{A} + B$</td>
+                <td>$A\overline{B}$</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>$\overline{A} + \overline{B}$</td>
+                <td>$AB$</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+### カルノーマップ
+:::tip[カルノーマップ]
+真理値表を図にすることで簡単に論理圧縮をする方法。4 変数くらいまでが実用的。
+:::
+1. グレイコードで表を作成する
+2. 1 のセルをグループ化する。ドントケアはグループに含めても含まなくてもよい
+3. グループごとに論理式を作成し和をとる
+
+### QM (Quine-McCluskey) 法
+
+### 典型的な組み合わせ回路
+- 全加算器 (full adder) : 入力 $A, B, C_{in}$，出力 $S, C_{out}$。桁挙げ考慮の加算器
+    - $S = A \oplus B \oplus C_{in},~C_{out} = AB + AC_{in} + BC_{in}$
+- マルチプレクサ (multiplexer) : 入力 $I_0, I_1, \ldots, I_n$，コントロール線 $S_0, S_1, \ldots, S_{\log_2 n - 1}$，出力 $Y$。
+コントロール線の値に応じて入力を一つ選択して出力する
+    - $Y = I_{S_0 S_1 \ldots S_{m-1}}$
+    - 例えば，入力 $D_0, D_1$，コントロール線 $S$ のとき，$Y = (D_0 + S)(D_1 + \overline{S})$
+
+### タイミング仕様
+入力が変化してから出力が変化するまでの遅延を考える。
+遅延はばらつきがあり，立ち上がり・立ち下がりの差，ゲート性能差，IR drop (電圧降下)，熱，パスの長さなどが影響する。
+- 論理ゲートごとに考える遅延
+    - **伝達遅延** (Propagation Delay, $t_{pd}$) : 入力が変化してから出力が変化するまでの最大遅延
+        - 電達遅延には，
+    - Contamination Delay ($t_{cd}$) : 入力が変化してから出力が変化するまでの最小遅延
+- 全体の遅延
+    - critical path : 伝達遅延の合計が最大となるパス
+    - shortest path : 伝達遅延の合計が最小となるパス
+- グリッチ : 入力が変化したときに，出力が一時的に望まない変化を起こす現象。パスの遅延差によって起こる
+    - グリッチを防ぐためには，入力の変化を同期させる，回路を冗長化するなどの対策が必要
+
+---
+
+- 1ビット加算器(adder)
+- 複数ビット加算器（桁上げ伝搬加算器 (ripple-carry adder)，桁上げ先見加算器(carry-lookahead adder)，プリフィックス加算器，etc。）
+    - ゲート段数削減とファン・イン，ファン・アウト増加のトレードオフ
+- 算術論理演算装置(ALU: Arithmetic Logic Unit)：加算器，減算器，シフタなどをまとめたもの。
+    - 74181 : 汎用ロジックIC。古典的なALUの例
+- レジスタ : Dフリップ・フロップ (Flip-Flop)を並べたものがよく使われる。エッジ・トリガ型。
+    - Dラッチ : クロック信号がなくても入力を出力に反映

@@ -1,0 +1,211 @@
+---
+title: 5. 動的計画法
+---
+
+import CodeToggle from '/components/CodeToggle.tsx';
+
+:::warning[目標]
+漸化式のある問題を解くために，動的計画法を使う！
+:::
+
+## 動的計画法
+小さい問題を解き，その結果を使って大きい問題を解く。漸化式など，再帰的に定義される問題に対して有効。
+
+大きく分けて，二つの方法がある。
+1. メモ化再帰 : 計算結果を保存しておくことで，計算量を減らす。再帰は行っているが，重複する計算を避けている
+    - わかりやすく実装できいるが，再帰の深さによるスタックオーバーフローに注意
+2. 漸化式を使う : 漸化式の形で計算を表現して，再帰を避ける。テーブルを使い，こちらを DP と呼ぶことが多い
+    - 応用の幅が広いが，設計が難しい
+
+### 例 : フィボナッチ数列
+$f(n) = f(n-1) + f(n-2),~f(1) = f(2) = 1$ で定義される。
+
+<CodeToggle language="python" title="フィボナッチ数列の例">
+```python
+def fib(n): # 素朴な再帰
+    if n<=2: return 1
+    else:
+    return fib(n-1) + fib(n-2)
+
+def fib_rev1(n): # メモ化再帰
+    f = [0]*(n+1) # メモ
+    def _fib(n):
+        if n <= 2: return 1
+        elif f[n] != 0: return f[n] # 記憶があればそれを使う
+        else: # なければ計算する
+            f[n] = _fib(n-1) + _fib(n-2)
+            return f[n]
+    return _fib(n)
+	
+def fib_rev2(n): # テーブルを使う (単に漸化式を使うだけ)
+    if n<=2: return 1
+    else:
+        f = [0]*(n+1)
+        f[0] = 0; f[1] = 1; f[2] = 1
+        for i in range(3, n+1):
+            f[i] = f[i-1] + f[i-2]
+    return f[n]
+```
+</CodeToggle>
+
+### 例 : 最大値問題 
+配列で与えられた整数 $a_1, a_2, \ldots, a_n$ のうち任意個の和の最大値 $S_n$ を求める。
+- 漸化式として，$S_{n + 1} = \max(S_n, S_n + a_n),~S_0 = 0$ が成り立つ
+
+<CodeToggle language="python" title="最大値問題の例">
+```python
+def max_sum(a):
+    s = [0]*(len(a)+1)
+    for i in range(len(a)):
+        s[i+1] = max(s[i], s[i]+a[i])
+    return s[len(a)]
+```
+</CodeToggle>
+
+---
+## DP の考え方
+:::tip[DP の流れ]
+1. DP テーブルを設計する
+    - 行，列，それぞれの要素の値，を考える。 **求めたい値 = 要素，説明変数 = 行，列**
+    - テンソルで考えると思った方が良いかも
+2. DP テーブルを初期化する
+3. DP テーブルの遷移を調べる (= 漸化式を見つける)
+    - ある状態に遷移し得る前の状態を考えて漸化式とする (漸化式的な方法，貰う DP )
+    - ある状態から遷移し得る全ての次の状態に対して，値を計算して足し合わせる (累積的な方法。プログラミングっぽい，配る DP )
+    - どちらの方法を使うかは，問題によるが，計算量が異なることもあるので注意
+4. コードに落とし込んで DP テーブルを埋める
+:::
+
+### 例 : コイン問題
+コインの額面が $c_1, c_2, \ldots, c_n$ のとき，額面の和が $x$ になるようなコインの最小枚数 $f(x)$ を求める。
+- 要素 = 組み合わせ数，行 = 額面の和。つまり，dp = [0円支払うためのコインの最小枚数, 1円支払うためのコインの最小枚数, …]
+- $f(x) = \min(f(x - c_i)) + 1,~f(0) = 0$ が成り立つので，これを実装すればよい
+
+<CodeToggle language="python" title="コイン問題の例">
+```python
+# amount = x:⽀払う額、coins = (c_i):硬貨の種類
+dp = [0 for i in range(amount+1)]
+for i in range(1, amount+1):
+    tmp_min = 10**6
+    for j in range(len(coins)):
+        if (i - coins[j] > -1) and (tmp_min > dp[i - coins[j]]):
+            tmp_min = dp[i - coins[j]]
+    dp[i] = tmp_min + 1
+return dp[amount] # 求めたいものはdpテーブルの端にある
+```
+</CodeToggle>
+
+### 例 : ナップサック問題
+重さ $w_i$，価値 $v_i$ の品物が $n$ 個あるとき，重さの合計が $W$ 以下で価値の合計が最大になるような品物の選び方を求める。
+- 要素 = 価値の総和，行 = 品物の番号 $(1, 2, \ldots, i)$ のみ利用可能，列 = 重さの合計 $j$ 以下
+- $f(i, j) = \max(f(i - 1, j), f(i - 1, j - w_i) + v_i),~f(0, j) = 0$ が成り立つので，これを実装すればよい
+    - 品物 $i$ を追加した際に，選んだ方が良いか否か
+- もし，重さの合計をぴったりにしたい場合は，初期値 $f(0,0) = 0, f(0,j > 0) = *$ とする ($*$ は不可能な状態を表す)
+
+<img src="/img/programming/knapsack.png" alt="ナップサック問題のイメージ" style={{ width: '80%', marginBottom: "10px" }}/>
+
+<CodeToggle language="python" title="ナップサック問題の例">
+```python
+# N = 品物の数, W = 重さの上限, weight = (w_i), value = (v_i)
+dp = [[-1 for _ in range(W+1)]for _ in range(N+1)] # -1 で初期化
+for i in range(W+1): dp[0][i] = 0 # 品物 0 個のときは価値 0
+for i in range(N): 
+    for j in range(W+1):
+        if weight[i] <= j:
+            dp[i+1][j] = max(dp[i][j],dp[i][j-weight[i]]+value[i])
+        else: dp[i+1][j]=dp[i][j]
+return dp[N][W]
+```
+</CodeToggle>  
+$%$
+
+一方で，メモ化再帰を使うと以下のようになる。dp のセルをメモを使いながら順番に計算していくイメージ。漸化式は使わない。
+
+<CodeToggle language="python" title="ナップサック問題のメモ化再帰">
+```python
+# N = 品物の数, W = 重さの上限, cur_i = 入れようとする品物, cur_w = この重さ以下で詰めたい (つまり，dp のセルの一つを計算しようとしているイメージ)
+note = [[-1 for _ in range(W+1)]for _ in range(N)] # メモ
+def knapsack_rec(cur_i, cur_w):
+    if cur_i < 0: return 0
+    if note[cur_i][cur_w] > -1: return note[cur_i][cur_w] # メモを使う
+        
+    if cur_w < weight[cur_i]: # 品物を入れられない
+        note[cur_i][cur_w] = knapsack_rec(i-1, cur_w)
+        return note[cur_i][cur_w]
+    else: # 品物を入れられる
+        not_in = knapsack_rec(i-1, cur_w) # 入れない場合の価値
+        is_in = knapsack_rec(i-1, cur_w-weight[i])+ value[i] # 入れる場合の価値
+        note[i][cur_w] = max(not_in, is_in)
+        return note[i][cur_w]
+```
+</CodeToggle>
+
+### 例 : 部分和問題
+与えられた整数 $a_1, a_2, \ldots, a_n$ のうち，いくつかの整数を選んで和が $S$ にできるかどうかを判定する。
+- 要素 = 和が $S$ になるかどうか ( $0$ or $1$ ) ，行 = 整数 $a_1, …, a_i$ のみ利用可能，列 = 和の合計 $j$
+- $f(i, j) = f(i - 1, j) + f(i - 1, j - a_i),~f(0,0) = 1,~f(0,j > 0) = 0$ が成り立つので，これを実装すればよい
+
+### 例 : レーベンシュタイン距離
+文字列 $s_1, s_2$ の間の距離を求める。具体的には，$s_1$ を $s_2$ に変換するために必要な編集操作 (挿入，削除，置換) の最小回数を求める。
+- 要素 = 編集距離，行 = $s_1$ のうち $i$ 文字まで，列 = $s_2$ のうち $j$ 文字まで
+- $f(i, j) = \min(f(i - 1, j) + 1, f(i, j - 1) + 1, f(i - 1, j - 1) + 0~\text{or}~1),~f(0, j) = j,~f(i, 0) = i$
+    - $0~\text{or}~1$ は，$s_1$ の $i$ 文字目と $s_2$ の $j$ 文字目が一致する場合は $0$，一致しない場合は $1$
+- 挿入 : $f(i, j) = f(i - 1, j) + 1$，削除 : $f(i, j) = f(i, j - 1) + 1$，置換 : $f(i, j) = f(i - 1, j - 1) + 1$，何もしない : $f(i, j) = f(i - 1, j - 1)$
+<img src="/img/programming/levenshtein.png" alt="レーベンシュタイン距離のイメージ" style={{ width: '60%', marginBottom: "10px" }}/>
+
+### 例 : 動的時間伸縮法 (Dynamic Time Warping, DTW)
+:::tip[DTW]
+2つの時系列データの類似度 (距離) を測る時に利⽤される。音声認識や⾔語処理などで使われる。
+:::
+
+<img src="https://c.mql5.com/2/88/DTW.PNG" alt="DTW のイメージ" style={{ width: '60%' }}/>
+画像は [MQL5における動的時間伸縮を用いたパターン認識](https://www.mql5.com/ja/articles/15572) より引用。
+
+単に同じ時刻のデータを比較するのではなく，時間軸を伸縮させて比較する。すなわち，データの要素間を時間によらず対応させる。1 対多の対応もありうる。
+- 2 つのデータの要素同士の全てのペアを考え，最も距離が小さいものを選ぶ ( ユークリッド距離とする )
+- データの要素は全て少なくとももう一方のデータの 1 つ以上の要素と対応する。ただし，"交差" はしない
+- 計算量は，データの要素数 $N, M$ に対して $O(NM)$。FastDTW という改良版 (近似計算) では，$O(\max(N, M))$
+
+DP の設計
+- 要素 = 距離，行 = データ 1 のうち $i$ 番目までの要素，列 = データ 2 のうち $j$ 番目までの要素 ($i,j = 0, 1, \ldots$)
+- $f(i, j) = \min(f(i - 1, j) + d(i, j), f(i, j - 1) + d(i, j), f(i - 1, j - 1) + d(i, j)),\\
+f(0, 0) = d(0, 0),~f(i, 0) = \sum_{k=0}^{i} d(k, 0),~f(0, j) = \sum_{k=0}^{j} d(0, k)$
+    - $d(i, j)$ はデータ 1 の $i$ 番目の要素とデータ 2 の $j$ 番目の要素の距離
+
+<img src="/img/programming/dtw.png" alt="DTW のイメージ" style={{ width: '60%', marginBottom: "10px" }}/>
+
+<CodeToggle language="python" title="DTW の実装">
+```python
+def dist(x, y): return (x-y) ** 2 # ユークリッド距離
+
+def dtw(a, b):
+    N = len(a)
+    M = len(b)
+
+    # DP テーブルの初期化
+    dp = [[0 for j in range(M)] for i in range(N)]
+    dp[0][0] = dist(a[0], b[0])
+    for i in range(1, N):
+        dp[i][0] = dp[i-1][0] + dist(a[i], b[0])
+    for j in range(1, M):
+        dp[0][j] = dp[0][j-1] + dist(a[0], b[j])
+            
+    # DPテーブルを埋めていく
+    for i in range(1, N):
+        for j in range(1, M):
+            dp[i][j] = min(min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + dist(a[i], b[j])
+    return dp[N-1][M-1] 
+```
+</CodeToggle>
+
+---
+## DP で効率的に解ける問題の条件
+#### 1. 部分構造最適性 (optimal substructure, 最適性原理)
+- より⼩さな問題にしても同じ構造であり，同じ解き⽅で解くことができる
+- より⼩さな問題を複数考える時，その問題間で考えている領域に被っているところがない
+
+つまり，「次の最適解 = 今までの最適解 + 最適な選択」 ( = 漸化式) が成り立つので，1 ステップずつ考えれば良い。
+
+#### 2. 部分問題重複性 (overlapping subproblems)
+- ある問題を解く際に，同⼀の部分問題が繰り返し出現する $\to$ メモ化再帰やテーブルを使うことで効率的に解ける
+- 分割統治法で解ける問題 (例 : クイックソート) は部分問題が重複しないので，単純な再帰で効率良く解ける
