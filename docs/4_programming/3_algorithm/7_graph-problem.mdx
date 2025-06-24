@@ -18,7 +18,7 @@ import CodeToggle from '/components/CodeToggle.tsx';
 :::warning[目標]
 特定の 2 つのノード間の最短経路を求める。ある始点から他の全てのノードへの最短経路を求めることが多い。
 :::
-最短経路の部分経路も最短経路である，という性質を利用する。なお，各エッジの距離 (重み) が全て同じなら，BFS で求めることができる。
+最短経路の部分経路も最短経路である，という性質を利用する。なお，各辺の距離 (重み) が全て同じなら，BFS で求めることができる。
 
 ### ダイクストラ法
 :::tip[ダイクストラ法]
@@ -32,6 +32,7 @@ import CodeToggle from '/components/CodeToggle.tsx';
 - ノードのデータ構造としてヒープを使うことで $O((V + E) \log V)$ にできる。(実装したのは $O(E \log E)$)
     - 最短距離が最小のノードを選ぶこと，ヒープに追加することに $O(\log V)$ かかるため
     - フィボナッチヒープを使うと $O(E + V \log V)$ となる。これは，追加の計算量が $O(1)$ になるため
+    - なお，$O(\log E) = O(\log V)$ である
 
 <img src="/img/programming/dijkstra.png" alt="ダイクストラ法の結果例" width="50%"/>
 
@@ -212,6 +213,249 @@ def WarshallFloyd(V, e_matrix):
             for j in range(V):
                 if dist[i][k] != inf and dist[k][j] != inf:
                 dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j])
+    return dist
+```
+</CodeToggle>
+
+---
+## 最小全域木問題
+:::warning[目標]
+最小全域木 (MST) を求める。すなわち，グラフの全てのノードが連結されているツリーで，辺の重みの合計が最小になるものを求める。
+:::
+
+### Union-Find 木
+:::tip[Union-Find 木]
+要素を複数の木に分けて管理するデータ構造。各木に対して，Union (結合) と Find (探索) の操作を行える。
+- Unite (結合) : 片方の木の根からもう片方の木の根に繋ぐ
+- Find (探索) : 要素がどの木に属しているかを調べる。すなわち，その要素の根を見つける
+- 互いの木の要素は重ならない (素集合)
+:::
+
+<CodeToggle language="python" title="Union-Find 木の実装">
+```python
+class UnionFind:
+    def __init__(self, n):
+        self.parent = [i for i in range(n)] # 初期化（全員独立）
+        self.height = [0 for _ in range(n)] # 各⽊の⾼さ
+        
+    def get_root(self, i): # 要素 i の根ノードを探す
+        if self.parent[i] == i: return i
+        else:
+            self.parent[i] = self.get_root(self.parent[i]) # 再帰的に根を探し、要素 i の親をその根に更新する (経路圧縮)
+            return self.parent[i]
+            
+    def unite(self, i, j): # 要素 i と j の属する木を結合する
+        root_i = self.get_root(i)
+        root_j = self.get_root(j)
+        if root_i != root_j: 
+            if self.height[root_i] < self.height[root_j]:
+                self.parent[root_i] = root_j # 要素 i の根を要素 j の根に繋ぐ
+            else:
+                self.parent[root_j] = root_i # 要素 j の根を要素 i の根に繋ぐ
+                if self.height[root_i] == self.height[root_j]:
+                    self.height[root_i] += 1 # 二つの木の高さが同じ時のみ、結合後の高さが 1 増える
+```
+</CodeToggle>
+
+
+### クリスカル法 (Kruskal's algorithm)
+:::tip[クリスカル法]
+辺の距離 (重み) が小さい順に辺を選んでいき，サイクルができないようにすることで最小全域木を求める。
+1. 全ての辺を距離の小さい順にソートする
+2. ソートした辺を順に見ていき，サイクルができない場合，最小全域木に追加する
+3. 全ての辺のチェックが終わるまで 2 を繰り返す
+:::
+- 全体の計算量は，Union-Find 木を使う場合，隣接リストなら $O(E \log E)$，隣接行列なら辺を取り出すために $O(V^2)$ となる
+
+ここで，閉路の検出方法が重要となる。
+- 閉路の検出として，辺を足す前に BFS や DFS を行って，繋ごうとしてるノードがすでに繋がっているかを確認することも可能。この場合，計算量は $O(V^2)$
+    - 一回の BFS や DFS は $O(E +V) = O(V)$ であり，これを $V = 1,2,…$ で行うため
+- Union-Find 木を使うと，閉路の検出自体はほとんど $O(1)$ で行える
+    - ここでは，ノード間を辺で繋いだ時に二つのノードの属する木を結合することで，すでに 2 ノードが結合されている場合は辺を追加しないようにする
+
+<CodeToggle language="python" title="クリスカル法の実装">
+```python
+# [始点, 終点, 距離] のリスト
+e_list = [
+[0, 1, 5], [0, 2, 4], [1, 3, 3], [1, 5, 9],
+[2, 3, 2], [2, 4, 3], [3, 5, 1], [3, 6, 7],
+[4, 6, 8], [5, 6, 2], [5, 7, 5], [6, 7, 2]
+]
+
+def kruskal(V, e_list):
+    e_cost_sorted = sorted(e_list) # 辺を距離の小さい順にソート
+    uf_tree = UnionFind(V)
+    mst = []
+    for item in e_cost_sorted:
+        if uf_tree.get_root(item[1]) != uf_tree.get_root(item[2]): # 2 ノードが異なる木に属す
+            uf_tree.unite(item[1], item[2]) # 2 ノードを結合
+            mst.append([item[0], item[1], item[2]]) # 最小全域木に追加
+    return mst
+```
+</CodeToggle>
+
+### プリム法 (Prim's algorithm)
+:::tip[プリム法]
+始点から繋がっているノードの中で，最小の距離を持つ辺を選び，そのノードを最小全域木に追加していくアルゴリズム。
+1. 始点ノードを最小全域木に追加
+2. 最小全域木に追加したノードから繋がっているノードの中で，最小の距離を持つ辺を選んでそのノードを最小全域木に追加する
+3. 2 を全てのノードが最小全域木に追加されるまで繰り返す
+:::
+
+- 計算量 : 隣接行列で最小距離の辺をナイーブに選ぶと，$O(V^3)$。隣接リストで最小距離の辺をナイーブに選ぶと $O(EV)$
+- ヒープを用いた下記の実装では $O(E\log E)$。フィボナッチヒープを用いると $O(E + V \log V)$ となる
+
+<CodeToggle language="python" title="プリム法の実装">
+```python
+import heapq
+
+# [距離, 始点, 終点] のリスト
+e_list = [
+[5, 0, 1], [4, 0, 2], [3, 1, 3], [9, 1, 5],
+[2, 2, 3], [3, 2, 4], [1, 3, 5], [7, 3, 6],
+[8, 4, 6], [2, 5, 6], [5, 5, 7], [2, 6, 7]
+]
+
+def prim(V, e_list):
+    edges_from = [[] for _ in range(V)] 
+    for e in e_list: # 隣接リストに変換
+        edges_from[e[1]].append([e[0], e[1], e[2]]) # [距離, 始点, 終点] の形
+    e_heapq = []
+    mst = [] # 最⼩全域⽊
+    included = [False]*V
+    included[0] = True
+    for e in edges_from[0]: # 始点から伸びる全ての辺をヒープに追加
+        heapq.heappush(e_heapq, e)
+    while len(e_heapq):
+        min_edge = heapq.heappop(e_heapq) # 最小距離の辺を取り出す
+        if not included[min_edge[2]]:
+            included[min_edge[2]] = True
+            mst.append([min_edge[1], min_edge[2]]) # 最小全域木に辺を追加
+            for e in edges_from[min_edge[2]]: # 取り出した辺の終点から伸びる辺をヒープに追加 (追加前のもののみ)
+                if not included[e[2]]:
+                    heapq.heappush(e_heapq, e) 
+    return mst
+```
+</CodeToggle>
+
+---
+## トポロジカルソート
+:::warning[目標]
+閉路のない有向グラフにおいて，全ての有向辺の向きが同じになるように並び替える。結果は複数存在する可能性がある。
+
+また，そのような並び替えをできるグラフを **有向非巡回グラフ (DAG)** と呼ぶ。
+- DAG は巡回できる閉路が存在しない。ただし，木でない場合もある
+:::
+- 有向木 : DAG の一種であり，根を一つだけもち，辺の向きが根から葉，もしくは葉から根のどちらかに限られる。
+また，任意の 2 ノード間に一意のパスが存在する (これは木の条件)
+- 以下の図は DAG の例
+    <div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <img src="/img/programming/dag1.png" alt="DAG の例" style={{ width: '20%', aspectRatio: 'auto', objectFit: 'contain' }} />
+    <img src="/img/programming/dag2.png" alt="DAG の例" style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }} />
+    </div>
+
+### Kahn のトポロジカルソート (Kahn's algorithm)
+:::tip[Kahn のトポロジカルソート]
+入次数 0 のノードを見つけ出し，グラフから順次取り出していく。もし，途中で入次数 0 のノードがなくなった場合，DAG ではないと判断する。
+:::
+- 計算量は $O(V + E)$
+
+<CodeToggle language="python" title="Kahn のトポロジカルソートの実装">
+```python
+# 隣接リスト。[始点, 終点] の形
+edges = [[0, 1], [0, 2], [1, 3], [2, 3], [2, 4], [3, 4]]
+from collections import deque
+
+# 引数：V:ノード数, E:辺の数, edges:隣接リスト
+def KahnTopo(V, E, edges):
+    indeg = [0]*V
+    outedge = [[] for _ in range (V)] # 各ノードから伸びる辺の [終点] の隣接リスト
+    for v_from, v_to in edges: # 入次数と辺のリストを作成
+        indeg[v_to] += 1
+        outedge[v_from].append(v_to) 
+        
+    sorted_g = []
+    deq = list(v for v in range(E) if inedge[v]==0)
+    while deq:
+        v = deq.pop(0) # 入次数 0 のノードを取り出す
+        for item in outedge[v]:
+            inedge[item] -= 1  # 取り出したノードとつながるノードの入次数を減らす
+            E -= 1 # 辺の数を減らす
+            if inedge[item] == 0: # 入次数が 0 になったノードを deq に追加
+                left = 0
+                right = len(deq)-1
+                if right < 0:
+                    deq.append(item)
+                elif item < deq[left]:
+                    deq.insert(left, item)
+                elif item > deq[right]:
+                    deq.insert(right+1,item)
+                else:
+                    while right - left > 1:
+                        tmp = (right+left)//2
+                        if item > deq[tmp]:
+                            left = tmp
+                        else:
+                            right = tmp
+                        deq.insert(right,item)
+        sorted_g.append(v)
+    if E != 0:
+        return None # 辺が残っていれば DAG でない
+    return sorted_g
+```
+</CodeToggle>
+
+### Tarjan のトポロジカルソート (Tarjan's algorithm)
+:::tip[Tarjan のトポロジカルソート]
+DFS を用いて，先に進めないノードまで到達したら，そこから戻りながらノードを取り出していく。
+もし，途中で同じノードに戻ってきた場合，DAG ではないと判断する。
+:::
+
+- 計算量は $O(V + E)$
+
+<CodeToggle language="python" title="Tarjan のトポロジカルソートの実装">
+```python
+def TarjanTopo(V, edges):
+    def check(v):
+        if visited[v] == 1:
+            return None # 2回目の訪問なら DAG ではない
+        elif visited[v] == 0:
+            visited[v] = 1 # 処理待ちにする
+            for to_v in outedge[v]: check(to_v) # 隣接ノードを再帰
+            # 自分より深いノードが処理済みになれば、次は自分が処理済みになって呼び出される
+            visited[v] = 2
+            sorted_g.appendleft(v)
+        
+    visited = [0]*V # 0: 未訪問, 1: 処理待ち, 2: 処理済
+    outedge = [[] for _ in range (V)]
+    for e in edges: outedge[e[0]].append(e[1]) # 各ノードから伸びる辺の [終点] の隣接リスト
+    sorted_g = deque()
+    for i in range(V): check(i) # 各ノードをチェック
+    return sorted_g
+```
+</CodeToggle>
+
+### トポロジカルソートの応用例
+- 閉路チェック : 有向グラフにおいてトポロジカルソートできなかった場合，どこかに閉路が存在する（有向巡回グラフになっている）
+- プロジェクトの依存関係を考慮したスケジューリング
+- DAG における最短経路を求める
+
+<CodeToggle language="python" title="DAG における最短経路を求める">
+```python
+def shortest_path_DAG(V, E, edges, start_vertex):
+    sorted_g = KahnTopo(V, E, edges) # トポロジカルソートを行う
+    if not sorted_g:
+        return None # DAG でない場合は None を返す
+    edge_list = [[] for _ in range(V)]
+    for u, v, weight in edges:
+        edge_list[u].append([v, weight]) # 各ノードから伸びる辺の [終点, 重み] の隣接リスト
+    dist = [float('inf')] * V; dist[start_vertex] = 0 # start_vertex からの距離を初期化
+    
+    for u in sorted_g:
+        if dist[u] != float('inf'):
+            for v, weight in edge_list[u]: # u からつながる全てのノード v の距離を更新
+                if dist[v] > dist[u] + weight:
+                    dist[v] = dist[u] + weight
     return dist
 ```
 </CodeToggle>
