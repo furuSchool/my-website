@@ -375,33 +375,19 @@ def KahnTopo(V, E, edges):
         outedge[v_from].append(v_to) 
         
     sorted_g = []
-    deq = list(v for v in range(E) if inedge[v]==0)
+    deq = deque([i for i in range(V) if indegree[i] == 0])
     while deq:
-        v = deq.pop(0) # 入次数 0 のノードを取り出す
+        v = deq.popleft() # 入次数 0 のノードを取り出す
         for item in outedge[v]:
             inedge[item] -= 1  # 取り出したノードとつながるノードの入次数を減らす
             E -= 1 # 辺の数を減らす
             if inedge[item] == 0: # 入次数が 0 になったノードを deq に追加
-                left = 0
-                right = len(deq)-1
-                if right < 0:
-                    deq.append(item)
-                elif item < deq[left]:
-                    deq.insert(left, item)
-                elif item > deq[right]:
-                    deq.insert(right+1,item)
-                else:
-                    while right - left > 1:
-                        tmp = (right+left)//2
-                        if item > deq[tmp]:
-                            left = tmp
-                        else:
-                            right = tmp
-                        deq.insert(right,item)
+                deq.append(item)
         sorted_g.append(v)
-    if E != 0:
-        return None # 辺が残っていれば DAG でない
-    return sorted_g
+    if len(sorted_nodes) == V:
+        return sorted_nodes
+    else:
+        return None # DAG ではない
 ```
 </CodeToggle>
 
@@ -439,6 +425,7 @@ def TarjanTopo(V, edges):
 - 閉路チェック : 有向グラフにおいてトポロジカルソートできなかった場合，どこかに閉路が存在する（有向巡回グラフになっている）
 - プロジェクトの依存関係を考慮したスケジューリング
 - DAG における最短経路を求める
+    - 計算量は $O(V + E)$ でいける
 
 <CodeToggle language="python" title="DAG における最短経路を求める">
 ```python
