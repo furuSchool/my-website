@@ -1,0 +1,217 @@
+---
+title: 7. グラフの諸問題
+---
+参照: [3. グラフとその探索 (BFS, DFS)](/docs/4_programming/3_algorithm/3_graph.mdx)
+
+import CodeToggle from '/components/CodeToggle.tsx';
+
+:::warning[目標]
+グラフに関する様々な問題を解く。具体的には以下のようなもの。
+- 最短経路問題
+- 最小全域木問題
+- 最大フロー問題
+- 最小費用流問題
+:::
+
+---
+## 2 頂点最短経路問題
+:::warning[目標]
+特定の 2 つのノード間の最短経路を求める。ある始点から他の全てのノードへの最短経路を求めることが多い。
+:::
+最短経路の部分経路も最短経路である，という性質を利用する。なお，各エッジの距離 (重み) が全て同じなら，BFS で求めることができる。
+
+### ダイクストラ法
+:::tip[ダイクストラ法]
+非負の重みを持つグラフにおいて，始点から繋がっているノードの最短距離を更新していくアルゴリズム。
+1. 各ノードの最短距離を無限大に初期化。始点ノードは 0
+2. 現在いるノードにつながるノードの最短距離の更新を試みる
+3. 最短距離が最小のノードを選び，そのノードを現在のノードとする
+4. 2, 3 を繰り返す
+:::
+- 計算量は $O(V^2 + E)$ であり，最短距離が最小のノードを選ぶのに $O(V)$ かかるのがボトルネック。$E$ は合計で全部の辺を 2 回ずつ見るため
+- ノードのデータ構造としてヒープを使うことで $O((V + E) \log V)$ にできる。(実装したのは $O(E \log E)$)
+    - 最短距離が最小のノードを選ぶこと，ヒープに追加することに $O(\log V)$ かかるため
+    - フィボナッチヒープを使うと $O(E + V \log V)$ となる。これは，追加の計算量が $O(1)$ になるため
+
+<img src="/img/programming/dijkstra.png" alt="ダイクストラ法の結果例" width="50%"/>
+
+<CodeToggle language="python" title="ダイクストラ法の実装">
+```python
+# 隣接リスト。[ノード, 距離]の形
+edges_list = [
+[[1, 5], [2, 4]], # ノードA
+[[0, 5], [3, 3], [5, 9]], # ノードB
+[[0, 4], [3, 2], [4, 3]], # ノードC
+[[1, 3], [2, 2], [5, 1], [6, 7]], # ノードD
+[[2, 3], [6, 8]], # ノードE
+[[1, 9], [3, 1], [6, 2], [7, 5]], # ノードF
+[[3, 7], [4, 8], [5, 2], [7, 2]], # ノードG
+[[5, 5], [6, 2]] # ノードH
+]
+
+# Vはノードの数、e_listは隣接リスト
+def dijkstra(V, e_list):
+    inf = float('inf')
+    done = [False]*V # ここを始点に計算したか (訪問済みか) 
+    dist = [inf]*V # 始点からの距離
+    dist[0] = 0
+    while 1:
+        tmp_min_dist = inf
+        cur_node = -1
+        for i in range(V): # 訪問済みでないノードで距離最小のノードを cur_node とする
+            if (not done[i]) and (tmp_min_dist > dist[i]):
+                tmp_min_dist = dist[i]
+                cur_node = i
+                
+        for e in e_list[cur_node]: # cur_node から繋がっているノードの距離を更新
+            if dist[e[0]] > dist[cur_node] + e[1]:
+                dist[e[0]] = dist[cur_node] + e[1]
+        done[cur_node] = True
+                
+        if cur_node == -1: break # すべてのノードを訪問したら終了
+    return dist
+
+
+import heapq
+# ヒープを使う場合
+# N:頂点, edges_list:隣接リスト, S:始点
+def dijkstra_heap(N,edges_list,S):
+    inf = float('inf')
+    done = [False]*N
+    dist = [inf]*N
+    dist[S] = 0
+    node_heap = [] 
+    heapq.heappush(node_heap, [dist[S], S]) # ヒープに [距離, 始点] を追加
+
+    while node_heap:
+        tmp = heapq.heappop(node_heap) # 距離最小のノードを取り出す (計算量は O(log E))
+        cur_node = tmp[1]
+        if not done[cur_node]: # 未訪問なら
+            for e in edges_list[cur_node]: # cur_node から繋がっているノードの距離を更新
+                if dist[e[0]] > dist[cur_node] + e[1]:
+                    dist[e[0]] = dist[cur_node] + e[1]
+                    heapq.heappush(node_heap,[dist[e[0]], e[0]]) # 距離更新したならヒープに追加 (今回の計算量は O(log E))
+            done[cur_node] = True
+    return dist
+```
+</CodeToggle>
+
+### ベルマン・フォード法
+:::tip[ベルマン・フォード法]
+負の重みを持つグラフにおいても最短経路を求めることができるアルゴリズム。負の閉路 (= 最短距離が無限に小さくできる) も検出できる。
+1. 各ノードの最短距離を無限大に初期化。始点ノードは 0
+2. 全ての辺を見て，各ノードの最短距離の更新を試みる。結果として，始点から徐々に距離が広がる
+3. 2 を $V - 1$ 回繰り返す ($V$ はノードの数)。$V$ 回目に更新があった場合，負の閉路があると判断する
+    - $V-1$ 回以内には最短距離が全体に広がってるはず ! (厳密には，始点から最も遠いノードまでの距離回数)
+:::
+- 計算量は $O(VE)$ であり，$V$ 回のループで全ての辺を見ている
+
+<CodeToggle language="python" title="ベルマン・フォード法の実装">
+```python
+# [始点,終点,距離]
+edges_list2 = [[0, 1, 5], [0, 2, 4], [1, 0, 5], [1, 3, 9], [1, 5, 9],
+[2, 0, 4], [2, 3, 2], [2, 4, 3], [3, 1, 9], [3, 2, 2], [3, 5, 1],[3, 6, 7], 
+[4, 2, 3], [4, 6, 8], [5, 1, 9], [5, 3, 1], [5, 6, 2],[5, 7, 5], [6, 3, 7], 
+[6, 4, 8], [6, 5, 2], [6, 7, 2], [7, 5, 5], [7, 6, 2]]
+
+def BellmanFord(V, e_list):
+    inf = float('inf')
+    dist = [inf]*V
+    dist[0] = 0
+    for j in range(V):
+        for e in edges_list:
+            if dist[e[1]] > e[2] + dist[e[0]]:
+                dist[e[1]] = e[2] + dist[e[0]]
+                if j==V-1: return -1 # 負の閉路がある
+    return dist
+```
+</CodeToggle>
+
+### SPFA (Shortest Path Faster Algorithm)
+:::tip[SPFA]
+ベルマン・フォード法の改良版で，毎回全ての辺をチェックすることを避けて高速化を図るアルゴリズム。
+1. 各ノードの最短距離を無限大に初期化。始点ノードは 0
+2. 始点ノードをキューに追加
+3. キューからノードを取り出し，そのノードから繋がっているノードの距離を更新を試みる
+4. 更新があったノードのみをキューに追加する
+5. キューが空になるまで 3, 4 を繰り返す
+6. 同じノードがキューに $V$ 回追加された場合，負の閉路があると判断する
+:::
+- 計算量は最悪の場合 $O(VE)$ だが，平均的には $O(E)$ に近い
+
+<CodeToggle language="python" title="SPFA の実装">
+```python
+# 隣接リスト。[ノード, 距離]の形
+edges_list = [
+[[1, 5], [2, 4]], # ノードA
+[[0, 5], [3, 3], [5, 9]], # ノードB
+[[0, 4], [3, 2], [4, 3]], # ノードC
+[[1, 3], [2, 2], [5, 1], [6, 7]], # ノードD
+[[2, 3], [6, 8]], # ノードE
+[[1, 9], [3, 1], [6, 2], [7, 5]], # ノードF
+[[3, 7], [4, 8], [5, 2], [7, 2]], # ノードG
+[[5, 5], [6, 2]] # ノードH
+]
+
+from collections import deque
+# 引数：ノード数、隣接リスト
+def spfa(V, e_list):
+    inf = float('inf')
+    dist = [inf]*V
+    dist[0] = 0
+    node_to_check = deque()
+    in_queue = [False]*V
+    node_to_check.append(0)
+    in_queue[0] = True
+    while node_to_check:
+        cur_node = node_to_check.popleft() # キューからノードを取り出す
+        in_queue[cur_node] = False
+        for e in e_list[cur_node]: # cur_node から繋がっているノードの距離を更新
+            if dist[e[0]] > dist[cur_node] + e[1]:
+                dist[e[0]] = dist[cur_node] + e[1]
+                if not in_queue[e[0]]: # 更新があったが、キューにまだ入っていないノードを追加
+                    in_queue[e[0]] = True
+                    node_to_check.append(e[0])
+    return dist
+```
+</CodeToggle>
+
+---
+## 全点対最短経路問題
+:::warning[目標]
+全ての 2 ノード間の最短経路を求める。
+:::
+### ワーシャル・フロイド法
+:::tip[ワーシャル・フロイド法]
+全てのノード間の最短距離を求めるアルゴリズム。DP を用いて，最短距離を更新していく。
+- 任意のノード $i$ から $j$ への最短距離について，ノード $k$ を経由する場合の最短距離を考えて更新を試みる
+    - 具体的には，$d[i][j] = \min(d[i][j], d[i][k] + d[k][j])$ を $k = 0, 1, \ldots, V - 1$ の順に全てのノードについて行う
+:::
+- 計算量は $O(V^3)$。ダイクストラ法を全ての始点で適用すると，$O(VE \log V)$ となる
+
+<CodeToggle language="python" title="ワーシャル・フロイド法の実装">
+```python
+inf = float('inf')
+e_matrix = [
+[0, 5, 4, inf, inf, inf, inf, inf], # ノードA
+[5, 0, inf, 3, inf, 9, inf, inf], # ノードB
+[4, inf, 0, 2, 3, inf, inf, inf], # ノードC
+[inf, 3, 2, 0, inf, 1, 7, inf], # ノードD
+[inf, inf, 3, inf, 0, inf, 8, inf], # ノードE
+[inf, 9, inf, 1, inf, 0, 2, 5], # ノードF
+[inf, inf, inf, 7, 8, 2, 0, 2], # ノードG
+[inf, inf, inf, inf, inf, 5, 2, 0] # ノードH
+]
+
+# 引数：ノードの総数、隣接⾏列
+def WarshallFloyd(V, e_matrix):
+    # dist[i][j]：隣接行列を更新する形で、ノードiからノードjまで最短距離を保持する
+    dist = e_matrix 
+    for k in range(V):
+        for i in range(V):
+            for j in range(V):
+                if dist[i][k] != inf and dist[k][j] != inf:
+                dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j])
+    return dist
+```
+</CodeToggle>
