@@ -1,7 +1,7 @@
 ---
 title: 7. グラフの諸問題
 ---
-参照: [3. グラフとその探索 (BFS, DFS)](/docs/4_programming/3_algorithm/3_graph.mdx)
+参照: [3. グラフとその探索 (BFS, DFS)](/docs/programming/algorithm/graph)
 
 import CodeToggle from '/components/CodeToggle.tsx';
 
@@ -446,3 +446,219 @@ def shortest_path_DAG(V, E, edges, start_vertex):
     return dist
 ```
 </CodeToggle>
+
+---
+## 最大フロー問題
+:::warning[目標]
+辺の重みが流れの容量 (フロー) を表すグラフにおいて，始点から終点までの最大フローを求める。
+:::
+<img src="/img/programming/flow.png" alt="フローの例" width="30%"/>
+- 画像の場合，$A \to B \to D \to F$ は最大 4 流せる
+
+### 貪欲法
+:::tip[貪欲法]
+ある基準を元に，今ある選択肢のうち最も良いものを選び続ける方法。最適解とは限らない。
+:::
+- 例えば，上から順にめいいっぱい流す
+<img src="/img/programming/greedy-flow.png" alt="貪欲法のフローの例" width="30%"/>
+
+### フォード・ファルカーソン法 (Ford-Fulkerson method)
+:::tip[フォード・ファルカーソン法]
+貪欲法と同じく，DFSやBFSで開始ノードから終了ノードまでの経路を探索し，流せるだけ流す。
+ただし，経路の探索において，ノード間を逆に辿るような仮想的な経路も考慮する。
+- ただし，全ての辺の容量が有理数である場合に限る (整数に直して計算)
+- 無理数の場合，停⽌せず最適解に収束しないことがある
+- ひたすら DFS を行い，見つけた経路に流せるだけ流すことを繰り返す
+:::
+
+- 計算量 : 最大流の値を $F$ とした場合，$O(FV^2)$。隣接リストなら $O(FE)$
+    - 一回で最小でもフローは $1$ 増える。DFS なので，$O(V^2)$
+- 他の方法 : エドモンズ・カープ法：$O(VE^2)$，ディニッツ法：$O(V^2E)$
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+<div  style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }}>
+貪欲法で考えた時のフローの例
+<img src="/img/programming/ford-fulkerson1.png" alt="フォード・ファルカーソン法の例1"/>
+</div>
+<div  style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }}>
+さらに，逆に辿る経路を考慮した場合のフローの例
+<img src="/img/programming/ford-fulkerson2.png" alt="フォード・ファルカーソン法の例2"/>
+</div>
+<div  style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }}>
+最終的な結果
+<img src="/img/programming/ford-fulkerson3.png" alt="フォード・ファルカーソン法の例3"/>
+</div>
+<div  style={{ width: '40%', aspectRatio: 'auto', objectFit: 'contain' }}>
+逆に辿る経路を考慮したことで新たに生じたフロー
+<img src="/img/programming/ford-fulkerson4.png" alt="フォード・ファルカーソン法の例4"/>
+</div>
+</div>  
+
+<CodeToggle language="python" title="フォード・ファルカーソン法の実装">
+```python
+# 隣接行列
+capacity =[
+[0, 10, 10, 0, 0, 0], # A->B: 10, A->C: 10
+[0, 0, 0, 4, 8, 0], # B->D: 4, B->E: 8
+[0, 0, 0, 7, 4, 0], # C->D: 7, C->E: 4
+[0, 0, 0, 0, 0, 8], # D->F: 8
+[0, 0, 0, 0, 0, 12], # E->F: 12
+[0, 0, 0, 0, 0, 0] # Fから出ていくものなし
+]
+
+# 始点 s, 終点 e, 始点まで流せる量 flow, ノード数 V, 始点に来るまでに訪問済みリスト visited, 容量行列 capacity
+def dfs_ff(s, e, flow, V, visited, capacity):
+    if (s == e): return flow #  終点に到達したら流せるだけ流す
+    visited[s] = True
+    for i in range(V):
+        if visited[i] == False and capacity[s][i] > 0: # s から流せるノード全てでそこから DFS
+            f = dfs_ff(i,e, min(flow, capacity[s][i]), V, visited, capacity)
+            if f > 0:
+                capacity[s][i] -= f # 順方向に流す
+                capacity[i][s] += f # 逆方向に流す
+                return f
+    return 0
+
+max_flow = 0
+V = 6
+while True:
+    visited = [False for _ in range(N)]
+    f = dfs_ff(0, N-1, 10**9, N, visited, capacity) # DFS で再帰的に実装
+    if not f: break # もう流せないなら終了
+    max_flow += f
+print(max_flow) # 最大フローを出力
+```
+</CodeToggle>
+
+---
+## 最小費用流問題
+:::warning[目標]
+各辺が流れの容量 (フロー) とコストを持つグラフにおいて，ある流量 $f$ を始点から終点まで流す時の最小コストを求める。
+:::
+
+### プライマル・デュアル法 (Primal-Dual method)
+:::tip[プライマル・デュアル法]
+フォード・ファルカーソン法をベースに，逆に辿る経路を考慮しつつ，その時点での最小コストの経路から順に流せるだけ流す方法。
+- なお，逆方向に流すときのコストはマイナスとする
+:::
+<img src="/img/programming/primal-dual.png" alt="プライマル・デュアル法の例" width="30%"/>
+
+- 計算量 : 最小コスト経路を求めるのが $O(VE)$ (ベルマン・フォード法)，最小で流量を 1 ずつしか更新できないため，全体で $O(FVE)$
+    - ただし，"ポテンシャル" を使ってダイクストラ法を使えば負の経路も考慮でき，結果として $O(FE \log V)$ になる
+
+{/* <CodeToggle language="python" title="プライマル・デュアル法の実装"> */}
+```python
+# {隣接ノード, [(容量), (コスト)]}
+graph =[
+{1: [3, 6], 2: [5, 2]}, # ノードA
+{0: [0, -6], 2: [0, -3], 3: [4, 3]}, # ノードB
+{0: [0, -2], 1: [7, 3], 3: [6, 9]}, # ノードC
+{1: [0, -3], 2: [0, -9]} # ノードD
+] # 逆方向のコストも入れておく
+
+# V: ノード数, f: 流したいフローの量
+def PrimalDual(graph, V, f):
+    totalCost = 0
+    cur_flow = 0
+    while True:
+        # ベルマンフォード法でコストが最も小さい経路を求める
+        cost = [inf]*V # そこに行くまでの最小コスト
+        cost[0] = 0
+        route = [-1]*V # そこに来る前のノード
+        flag = True
+        while flag:
+            flag = False; cur_node = 0
+            for i in range(V):
+                for dest_n, e in graph[i].items(): # 全ての辺を見て距離を更新 (V 回繰り返す)
+                    if e[0] > 0 and cost[i] + e[1] < cost[dest_n]:
+                        flag = True
+                        cost[dest_n] = cost[i] + e[1]
+                        route[dest_n] = i
+            if cost[V-1] == inf: return -1
+
+        min_c = inf
+        cur_n = V-1
+        prev_n = route[cur_n]
+        # 最小コスト経路の最大フローを求める
+        while prev_n != -1:
+            if min_c > graph[prev_n][cur_n][0]:
+                min_c = graph[prev_n][cur_n][0] # フローの更新
+            cur_n = prev_n # 前のノードに戻る
+            prev_n = route[cur_n]
+        # コストの更新
+        if cur_flow + min_c >= f:
+            totalCost += cost[V-1]*(f - cur_flow)
+            return totalCost
+        else:
+            totalCost += cost[V-1]*min_c
+            cur_flow += min_c
+        # フローの更新
+        cur_n = V-1; prev_n = route[cur_n]
+        while prev_n != -1:
+            graph[prev_n][cur_n][0] -= min_c # 順⽅向
+            graph[cur_n][prev_n][0] += min_c # 逆⽅向
+            cur_n = prev_n, prev_n = route[cur_n]
+    return totalCost
+```
+{/* </CodeToggle> */}
+
+---
+## グラフのカット
+:::warning[目標]
+あるグラフを 2 つのグループに分ける。$(S,V  \backslash S)$ のように表す。  
+またこの時，辺のうちノードが別のグループに属しているものを **カットエッジ** と呼ぶ。
+:::
+
+### s-t カット
+:::tip[s-t カット]
+$S$ に始点が，$V  \backslash S$ に終点が含まれるようなカットのこと。つまり，カットエッジを全て取り除くと始点から終点に到達できなくなる。
+:::
+ここで，カットエッジの重みの合計を $U(S \to V \backslash S)$ とする。  
+この時，フロー $f$ = [$S$ から $V  \backslash S$ へのフローの総和] - [$V \backslash S$ から $S$ へのフローの総和] であり，
+$f \leq U(S \to V \backslash S)$ が成り立つ。
+
+### 最大流・最小カット定理
+:::tip[最大流・最小カット定理]
+最大フローと s-t カットのカットエッジの重みの合計の最小値は等しい。後者は最小カットと呼ばれる。
+:::
+
+そこで，最小カットは以下のように求められる。
+:::note[最小カットの求め方]
+1. フォード・ファルカーソン法で最大フローを求める
+2. 最大フローを引いた残りの容量を持つグラフを考える。この時，**始点から到達可能なノード**を $S$，それ以外を $V \backslash S$ とする
+:::
+最大フローを流す時，$V \backslash S$ から $S$ へのフローは 0 となるカットが存在し，この時 $f = U(S \to V \backslash S)$ となる。
+
+- 愚直に考えると，$O(2^{V - 2})$ であるが，$O(FE)$ や $O(FV^2)$ で求められる
+- ノードに容量がある場合，入る辺用のノードと出る辺用のノードを追加して，そのノード間に容量を設定すればよい
+    <img src="/img/programming/cut1.png" alt="ノードに容量がある場合の例" width="50%"/>
+- 複数の始点や終点がある場合，新たに始点や終点を追加して，それらから元の始点や終点に向かう辺を追加すればよい
+    <img src="/img/programming/cut2.png" alt="複数の始点や終点がある場合の例" width="50%"/>
+
+---
+## 二部グラフのマッチング
+### 二部グラフ (Bipartite Graph)
+:::tip[二部グラフ]
+ノードを 2 つのグループに分割でき，各グループ内の頂点同士には辺がないグラフのこと。
+:::
+例えば，二つのグループに所属する人をマッチングしたりする。なお，辺はノード同士がペアになってよいことを示すことが多い。
+
+:::warning[目標]
+二部グラフにおいて，ノード間を繋ぐ組み合わせを求める。
+- 目的 : ノード間を繋ぐ辺の数を最大にする，決められたペアの数を達成する，全員をペアとする，などがある
+- 条件としては，複数ノード間を繋ぐことを許すかどうかなどがある
+:::
+
+### 二部グラフの最大マッチング
+:::tip[二部グラフの最大マッチング]
+二部グラフにおいて，ノード間を繋ぐ辺の数を最大にする組み合わせを求める。
+これは，最大流問題に置き換えれば簡単に解ける。また，始点から・終点への流量を変化させれば，複数のノード間のつながりを許すこともできる。
+<img src="/img/programming/bipartite-matching.png" alt="二部グラフの最大マッチングの例" width="50%"/>
+:::
+
+### 重み付き二部グラフの最大マッチング
+:::tip[重み付き二部グラフの最大マッチング]
+二部グラフにおいて，ノード間を繋ぐ辺の重みの合計を最大にする組み合わせを求める。これは，最小費用流問題に置き換えれば簡単に解ける。
+<img src="/img/programming/bipartite-weighted-matching.png" alt="重み付き二部グラフの最大マッチングの例" width="50%"/>
+:::
+ただ，この方法は全体最適であるため大きな不利益を被る個人が存在することもある。他には，安定マッチング，ゲール・シャプレーアルゴリズムなどがある。
