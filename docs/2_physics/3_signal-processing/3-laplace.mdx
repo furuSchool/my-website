@@ -40,19 +40,20 @@ title: 3. ラプラス変換
 > 9. 初期値定理：$\lim_{s \to \infty} s F(s) = f(0)$
 > 10. 終端値定理：$\lim_{s \to 0} s F(s) = f(\infty)$
 
+<img src="/img/physics/laplace2.png" alt="ラプラス変換表" style={{ width: '70%' }} />
+
 ### ラプラス変換表
 <img src="/img/physics/laplace.png" alt="ラプラス変換表" style={{ width: '70%' }} />
-上記は，https://detail-infomation.com/laplace-transform-table/ より引用
 - あとは，部分分数分解したりして計算する。
 
 ---
 ## 極と零点
-ここからは，s領域からシステムの安定性を考える。
+ここからは，$s$ 領域からシステムの安定性を考える。
 
 伝達関数：$H(s) = \frac{P(s)}{Q(s)} = H \frac{(s-z_1)(s-z_2)\cdots(s-z_n)}{(s-p_1)(s-p_2)\cdots(s-p_m)}$ とする。
 - $z_i$：零点，$p_i$：極，$H$：ゲイン/尺度因数
 - これを部分分数分解すれば，分母に出てくるのは $s-p_i$ の形のみ
-- フーリエ変換の時と同様に，s領域の伝達関数から回路の特性がわかる。（$s = j\omega$ を代入すればフーリエ変換と同じ）
+- フーリエ変換の時と同様に，$s$ 領域の伝達関数から回路の特性がわかる。（$s = j\omega$ を代入すればフーリエ変換と同じ）
     - 例えば電気回路なら回路から伝達関数を計算できる $\to$ システムの周波数特性がわかる $\to$ bode線図などで表現
 - $m$ 位の極：$p_i$ が $m$ 重根である場合。すなわち，$\frac{K_i}{(s-p_i)^m} $ のような形
 

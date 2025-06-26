@@ -546,7 +546,7 @@ print(max_flow) # 最大フローを出力
 - 計算量 : 最小コスト経路を求めるのが $O(VE)$ (ベルマン・フォード法)，最小で流量を 1 ずつしか更新できないため，全体で $O(FVE)$
     - ただし，"ポテンシャル" を使ってダイクストラ法を使えば負の経路も考慮でき，結果として $O(FE \log V)$ になる
 
-{/* <CodeToggle language="python" title="プライマル・デュアル法の実装"> */}
+<CodeToggle language="python" title="プライマル・デュアル法の実装">
 ```python
 # {隣接ノード, [(容量), (コスト)]}
 graph =[
@@ -600,7 +600,7 @@ def PrimalDual(graph, V, f):
             cur_n = prev_n, prev_n = route[cur_n]
     return totalCost
 ```
-{/* </CodeToggle> */}
+</CodeToggle>
 
 ---
 ## グラフのカット
