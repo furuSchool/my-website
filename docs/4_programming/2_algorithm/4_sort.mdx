@@ -28,7 +28,7 @@ $1$ ~ $i$ 番目の要素までソート済みとし，$i+1$ 番目の要素を�
 
 ---
 ### ツリーソート
-配列を二分探索木に変換し，最も左のノードから順に取り出す。([二分木](/docs/4_programming/3_algorithm/2_search.mdx#二分木)を参照)
+配列を二分探索木に変換し，最も左のノードから順に取り出す。([二分木](/docs/programming/algorithm/search#二分木)を参照)
 - 大体 $O(n \log n)$。偏っていると $O(n^2)$
 - 取り出すのは，「左の部分木を辿る $\rightarrow$ 右の部分木を辿る」ことを再帰的に行う
 
@@ -264,7 +264,7 @@ def mergesort(seq):
 ### ヒープソート
 1. 配列をヒープに変換する
 2. ヒープから最小値を取り出し，削除を繰り返す
-- [ヒープ](/docs/4_programming/3_algorithm/1_data-structure.mdx#ヒープ)を参照
+- [ヒープ](/docs/programming/algorithm/data-structure#ヒープ)を参照
 - 計算量は $O(n \log n)$。安定ソートではない
 - 記憶容量は $O(n)$ 必要 (ヒープを配列で表現するため)
 
