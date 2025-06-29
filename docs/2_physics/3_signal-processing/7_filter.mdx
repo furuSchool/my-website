@@ -1,0 +1,198 @@
+---
+title: 7. 信号処理フィルタ
+---
+
+## 信号推定フィルタ
+:::warning[目標]
+入力信号 $x(t)$ に雑音 $v(t)$ が乗った信号 $y(t) = x(t) + v(t)$ から，目標信号 $d(t)$ を推定するフィルタを設計する！
+この時，フィルタを $h(t)$ とすると，推定信号は $z(t) = y(t) * h(t)$ となり，$z(t) = d(t)$ を目標とする。
+:::
+つまり，$d(t) = x(t)$ を推定したい場合は， $e(t) = z(t) - d(t)$ として，$E[e(t)^2]$ を最小化するような $h(t)$ を求める。
+- ただし，このシステムは因果性を満たす。すなわち，$h(t) = 0~(t < 0)$
+
+### 連続型ウィナーフィルタ
+:::warning[目標]
+$d(t) = x(t)$ を推定するフィルタ $h(t)$ を求める。すなわち，
+$J = E[e(t)^2] = E[(\int_{-\infty}^{\infty} h(\tau)y(t-\tau) - d(t))^2]$ を最小化する。
+:::
+
+これは，計算を省略すると，以下が成り立つ時とわかる。
+:::tip[連続型 Wiener-Hopf 方程式]
+連続型 Wiener-Hopf 方程式 : $\int_{0}^{\infty} h(\tau)\phi_{yy}(t-\tau) d\tau = \phi_{yd}(t)~~(t \ge 0)$
+
+また，因果性を無視すると，フーリエ変換して $\displaystyle H(\omega) = \frac{\Phi_{yd}(\omega)}{\Phi_{yy}(\omega)}$ となる。
+:::
+因果性を持つフィルタを作成する場合は，厳密な解とはならない。ただ，**遅延** を設けることで，近似精度を上げることができる。$\to$ 平滑化フィルタ。
+
+### 平滑化フィルタ
+:::warning[目標]
+$d(t) = x(t - \Delta)$ を推定するフィルタを求める。
+:::
+
+この時，$y(t) = x(t) + v(t),~z(t) = y(t) * h(t),~d(t) = x(t - \Delta)$ とすると，以下が成り立つ。
+- $\phi_{yy}(t) = \phi_{xx}(t) + \phi_{vv}(t)$ (雑音と信号の相関はない)
+- $\phi_{yd}(t) = E[(x(t) + v(t))x(t + \Delta)] = \phi_{xx}(t - \Delta)$ (雑音と信号の相関はない)
+
+このような，過去の信号を推定するフィルタは，**平滑フィルタ**と呼ばれる。
+:::tip[平滑フィルタ]
+平滑フィルタ : $\displaystyle H(\omega) = \frac{\Phi_{xx}(\omega)}{\Phi_{xx}(\omega) + \Phi_{vv}(\omega)} e^{-j\omega\Delta}$
+
+つまり，信号成分が大きい周波数領域を通過させ，雑音成分が大きい周波数領域を通さない。
+:::
+
+
+### 離散型ウィナーフィルタ
+:::warning[目標]
+$d(k) = x(k)$ を推定するフィルタ $h(n)$ を求める。すなわち，
+$J = E[e(k)^2] = E[(\sum_{n=0}^{\infty} h(n)y(k-n) - d(k))^2]~~(d(k) = x(k))$ を最小化する。
+:::
+
+$\frac{\partial J}{\partial h(l)} = E[2(\sum_{n=0}^{\infty} h(n)y(k-n) - d(k))y(k-l)]
+= 2\sum_{n=0}^{\infty} h(n)E[y(k-n)y(k-l)] - 2E[d(k)y(k-l)]$ であり，これが任意の $l$ で $0$ になるようにすると，
+$\phi_{yy}(n-l) = E[y(k-n)y(k-l)],~\phi_{dy}(-l) = E[d(k)y(k-l)]$として，以下が成り立てば良い。
+
+:::tip[離散型 Wiener-Hopf 方程式]
+離散型 Wiener-Hopf 方程式 : $\displaystyle\sum_{n=0}^{\infty} h(n)\phi_{yy}(n-l) = \phi_{yd}(l)~~(l = 0,1,2,\ldots)$
+:::
+
+$\sum_{n=0}^{N-1} h(n)\phi_{yy}(n-l) = \phi_{yd}(l)$ の場合，以下が成り立つ。
+
+$$
+\begin{bmatrix}
+\phi_{yy}(0) & \phi_{yy}(1) & \cdots & \phi_{yy}(N-1) \\
+\phi_{yy}(1) & \phi_{yy}(0) & \cdots & \phi_{yy}(N-2) \\
+\vdots & \vdots & \ddots & \vdots \\
+\phi_{yy}(N-1) & \phi_{yy}(N-2) & \cdots & \phi_{yy}(0)
+\end{bmatrix}
+\begin{bmatrix}
+h(0) \\
+h(1) \\
+\vdots \\
+h(N-1)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\phi_{yd}(0) \\
+\phi_{yd}(1) \\
+\vdots \\
+\phi_{yd}(N-1)
+\end{bmatrix}
+$$
+
+よって，このフィルタは，以下の式で再現でき，単なる FIR フィルタで実装可能である。
+$$
+\begin{bmatrix}
+h(0) \\
+h(1) \\
+\vdots \\
+h(N-1)
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\phi_{yy}(0) & \phi_{yy}(1) & \cdots & \phi_{yy}(N-1) \\
+\phi_{yy}(1) & \phi_{yy}(0) & \cdots & \phi_{yy}(N-2) \\
+\vdots & \vdots & \ddots & \vdots \\
+\phi_{yy}(N-1) & \phi_{yy}(N-2) & \cdots & \phi_{yy}(0)
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+\phi_{yd}(0) \\
+\phi_{yd}(1) \\
+\vdots \\
+\phi_{yd}(N-1)
+\end{bmatrix}
+~~
+\left(\bm{h} = \bm{\Phi_{yy}}^{-1}\bm{\Phi_{yd}}\right)
+$$
+
+### 適応フィルタ (Adaptive Filter)
+入力と目標信号に合わせてフィルタ係数を自動的に更新するフィルタ。  
+:::warning[目標]
+$d(k)$ を推定するフィルタを求めるのだが，この際，最急降下法を用いて，$J = \sum_n e(k)^2$ の勾配で $h_k(n)$ を更新する。
+
+- トランバーサル型 ADF (Adaptive Digital Filter) : $N$ 個の時変フィルタ $h_k(n)$ を利用し，
+$y(n) = \sum_{k=0}^{N-1} h_k(n) x(n-k)$ とする
+- $\sum_n$ は自分が決めた時間幅 (例えば，$0,…,n-1$ の全ての時間) での誤差の和を考えるという意味
+:::
+画像は [音声信号処理の基礎理論（後編）](http://www.kumikomi.net/archives/2010/09/ep30rir2.php?page=3) より引用。
+<img src="http://www.kumikomi.net/archives/2010/09/ep30rir2/ep30rir2_f27.jpg" style={{ width: '40%' }} />
+
+この時，$\frac{\partial J}{\partial h_k(n)} = \sum_n(\sum_{l=0}^{N-1} h_l(n)x(n-l) - d(n))(-x(n-k))
+= -\sum_n e(n)x(n-k)$ であるので，
+
+$\displaystyle h_k(n+1) = h_k(n) + \mu\sum_n e(n)x(n-k)$ と更新すれば良い。
+特に，$e(n)^2$ のみから勾配を求める方法を LMS (Least Mean Square) 法と呼び，この時，$\displaystyle h_k(n+1) = h_k(n) + \mu e(n)x(n-k)$ となる。
+
+- なお，$\mu$ の例としては，$\mu = \frac{1}{\sum_n |x(n-k)|^2}$ などがある
+- $h_k(n+1) = h_k(n) + \mu e(n)x(n-k)$ は，単に前回のフィルタの係数と，前回の誤差と入力信号の積を足すだけである。
+
+---
+## 離散フィルタの特性
+伝達関数 $H(z) = C\frac{\prod_{n=1}^{N}(1 - \beta_n z^{-1})}{\prod_{m=1}^{M}(1 - \alpha_m z^{-1})}$ 
+($\beta_n$ : 零点, $\alpha_m$ : 極で収束条件より $|\alpha_m| < 1$ )の振幅特性と位相特性を考える。
+単純には，$z$ を単位円上で動かした時にどう入力-出力関係が変化するかを見れば良い。
+
+- 電気回路も参照
+
+$z = e^{j\omega T}$ で変換すると，$\omega$ 領域での伝達関数は，
+$H(\omega) = C e^{j (M - N) \omega T} \frac{\prod_{n=1}^{N}(e^{j\omega T} - \beta_n)}{\prod_{m=1}^{M}(e^{j\omega T} - \alpha_m)}$ となる。
+
+従って，$H$ は $z$ 平面を考えて，単位円内にある極 $\alpha_m$，零点 $\beta_n$，単位円上にある $z = e^{j\omega T}$ を考えればわかる。
+(画像は[こちら](https://www.ipml-aid.com/SignalProcessing/SignalProcessing04.pdf)より引用)
+<img src="/img/physics/filter.png" style={{ width: '40%' }} />
+- $|H| = |C| \frac{Q_1\cdots Q_N}{P_1\cdots P_M},~\angle H = (M - N)\omega T + (\theta_1 + \cdots + \theta_N) - (\phi_1 + \cdots + \phi_M)$
+- $|H|$ は単位円内にある極 $\alpha_m$ が $z$ 平面の単位円上の $z =e^{j\omega T}$ に近いほど，
+零点 $\beta_n$ が $z$ 平面の単位円上の $e^{j\omega T}$ から遠いほど大きくなる。
+
+### 群遅延
+:::tip[群遅延]
+群遅延は，周波数 $\omega$ の信号成分がフィルタを通過する時にかかる時間を表す。
+
+群遅延 : $T_g(\omega) = -\frac{d\angle H(\omega)}{d\omega} = -(M - N)T - (\sum_{n=1}^{N}\frac{d\theta_n}{d\omega} - \sum_{m=1}^{M}\frac{d\phi_m}{d\omega})$
+:::
+$z$ 平面で考えるなら，単位円上の点 $z = e^{j\omega T}$ が少し "回転" した際，角度変化の合計がどうなるかを求めれば良い。
+
+### 線形位相フィルタ (Linear Phase Filter)
+:::tip[線形位相フィルタ]
+線形位相フィルタ : $H(z) = \sum_{n=0}^{N-1} h(n) z^{-n}$ として，$h(n)$ は実数であり，対称または反対称である FIR フィルタ。
+
+この時，**群遅延は一定** となり，特に $|H| = 1$ の場合，入力信号に対して出力信号の **位相が歪まない**。(時間領域での波形が崩れない)
+:::
+- 対称 : $h(n) = h(N-1-n)$，反対称 : $h(n) = -h(N-1-n)$
+- 例えば，$N$ が奇数で対称の時，$H(z) = z^{-\frac{N-1}{2}}(h(\frac{N-1}{2}) + \sum_{n=1}^{\frac{N-1}{2}} h(\frac{N-1}{2} - n)(z^n + z^{-n}))$ となるので，  
+$H(\omega) = e^{-j\frac{(N-1)\omega T}{2}}(h(\frac{N-1}{2}) + \sum_{n=1}^{\frac{N-1}{2}} h(\frac{N-1}{2} - n)(e^{j n \omega T} + e^{-j n \omega T}))$ より，  
+$\angle H(\omega) = (-\frac{(N-1)\omega T}{2})$ で，群遅延は $\frac{(N-1)T}{2}$ と $\omega$ に依存しない
+- 線形位相システムは **極は存在せず**，$H(z^{-1}) = z^{N-1}H(z)$ であることから，
+$z$ 領域の単位円内部の零点 $z$ について，$z^{-1}, z^*, (z^*)^{-1}$ も零点である
+    - 極が存在しないため，急峻な $|H|$ を持つことは難しい
+
+### 全域通過型フィルタ (All-pass Filter, APF)
+:::tip[全域通過型フィルタ]
+全域通過型フィルタ : $|H(z)| = 1$ であるフィルタ。位相特性のみを変化させる。
+この時，$H(z) = \prod_{k=1}^{N}\frac{\alpha_k^*z - 1}{z - \alpha_k}$ と表せる。
+:::
+- 極 : $\alpha_k$ (単位円内)，零点 : $\frac{1}{\alpha_k^*}$ (単位円外)
+- この時，群遅延 $T_g(\omega) = -\frac{d\angle H(\omega)}{d\omega} = -\sum_{k=1}^{N}\frac{d}{d\omega}\angle(\frac{\alpha_k^*e^{j\omega T} - 1}{e^{j\omega T} - \alpha_k})$ は必ず **正** である。
+どんな入力に対しても出力が遅れる
+
+### 最小位相フィルタ (Minimum Phase Filter)
+:::tip[最小位相フィルタ]
+所望の $|H|$ を持つフィルタのうち，群遅延が最小となるフィルタ。このフィルタは，零点と極が全て単位円内にある。
+また，$\frac{1}{H(z)}$ も安定なフィルタとなる。
+:::
+任意の $H(z)$ に対して，零点が全て単位円内にあり，かつ $|G(z)| = |H(z)|$ を満たすフィルタ $G(z)$ を考える。  
+この時， $A(z) = \frac{H(z)}{G(z)}$ は極が全て単位円内にあることから安定であり，$|A(z)| = 1$ である。よって，$A(z)$ は全域通過型フィルタである。  
+$A(z)$ の群遅延は必ず正であるため，
+$-\frac{d\angle H(\omega)}{d\omega} = -\frac{d\angle A(\omega)}{d\omega} - \frac{d\angle G(\omega)}{d\omega} \ge - \frac{d\angle G(\omega)}{d\omega}$ となる。
+従って，$G(z)$ は最小位相フィルタである。
+
+:::note[定理]
+任意のフィルタは最小位相フィルタと全域通過型フィルタの積で表せる。
+$H(z) = G(z)A(z)$ として，$G(z)$ は最小位相フィルタ，$A(z)$ は全域通過型フィルタ。
+:::
+
+### まとめ
+画像は，[FIR ディジタルフィルタの設計法](http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch6.pdf) より引用。
+<img src="/img/physics/filter_summary.png" style={{ width: '80%' }} />
+- 線形位相フィルタは，群遅延が一定，$h(n)$ が実数で対称または反対称，極は存在しない，急峻な $|H|$ は難しい
+- 全域通過型フィルタは，群遅延は正，極は単位円内，零点は単位円外
+- 最小位相フィルタは，群遅延は最小，零点と極は単位円内

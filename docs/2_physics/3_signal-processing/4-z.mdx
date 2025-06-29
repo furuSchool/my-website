@@ -15,12 +15,11 @@ title: 4. z 変換
 両側 $z$ 変換：$X(z) = \sum_{n=-\infty}^{\infty} x(n) z^{-n}$  
 逆 $z$ 変換：$x(n) = \frac{1}{2\pi j} \oint_C X(z) z^{n-1} dz$
 :::
-- $z = e^{sT} = e^{(\sigma + j \omega) T}$
-- サンプル値列：$x^*(t) = \sum_{n=0}^{\infty} x(nT) \delta(t - nT) \leftrightarrow X^*(s) = \sum_{n=0}^{\infty} x(nT) e^{-snT}$
+信号サンプル値列：$x^*(t) = \sum_{n=0}^{\infty} x(nT) \delta(t - nT)$ をラプラス変換すると， $X^*(s) = \sum_{n=0}^{\infty} x(nT) e^{-snT}$ となるので，
+$z = e^{sT} = e^{(\sigma + j \omega) T}$ と考えられる。
 
 これにより，離散信号のシステムの安定性や特性を解析できるようになる。主に，**差分方程式を解く際**に使われる。
-- $x(n)$ の差分方程式を $z$ 変換すると，$X(z)$ になる
-- $x(n-1) \leftrightarrow z^{-1}X(z)$ を使えば，差分方程式は代数方程式に
+- $x(n)$ の差分方程式を $z$ 変換すると，$X(z)$ の代数方程式に変換される。特に，$x(n-1) \leftrightarrow z^{-1}X(z)$ である
 
 ---
 

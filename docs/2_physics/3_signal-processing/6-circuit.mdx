@@ -1,5 +1,5 @@
 ---
-title: 5. 離散信号回路
+title: 6. 離散信号回路
 ---
 :::warning[目標]
 どうやってデジタル信号を処理する回路を設計，作成するかを学ぶ！
@@ -21,7 +21,7 @@ title: 5. 離散信号回路
 - 一般の応答 : 線形時不変なら，$y(n) = \phi[\sum_{k=-\infty}^{\infty} x(k) \delta(n-k)] = \sum_{k=-\infty}^{\infty} x(k) h(n-k) 
 = \sum_{k^{\prime}=-\infty}^{\infty} h(k^{\prime})x(n-k^{\prime})$
     - 因果性が成り立つなら，$y(n) = \sum_{k=0}^{n} h(k)x(n-k)$ : 過去の情報しか使わない
-    - $k$ 前の信号 $x(n-k)$ $k$ 前の影響がどのくらい残るかの指標 $h(k)$ の積を足し合わせるイメージ
+    - $x(n-k)$ : $k$ 前の入力。$h(k)$ : $k$ 前の影響がどのくらい残るかの指標。つまり，前の入力を $h(k)$ で重みをつけて足し合わせるイメージ
 
 ---
 
@@ -29,36 +29,37 @@ title: 5. 離散信号回路
 :::warning[目標]
 伝達関数 $H(z)$ からシステム = 回路を設計する！
 :::
-:::tip[システムの種類]
-- 単位インパルス応答 $h(n)$ が有限の時間長 = FIRシステム : $y(n) = \sum_{k=0}^{K} h(k)x(n-k)$  
-- 単位インパルス応答 $h(n)$ が無限の時間長 = IIRシステム : $y(n) = \sum_{k=0}^{\infty} h(k)x(n-k)$  
-$\to~y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ という形に一般化できる
-:::
 
 ### システムの安定性
 :::tip[安定性]
-システムが安定 : 有界な任意の入力に対して出力が常に有界であること。下記の2つは安定であるための必要十分条件
+システムが安定 : 有界な任意の入力に対して出力が常に有界であること。下記の2つは，それぞれ安定であるための必要十分条件
 1. $\sum_{k=0}^{\infty} |h(k)| < \infty$
 2. $H(z)$ の極が単位円の内側にある
     - 極 $s = p_i < 0,~z = e^{sT}$ から考えればわかる
 :::
 
 ### 素子の種類
-画像は，https://www7b.biglobe.ne.jp/~yizawa/InfSys1/basic/chap10/index.htm より引用。
+画像は，[ディジタルフィルタとｚ変換](https://www7b.biglobe.ne.jp/~yizawa/InfSys1/basic/chap10/index.htm) より引用。[デジタル回路](/docs/information/architecture/digital) も参照。
 1. 加算器 : 入力 : $x_1(n), x_2(n)$，出力 : $x_1(n) + x_2(n)$ 
 <img src="/img/physics/sum.png" alt="加算器" style={{ width: '20%', marginLeft: '40px' }} />
 2. 定数倍 : 入力 : $x(n)$，出力 : $ax(n)$
 <img src="/img/physics/mul.png" alt="定数倍" style={{ width: '20%', marginLeft: '40px' }} />
-3. 遅延器 : 入力 : $x(n)$，出力 : $x(n-1)$　（これは，z平面では $z^{-1}$ をかけるのに対応）
+3. 遅延器 : 入力 : $x(n)$，出力 : $x(n-1)$　（これは，z平面では $z^{-1}$ をかけるのに対応。D-FF などで作られる）
 <img src="/img/physics/delay.png" alt="遅延器" style={{ width: '20%', marginLeft: '40px' }} />
 
+### システムの種類
+:::tip[システムの種類]
+- 単位インパルス応答 $h(n)$ が有限の時間長 = FIRシステム : $y(n) = \sum_{k=0}^{K} h(k)x(n-k)$  
+- 単位インパルス応答 $h(n)$ が無限の時間長 = IIRシステム : $y(n) = \sum_{k=0}^{\infty} h(k)x(n-k)$  
+$\to~y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ という形に一般化できる
+:::
+
 ### FIRシステム
-$Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$
-- 非再帰型システムとして実装できる
-- 常に安定なシステム
+$Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$。  
+この時，非再帰型システムとして実装でき，常に安定なシステムとなる。
 
 #### 実際の回路設計
-画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用。
+画像は，[ディジタルフィルタの回路構成](http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf) より引用。
 1. **直接型構成（トランスバーサル構成）** : $H(z) = \sum_{k=0}^{K} h(k)z^{-k}$ をそのまま用いる
 <img src="/img/physics/fir.png" style={{ width: '40%', marginLeft: '40px' }} />
 2. **縦続型構成** : $H(z) = H_1(z)H_2(z)…$ と分解して，$H_i(z)$ を別々に実装してから合成する
@@ -66,15 +67,12 @@ $Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$
 <img src="/img/physics/continuation.png" style={{ width: '30%', marginLeft: '40px' }} />
 
 ### IIRシステム
-$y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ から，  
-$Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \frac{N(z)}{D(z)} = \frac{\sum_{k=0}^{K} a(k)z^{-k}}{1 + \sum_{l=1}^{L} b(l)z^{-l}}$
-
-- 再帰型システムとして実装できる
-- 不安定になる可能性がある
+$y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ から，
+$Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \frac{N(z)}{D(z)} = \frac{\sum_{k=0}^{K} a(k)z^{-k}}{1 + \sum_{l=1}^{L} b(l)z^{-l}}$。
+この時，再帰型システムとして実装できるが，不安定になる可能性がある。
 
 #### 実際の回路設計
-画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf と   
-http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用。
+画像は，[ディジタルフィルタの回路構成](http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf)より引用。
 1. **直接型構成** : $H(z) = N(z) \times \frac{1}{D(z)}$ を縦続接続
 <div style={{ display: 'flex', justifyContent: 'left', gap: '20px' }}>
   <img src="/img/physics/iir.png" style={{ width: '30%' }} />
@@ -111,13 +109,14 @@ http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より�
 :::
 
 ### 標準 $z$ 変換 (インパルス応答不変変換)
-方針 : $z$ 領域の伝達関数 $H(z)$ のインパルス応答 $h(n)$ が $s$ 領域の伝達関数 $K(s)$ のインパルス応答 $k(t)$ に一致するように設計する
-- $T$ はサンプリング周期
+方針 : $z$ 領域の伝達関数 $H(z)$ のインパルス応答 $h(n)$ が $s$ 領域の伝達関数 $K(s)$ のインパルス応答 $k(t)$ に一致するように設計する。
+:::note[標準 $z$ 変換]
+**サンプル値化された $s$ 領域の伝達関数 $K^*(s)$ に $z = e^{sT}$ を代入すれば良い。**( $T$ はサンプリング周期)
 
-#### 定義 : サンプル値化された s 領域の伝達関数 $K^*(s)$ に $z = e^{sT}$ を代入すれば良い
-ただ，$\frac{1}{s + \alpha_n}$ を　$\frac{1}{1 - z^{-1}e^{-\alpha_n T}}$ で置き換えて，$K(s)$ を $H(z)$ に変換することもできる。
-- $K(s) = \sum_n \frac{R_n}{s + \alpha_n}$ の時，$k(t) = \sum_n R_n e^{-\alpha_n t}$ なので，これをサンプリングして，
-$h(n) = \sum_k R_k e^{-\alpha_k nT}$ となるように設計する。
+**または，$s$ 領域の伝達関数 $K(s)$ の $\frac{1}{s + \alpha_n}$ を　$\frac{1}{1 - z^{-1}e^{-\alpha_n T}}$ で置き換えて，$K(s)$ を $H(z)$ に変換することもできる。**
+:::
+$K(s) = \sum_n \frac{R_n}{s + \alpha_n}$ の時，$k(t) = \sum_n R_n e^{-\alpha_n t}$ なので，これをサンプリングして，
+$h(n) = \sum_k R_k e^{-\alpha_k nT}$ となるように設計する。  
 よって，$h(n)$ を $z$ 変換すれば，$H(z) = \sum_k \frac{R_k}{1 - z^{-1}e^{-\alpha_k T}}$ となる。
 
 #### 標準 $z$ 変換の特徴
