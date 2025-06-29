@@ -8,19 +8,19 @@ title: 5. 離散信号回路
 
 ## 離散信号の基本
 半分復習。
-- 離散信号 $x(n)$：連続信号 $x(t)$ をサンプリング $\to~x(nT)~\to x(n)$
-- 単位パルス信号 $\delta(n)$：$n=0$ のとき $1$，それ以外は $0$
-- ステップ信号 $u(n)$：$n \ge 0$ のとき $1$，それ以外は $0$
-- 一般の信号：$x(n) = \sum_{k=-\infty}^{\infty} x(k) \delta(n-k)$ と表せる
+- 離散信号 $x(n)$ : 連続信号 $x(t)$ を周期 $T$ でサンプリング $\to~x(nT)~\to x(n)$
+- 単位パルス信号 $\delta(n)$ : $n=0$ のとき $1$，それ以外は $0$
+- ステップ信号 $u(n)$ : $n \ge 0$ のとき $1$，それ以外は $0$
+- 一般の信号 : $x(n) = \sum_{k=-\infty}^{\infty} x(k) \delta(n-k)$ と表せる
 
-離散時間システム：$x(n)$ を $y(n)$ に変換するシステム。$y(n) = \phi[x(n)]$ と表す。
-- 線形性： $ax_1(n) + bx_2(n)~\to~ay_1(n) + by_2(n)$
-- 時不変性：$x(n-k)~\rightarrow~y(n-k)$
-- 因果性：$x(n) = 0~(n < 0)~\rightarrow~h(n) = y(n) = 0~(n < 0)$
-- 単位パルス応答 $h(n)$：$\delta(n)~\rightarrow~h(n)$
-- 一般の応答：線形時不変なら，$y(n) = \phi[\sum_{k=-\infty}^{\infty} x(k) \delta(n-k)] = \sum_{k=-\infty}^{\infty} x(k) h(n-k) 
+離散時間システム : $x(n)$ を $y(n)$ に変換するシステム。$y(n) = \phi[x(n)]$ と表す。
+- 線形性 :  $ax_1(n) + bx_2(n)~\to~ay_1(n) + by_2(n)$
+- 時不変性 : $x(n-k)~\rightarrow~y(n-k)$
+- 因果性 : $x(n) = 0~(n < 0)~\rightarrow~h(n) = y(n) = 0~(n < 0)$
+- 単位パルス応答 $h(n)$ : $\delta(n)~\rightarrow~h(n)$
+- 一般の応答 : 線形時不変なら，$y(n) = \phi[\sum_{k=-\infty}^{\infty} x(k) \delta(n-k)] = \sum_{k=-\infty}^{\infty} x(k) h(n-k) 
 = \sum_{k^{\prime}=-\infty}^{\infty} h(k^{\prime})x(n-k^{\prime})$
-    - 因果性が成り立つなら，$y(n) = \sum_{k=0}^{n} h(k)x(n-k)$：過去の情報しか使わない
+    - 因果性が成り立つなら，$y(n) = \sum_{k=0}^{n} h(k)x(n-k)$ : 過去の情報しか使わない
     - $k$ 前の信号 $x(n-k)$ $k$ 前の影響がどのくらい残るかの指標 $h(k)$ の積を足し合わせるイメージ
 
 ---
@@ -30,14 +30,14 @@ title: 5. 離散信号回路
 伝達関数 $H(z)$ からシステム = 回路を設計する！
 :::
 :::tip[システムの種類]
-- 単位インパルス応答 $h(n)$ が有限の時間長 = FIRシステム：$y(n) = \sum_{k=0}^{K} h(k)x(n-k)$  
-- 単位インパルス応答 $h(n)$ が無限の時間長 = IIRシステム：$y(n) = \sum_{k=0}^{\infty} h(k)x(n-k)$  
+- 単位インパルス応答 $h(n)$ が有限の時間長 = FIRシステム : $y(n) = \sum_{k=0}^{K} h(k)x(n-k)$  
+- 単位インパルス応答 $h(n)$ が無限の時間長 = IIRシステム : $y(n) = \sum_{k=0}^{\infty} h(k)x(n-k)$  
 $\to~y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ という形に一般化できる
 :::
 
 ### システムの安定性
 :::tip[安定性]
-システムが安定：有界な任意の入力に対して出力が常に有界であること。下記の2つは安定であるための必要十分条件
+システムが安定 : 有界な任意の入力に対して出力が常に有界であること。下記の2つは安定であるための必要十分条件
 1. $\sum_{k=0}^{\infty} |h(k)| < \infty$
 2. $H(z)$ の極が単位円の内側にある
     - 極 $s = p_i < 0,~z = e^{sT}$ から考えればわかる
@@ -45,11 +45,11 @@ $\to~y(n) = \sum_{k=0}^{K} a(k)x(n-k) - \sum_{l=1}^{L} b(l)y(n-l)$ という形�
 
 ### 素子の種類
 画像は，https://www7b.biglobe.ne.jp/~yizawa/InfSys1/basic/chap10/index.htm より引用。
-1. 加算器：入力：$x_1(n), x_2(n)$，出力：$x_1(n) + x_2(n)$ 
+1. 加算器 : 入力 : $x_1(n), x_2(n)$，出力 : $x_1(n) + x_2(n)$ 
 <img src="/img/physics/sum.png" alt="加算器" style={{ width: '20%', marginLeft: '40px' }} />
-2. 定数倍：入力：$x(n)$，出力：$ax(n)$
+2. 定数倍 : 入力 : $x(n)$，出力 : $ax(n)$
 <img src="/img/physics/mul.png" alt="定数倍" style={{ width: '20%', marginLeft: '40px' }} />
-3. 遅延器：入力：$x(n)$，出力：$x(n-1)$　（これは，z平面では $z^{-1}$ をかけるのに対応）
+3. 遅延器 : 入力 : $x(n)$，出力 : $x(n-1)$　（これは，z平面では $z^{-1}$ をかけるのに対応）
 <img src="/img/physics/delay.png" alt="遅延器" style={{ width: '20%', marginLeft: '40px' }} />
 
 ### FIRシステム
@@ -59,9 +59,9 @@ $Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$
 
 #### 実際の回路設計
 画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用。
-1. **直接型構成（トランスバーサル構成）**：$H(z) = \sum_{k=0}^{K} h(k)z^{-k}$ をそのまま用いる
+1. **直接型構成（トランスバーサル構成）** : $H(z) = \sum_{k=0}^{K} h(k)z^{-k}$ をそのまま用いる
 <img src="/img/physics/fir.png" style={{ width: '40%', marginLeft: '40px' }} />
-2. **縦続型構成**：$H(z) = H_1(z)H_2(z)…$ と分解して，$H_i(z)$ を別々に実装してから合成する
+2. **縦続型構成** : $H(z) = H_1(z)H_2(z)…$ と分解して，$H_i(z)$ を別々に実装してから合成する
     - $H_i(z)$を実係数の一次式か二次式に分解できる
 <img src="/img/physics/continuation.png" style={{ width: '30%', marginLeft: '40px' }} />
 
@@ -75,30 +75,30 @@ $Y(z) = H(z)X(z)$ と表せる。ただし，$H(z) = \frac{N(z)}{D(z)} = \frac{\
 #### 実際の回路設計
 画像は，http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf と   
 http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より引用。
-1. **直接型構成**：$H(z) = N(z) \times \frac{1}{D(z)}$ を縦続接続
+1. **直接型構成** : $H(z) = N(z) \times \frac{1}{D(z)}$ を縦続接続
 <div style={{ display: 'flex', justifyContent: 'left', gap: '20px' }}>
   <img src="/img/physics/iir.png" style={{ width: '30%' }} />
   <img src="/img/physics/iir2.png" style={{ width: '30%' }} />
 </div>
     - 分母は，フィードバック回路により実現する
-    - 遅延素子数：左は$K + L$ 個，右は $\max(K,L)$ 個
+    - 遅延素子数 : 左は$K + L$ 個，右は $\max(K,L)$ 個
     - 右だと，中間系列のダイナミックレンジ（最大値 / 最小値）が大きくなることがある
-2. **縦続型構成**：$H(z) = H_1(z)H_2(z)…$ と分解して，$H_i(z)$ を別々に実装してから合成する
+2. **縦続型構成** : $H(z) = H_1(z)H_2(z)…$ と分解して，$H_i(z)$ を別々に実装してから合成する
     - $H_i(z)$ の分母分子を実係数の一次式か二次式に分解できる
 <img src="/img/physics/iir_continuation.png" style={{ width: '40%', marginLeft: '40px' }} />
-    - 遅延素子数：$\max(K,L)$ 個
+    - 遅延素子数 : $\max(K,L)$ 個
     - 安定性の確保が楽
-3. **並列型構成**：$H(z) = H_1(z) + H_2(z) + …$ と部分分数分解して，$H_i(z)$ を別々に実装してから合成する
+3. **並列型構成** : $H(z) = H_1(z) + H_2(z) + …$ と部分分数分解して，$H_i(z)$ を別々に実装してから合成する
     - $H_i(z)$ の分子を二次式以下，分母を分子より次数が小さい実係数の多項式に分解できる
 <img src="/img/physics/parallel.png" style={{ width: '30%', marginLeft: '40px' }} />
-4. **ハシゴ型構成**：$H(z) = a_0 + \frac{a_1 z^{-1}}{1 + \frac{a_2 z^{-1}}{{…}}}$ と連分数展開
+4. **ハシゴ型構成** : $H(z) = a_0 + \frac{a_1 z^{-1}}{1 + \frac{a_2 z^{-1}}{{…}}}$ と連分数展開
 <img src="/img/physics/iir_divide.png" style={{ width: '30%', marginLeft: '40px' }} />
 
 ### 各回路の比較
 | 性質 | 直接形 | 縦続形 | 並列形 | はしご形 | 格子形 |
 |---|---|---|---|---|---|
 | 素子感度 | IIR: 高い，FIR: 阻止域で高い | 少し高い| 少し高い| 低い| 低い|
-| 出力雑音 | IIR: 高い，IR: 低い| IIR: 低い，FIR: 高い | 低い | 低い | 低い |
+| 出力雑音 | IIR: 高い，FIR: 低い| IIR: 低い，FIR: 高い | 低い | 低い | 低い |
 | 計算量 | 少ない | 少ない | 若干増える | 少ない    | 若干増える |
 | 回路構造の規則性 | 積和演算 | 2次回路のモジュール化 | やや不規則 | 規則性，モジュール化に不向き | モジュール化にやや不向き |
 
@@ -107,34 +107,34 @@ http://leo.ec.t.kanazawa-u.ac.jp/~nakayama/edu/file/signal_proc_ch7.pdf より�
 :::warning[目標]
 求める性質を満たすシステムの伝達関数 $H(z)$ を設計する方法を学ぶ！
 
-方針：アナログ設計（$H(s)$） $\to$ デジタル設計（$H(z)$）：アナログフィルタを用いる！
+方針 : アナログ設計（$H(s)$） $\to$ デジタル設計（$H(z)$） : アナログフィルタを用いる！
 :::
 
-### 標準z変換
-方針：z領域の伝達関数 $H(z)$ のインパルス応答 $h(n)$ が s領域の伝達関数 $K(s)$ のインパルス応答 $k(t)$ に一致するように設計する
+### 標準 $z$ 変換 (インパルス応答不変変換)
+方針 : $z$ 領域の伝達関数 $H(z)$ のインパルス応答 $h(n)$ が $s$ 領域の伝達関数 $K(s)$ のインパルス応答 $k(t)$ に一致するように設計する
 - $T$ はサンプリング周期
 
-#### 定義
-1. サンプル値化された s 領域の伝達関数 $K^*(s)$ に $z = e^{sT}$ を代入
-2. $\frac{1}{s + \alpha_n}$ を　$\frac{1}{1 - e^{-\alpha_n T}z^{-1}}$ で置き換えて，$K(s)$ を $H(z)$ に変換
-    - $K(s) = \sum_n \frac{R_n}{s + \alpha_n}$ の時，$k(t) = \sum_n R_n e^{-\alpha_n t}$ なので，$h(n) = R_n e^{-\alpha_n nT}$ となるように設計する. 
-    この時，$H(z) = \sum_l h_l z^{-l} = \sum_l \sum_n R_n e^{-\alpha_n lT} z^{-n} = \sum_n R_n \frac{1}{1 - e^{-\alpha_n T}z^{-1}}$ となる. 
+#### 定義 : サンプル値化された s 領域の伝達関数 $K^*(s)$ に $z = e^{sT}$ を代入すれば良い
+ただ，$\frac{1}{s + \alpha_n}$ を　$\frac{1}{1 - z^{-1}e^{-\alpha_n T}}$ で置き換えて，$K(s)$ を $H(z)$ に変換することもできる。
+- $K(s) = \sum_n \frac{R_n}{s + \alpha_n}$ の時，$k(t) = \sum_n R_n e^{-\alpha_n t}$ なので，これをサンプリングして，
+$h(n) = \sum_k R_k e^{-\alpha_k nT}$ となるように設計する。
+よって，$h(n)$ を $z$ 変換すれば，$H(z) = \sum_k \frac{R_k}{1 - z^{-1}e^{-\alpha_k T}}$ となる。
 
-#### 標準z変換の特徴
+#### 標準 $z$ 変換の特徴
 - インパルス応答は不変
 - 周波数応答には折り返し歪みが生じることがある
     - 例えば，LPFやBPFを作りたいならOK，HPFやBEFを作りたいならNG
     - というか，デジタルフィルタでHPFやBEFを作るのってそら難しいよね
 
-### 双一次z変換
-方針：折り返し歪みを生じないようにs領域の伝達関数 $K(s)$をz領域の伝達関数 $H(z)$ に変換する 
+### 双一次 $z$ 変換
+方針 : 折り返し歪みを生じないようにs領域の伝達関数 $K(s)$を $z$ 領域の伝達関数 $H(z)$ に変換する 
 
 #### 定義
 $ s = \frac{2}{T}\cdot\frac{1 - z^{-1}}{1 + z^{-1}}$ で置き換えて，$K(s)$ を $H(z)$ に変換
-- 別の言い方だと，$\frac{sT}{2} = \tanh(\frac{pT}{2})$ として，$s$ を $p$ に変換した後に標準z変換 $z = e^{pT}$ を行う
+- 別の言い方だと，$\frac{sT}{2} = \tanh(\frac{pT}{2})$ として，$s$ を $p$ に変換した後に標準 $z$ 変換 $z = e^{pT}$ を行う
     - 先に $|\omega| < \frac{\pi}{T}$ の範囲に周波数を押し込めるイメージ
 
-#### 双一次z変換の特徴
+#### 双一次 $z$ 変換の特徴
 - 折り返し歪みが生じない
 - 非線形の周波数歪みが生じる。特にナイキスト周波数付近で大きくなる
 - インパルス応答は不変ではない
