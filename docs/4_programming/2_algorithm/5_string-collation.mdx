@@ -97,7 +97,7 @@ def kmp(text, pattern):
         <img src="/img/programming/bm-law.png" alt="BM 法のイメージ" style={{ width: '30%' }}/>
     - ただし，パターンの途中で照合が失敗した場合は，後戻りしないように制限する
 - 現実的には，$O(\frac{n}{l})$ (text 内の文字が pattern にない場合)。最悪の場合 $O(nl)$ (pattern の先頭文字だけ毎回違う場合)。
-- **BMH 法 (Boyer-Moore-Horspool)** : 照合に失敗した時，
+- **BMH 法 (Boyer-Moore-Horspool)** : 照合に失敗した時，pattern の末尾の文字が次にマッチする所まで進む
 
 <CodeToggle language="python" title="BM 法の実装">
 ```python
