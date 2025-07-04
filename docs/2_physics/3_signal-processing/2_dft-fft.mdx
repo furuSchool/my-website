@@ -36,13 +36,14 @@ DFTは，長さ $N$ の信号を周期 $N$ の周期信号として扱って見�
 
 ### DFTの性質
 $x(n)~\leftrightarrow~X(k),~y(n)~\leftrightarrow~Y(k)$ とすると，
-1. Persevalの等式：$\sum_{n=0}^{N-1} x(n) \overline{y(n)} = \frac{1}{N} \sum_{k=0}^{N-1} X(k) \overline{Y(k)}$
-2. 実数値列：$x(n) \in \mathbb{R}~\to~X(k) = \overline{X(-k)} = \overline{X(N-k)}$ （フーリエ変換と一緒）
-3. 直線畳み込み：$h(n) \ast x(n) = \sum_{l=0}^{N-1} h(l)x(n-l)~\leftrightarrow~H(k)X(k)$
+- $X(k)$ の実部と虚部を入れ替えた上で DFT を行い，その結果の実部と虚部を入れ替えて $\frac{1}{N}$ すると，$x(n)$ が得られる ( IDFT の実装方法)
+- Persevalの等式：$\sum_{n=0}^{N-1} x(n) \overline{y(n)} = \frac{1}{N} \sum_{k=0}^{N-1} X(k) \overline{Y(k)}$
+- 実数値列：$x(n) \in \mathbb{R}~\to~X(k) = \overline{X(-k)} = \overline{X(N-k)}$ （フーリエ変換と一緒）
+- 直線畳み込み：$h(n) \ast x(n) = \sum_{l=0}^{N-1} h(l)x(n-l)~\leftrightarrow~H(k)X(k)$
     - $n-l < 0 \Rightarrow x(l) = 0$
-4. 循環畳み込み：$h(n) \ast x(n) = \sum_{l=0}^{N-1} h([l]_N) x([n-l]_N)~\leftrightarrow~H(k)X(k)$
+- 循環畳み込み：$h(n) \ast x(n) = \sum_{l=0}^{N-1} h([l]_N) x([n-l]_N)~\leftrightarrow~H(k)X(k)$
     - $[l]_N = l \mod N$：$l$ を $N$ で割った余り
-5. 標本角周波数 $\Omega_0 = \frac{2\pi}{NT_0}$，角周波数 $q\Omega_0$ の複素正弦波 $ x(n) = e^{j q \Omega_0 n T_0}$ のDFT  
+- 標本角周波数 $\Omega_0 = \frac{2\pi}{NT_0}$，角周波数 $q\Omega_0$ の複素正弦波 $ x(n) = e^{j q \Omega_0 n T_0}$ のDFT  
     - $q$ が整数：$X(k) = \sum_{n=0}^{N-1} x(n) W_N^{k \cdot n} = \sum_{n=0}^{N-1} W_N^{-(q-k)n} = N \delta_{k,q+rN}$  
     = 離散化されると同時に，周期的に周波数成分が現れる
     - $q$ が整数でない：ほとんど全ての周波数成分が現れる   
@@ -87,12 +88,12 @@ DFTの高速演算！
     - つまり，偶数分の FFT + 奇数分の FFT * $W_N^k$ を繰り返せば良い。なお，ここでの $k$ は
     - 例えば，  
     $X(0) = G(0) + W_N^0H(0)$，$X(1) = G(1) + W_N^1 H(1)$，$X(2) = G(0) - W_N^0H(0)$，$X(3) = G(1) - W_N^1 H(1)$，
-    $G(0) = x(0) + W_N^0 x(2)，G(1) = x(0) - W_N^0 x(2)$，$H(0) = x(1) + W_N^0 x(3)，H(1) = x(1) - W_N^0 x(3)$
+    $G(0) = x(0) + W_N^0 x(2)$，$G(1) = x(0) - W_N^0 x(2)$，$H(0) = x(1) + W_N^0 x(3)$，$H(1) = x(1) - W_N^0 x(3)$
 
 ### FFTバタフライ
 ：FFTのアルゴリズムを可視化したもの。下記は，https://www1.gifu-u.ac.jp/~yktlab/sp1.pdf より引用。
 <img src="/img/physics/fft.png" alt="FFTバタフライ" style={{ width: '50%' }} />
 各蝶々が，$X(k) = G(k) + W_N^k H(k), ~X(k + \frac{N}{2}) = G(k) - W_N^k H(k)$に相当する。
-- この時の $k$ はクロスしているうちの上から何番目か，という考え方で良いかと
+- この時，$N$ は何個のデータをクロスさせているか，$k$ はクロスしているうちの上から何番目か，という考え方で良いかと
 - まっすぐ進むものはそのまま足す，右上がりのものは $W_N^k$ をかけて足す，右下がりのものは $W_N^k$ をかけて引く
 - 一つ目の方は，入力順序は2進数ビット逆順になっている（001 $\to$ 100，010 $\to$ 010）

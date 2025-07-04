@@ -92,7 +92,7 @@ $|H(\omega)|$：振幅特性，$\angle H(\omega)$：位相特性
 > 8. その他：$x(t) \leftrightarrow X(f) \Rightarrow X^*(-t) \leftrightarrow x(f)$
 > 9. パーセバルの等式：$\int_{-\infty}^{\infty} |x(t)|^2 dt = \int_{-\infty}^{\infty} |X(f)|^2 df$
 > 10. 関数の面積：$X(0) = \int_{-\infty}^{\infty} x(t) dt,~x(0) = \int_{-\infty}^{\infty} X(f) df$  
-：**時間領域での面積 =（f=0 での値），周波数領域での面積 = (t=0 での値)**
+：**時間領域での面積 = ( f=0 での値)，周波数領域での面積 = ( t=0 での値)**
 > 11. 対称性：$x(t) = x(-t)$ $\to$ $X(f) = X(-f)$，$x(t) = -x(-t)$ $\to$ $X(f) = -X(-f)$：**偶 $\leftrightarrow$ 偶，奇 $\leftrightarrow$ 奇**
 > 12. 実信号：$x(t) = x^*(t)$ $\to$ $X(f) = X^*(-f)$：**実 $\to$ エルミート対称**
 
@@ -112,6 +112,7 @@ $y(t) = h(t) \otimes x(t) = \int_{-\infty}^{\infty} h(\tau) x(t - \tau) d\tau$, 
 :::tip[標本化]
 標本化後の信号：$x^*(t) = \sum_{n=-\infty}^{\infty} x(nT_0) \delta(t - nT_0) = x(t) \otimes \delta^*(t)$
 - $\delta^*(t) = \sum_{n=-\infty}^{\infty} \delta(t - nT_0) = \frac{1}{T_0} \sum_{n=-\infty}^{\infty} e^{j 2\pi n f_s t}$
+    - $a_n = \frac{1}{T_0} \int_{-T_0/2}^{T_0/2} \delta^*(t) e^{-j 2\pi n f_s t} dt = \frac{1}{T_0}$ から，フーリエ級数展開をしている
 - 元信号にデルタ関数を畳み込んだもの
 
 これに対して，$X^*(f) = \frac{1}{T_0} \sum_{n=-\infty}^{\infty} X(f - n f_s)$：周期 $f_s$ の周期信号となっている！
@@ -159,7 +160,7 @@ $\left(X^*(\omega) = \frac{1}{2\pi T_0} \sum_{n=-\infty}^\infty X\left(\omega - 
 $F_0 = \frac{1}{NT_0},~f_s = \frac{1}{T_0}$ として，  
 $x^*(t) = \sum^{N-1}_{n=0} x(nT_0) \delta(t - nT_0), $  
 $\alpha_k = \frac{1}{NT_0} \int_{NT_0} x(t) e^{-j 2\pi k\frac{t}{NT_0}} dt = \frac{1}{NT_0} \sum^{N-1}_{n=0} x(nT_0) e^{-j \frac{2\pi k n}{N}}$
-    - 式自体は，フーリエ級数展開と同じ（離散フーリエ級数展開）
+    - 式自体は，フーリエ級数展開と同じ
     - $x(t)$ が周期 $NT_0$ の周期信号であるとして，$X(f)$ は周期 $NF_0$ の周期スペクトル（パルス列 N 個が1周期）
     - 現実で得られる信号はこの形になることが多い $\to$ DFT/FFT といった手法が発達
 :::
@@ -173,4 +174,4 @@ $\alpha_k = \frac{1}{NT_0} \int_{NT_0} x(t) e^{-j 2\pi k\frac{t}{NT_0}} dt = \fr
 | 連続・周期 信号 | 離散・非周期 スペクトル | フーリエ級数展開 |
 | 連続・非周期 信号 | 連続・非周期 スペクトル | フーリエ変換 |
 | 離散・非周期 信号 | 連続・周期 スペクトル | フーリエ変換 |
-| 離散・周期 信号 | 離散・周期 スペクトル | 離散フーリエ級数展開 |
+| 離散・周期 信号 | 離散・周期 スペクトル | 離散フーリエ級数展開，離散フーリエ変換 |
