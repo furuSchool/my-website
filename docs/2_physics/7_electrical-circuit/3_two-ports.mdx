@@ -1,0 +1,191 @@
+---
+title: 3. 2 端子対回路 (四端子網)
+---
+
+## 概要
+:::tip[2 端子対回路]
+入力端子 2 つ，出力端子 2 つを持つ回路。入力の電圧 $V_1$，電流 $I_1$ と出力の電圧 $V_2$，電流 $I_2$ の関係について考える。
+基本的には $s$ 領域で考える。
+
+また，$H(s) = \frac{V_2}{V_1}$ を **伝達関数，回路網関数** と呼ぶ。
+<img src="https://denki-no-shinzui.com/wp-content/uploads/2019/02/%E5%9B%9B%E7%AB%AF%E5%AD%90%E5%AE%9A%E6%95%B0%E3%81%AE%E6%A6%82%E8%A6%81-600x274.png" alt="2 端子対回路" style={{ width: "50%" }} />
+画像は [こちら](https://denki-no-shinzui.com/4terminal-constants/) より引用。
+:::
+
+### F 行列・Z 行列・Y 行列・H 行列
+:::tip[2 端子対回路の行列]
+2 端子対回路は、以下のような行列で表現される。Z・Y 行列では，対角要素は **駆動点関数 (イミタンス関数)**，非対角要素は **伝達関数** と呼ばれる。
+- F 行列 : $\begin{pmatrix} V_1 \\ I_1 \end{pmatrix} = \begin{pmatrix} A & B \\ C & D \end{pmatrix} \begin{pmatrix} V_2 \\ I_2 \end{pmatrix}$
+$,~~F = \begin{pmatrix} \frac{V_1}{V_2}|_{I_2 = 0} & \frac{V_1}{I_2}|_{V_2 = 0} \\ \frac{I_1}{V_2}|_{I_2 = 0} & \frac{I_1}{I_2}|_{V_2 = 0} \end{pmatrix}$
+    - 入力 = F $\times$ 出力。四端子網をつなげて行く際に便利で，$F$ の積で表現できる
+- Z 行列 : $\begin{pmatrix} V_1 \\ V_2 \end{pmatrix} = \begin{pmatrix} Z_{11} & Z_{12} \\ Z_{21} & Z_{22} \end{pmatrix} \begin{pmatrix} I_1 \\ -I_2 \end{pmatrix}$
+$,~~Z = \begin{pmatrix} \frac{V_1}{I_1}|_{I_2 = 0} & \frac{V_1}{-I_2}|_{I_1 = 0} \\ \frac{V_2}{I_1}|_{I_2 = 0} & \frac{V_2}{-I_2}|_{I_1 = 0} \end{pmatrix}$
+    - 電流の向きに注意 ( $I_1,I_2$ は，出力に流れる方向が正)
+    - 行列要素が全てインピーダンス。四端子網の直列接続に便利で，$Z$ の和で表現できる
+    - $Z_{11},Z_{22}$ : 開放駆動点インピーダンス， $Z_{12},Z_{21}$ : 開放伝達インピーダンス
+- Y 行列 : $\begin{pmatrix} I_1 \\ -I_2 \end{pmatrix} = \begin{pmatrix} Y_{11} & Y_{12} \\ Y_{21} & Y_{22} \end{pmatrix} \begin{pmatrix} V_1 \\ V_2 \end{pmatrix}$
+$,~~Y = \begin{pmatrix} \frac{I_1}{V_1}|_{V_2 = 0} & \frac{I_1}{V_2}|_{V_1 = 0} \\ \frac{-I_2}{V_1}|_{V_2 = 0} & \frac{-I_2}{V_2}|_{V_1 = 0} \end{pmatrix}$
+    - 電流の向きに注意 ( $I_1,I_2$ は，出力に流れる方向が正)
+    - 行列要素が全てアドミタンス。四端子網の並列接続に便利で，$Y$ の和で表現できる
+    - $Y_{11},Y_{22}$ : 短絡駆動点アドミタンス， $Y_{12},Y_{21}$ : 短絡伝達アドミタンス
+- H 行列 : $\begin{pmatrix} V_1 \\ I_2 \end{pmatrix} = \begin{pmatrix} H_{11} & H_{12} \\ H_{21} & H_{22} \end{pmatrix} \begin{pmatrix} I_1 \\ V_2 \end{pmatrix}$
+$,~~H = \begin{pmatrix} \frac{V_1}{I_1}|_{V_2 = 0} & \frac{V_1}{V_2}|_{I_1 = 0} \\ \frac{I_2}{I_1}|_{V_2 = 0} & \frac{I_2}{V_2}|_{I_1 = 0} \end{pmatrix}$
+    - トランジスタの解析など・能動素子を含む回路でよく用いられる
+
+各行列の性質
+- $Z = Y^{-1},~Y = Z^{-1},~F = \begin{pmatrix} \frac{Z_{11}}{Z_{21}} & \frac{|Z|}{Z_{21}} \\ \frac{1}{Z_{21}} & \frac{Z_{22}}{Z_{21}} \end{pmatrix}$
+- 対称な回路 : 入力と出力が入れ替えても同じ回路
+    - この時，$A = D,~Z_{11} = Z_{22},~Y_{11} = Y_{22}$ となる
+- 相反性を持つ回路 : 双方向性を持つ受動回路で構成される回路。RLC 回路などは当てはまる
+    - この時，$AD - BC = 1,~Z_{12} = Z_{21},~Y_{12} = Y_{21}$ となる
+:::
+
+### 2 端子対回路の例
+画像は [こちら](https://denken-ou.com/c2/denryokuh26-3/) より引用。
+<img src="/img/physics/2-ports.png" alt="2 端子対回路の例" style={{ width: "50%" }} />
+$F$ 行列は積によって多くの回路を表現できる。($Y = \frac{1}{Z}$)
+- 図 1 の場合，$F = \begin{pmatrix} 1 & Z \\ 0 & 1 \end{pmatrix},~Y = \begin{pmatrix} Y & -Y \\ -Y & Y \end{pmatrix}$
+- 図 2 の場合，$F = \begin{pmatrix} 1 & 0 \\ Y & 1 \end{pmatrix},~Z = \begin{pmatrix} Z & Z \\ Z & Z \end{pmatrix}$
+
+<img src="https://denki-no-shinzui.com/wp-content/uploads/2019/02/%CF%80%E5%BD%A2%E7%AD%89%E4%BE%A1%E5%9B%9E%E8%B7%AF-1-600x265.png" alt="π形回路" style={{ width: "50%" }} />
+**$\pi$ 形回路** : 画像は [こちら](https://denki-no-shinzui.com/4terminal-constants/) より引用。
+- $F = \begin{pmatrix} 1 + \frac{ZY}{2} & Z \\ Y(1 + \frac{ZY}{4}) & 1 + \frac{ZY}{2} \end{pmatrix},~
+Y = \begin{pmatrix} \frac{1}{Z} + \frac{Y}{2} & -\frac{1}{Z} \\ -\frac{1}{Z} & \frac{1}{Z} + \frac{Y}{2} \end{pmatrix}$ 
+
+<img src="https://denki-no-shinzui.com/wp-content/uploads/2019/02/T%E5%BD%A2%E7%AD%89%E4%BE%A1%E5%9B%9E%E8%B7%AF-600x313.png" alt="T 形回路" style={{ width: "50%" }} />
+**$T$ 形回路** : 画像は [こちら](https://denki-no-shinzui.com/4terminal-constants/) より引用。
+- $F = \begin{pmatrix} 1 + \frac{ZY}{2} & Z(1 + \frac{ZY}{4}) \\ Y & 1 + \frac{ZY}{2} \end{pmatrix},~
+Z = \begin{pmatrix} \frac{1}{Y} + \frac{Z}{2} & \frac{1}{Y} \\ \frac{1}{Y} & \frac{1}{Y} + \frac{Z}{2} \end{pmatrix}$
+
+<img src="/img/physics/symmetric-lattice-circuit.png" alt="対称格子回路" style={{ width: "30%" }} />
+**対称格子回路** : 画像は [こちら](https://www.ishikawa-nct.ac.jp/lab/E/y_kawai/www/data/course/CT2/22CT2/handouts/22CT2_s_lect09/22CT2_s_lect09_slide.pdf) より引用。
+- $F = \begin{pmatrix} \frac{z_s + z_f}{z_f - z_s} & \frac{2z_fz_s}{z_f - z_s} \\ \frac{2}{z_f - z_s} & \frac{z_s + z_f}{z_f - z_s} \end{pmatrix},~
+Z = \begin{pmatrix} \frac{1}{2}(z_f + z_s) & \frac{1}{2}(z_f - z_s) \\ \frac{1}{2}(z_f - z_s) & \frac{1}{2}(z_f + z_s) \end{pmatrix}$
+
+---
+## 2 端子対回路の利用
+### インピーダンス変換
+2 端子対回路の出力に負荷 $Z_L$ を接続した場合、入力端子に見えるインピーダンスは以下のようになる。
+
+$\displaystyle Z_{1} = \frac{V_1}{I_1} = \frac{AV_2 + BI_2}{CV_2 + DI_2} = \frac{AZ_L + B}{CZ_L + D}$
+
+よって，適切な $Z_L$ を選ぶことで、入力端子に見えるインピーダンスを調整できる。
+
+**インピーダンス整合** : 端子の左右に見えるインピーダンスを一致させること。例えば，上記の入力端子に電源と $Z_0$ を接続した場合，以下が成り立つことをいう。
+- 最大電力伝達マッチング : $Z_1 = Z_0^*$
+- 無反射マッチング : $Z_1 = Z_0$
+
+### 影像パラメータ
+全ての端子でインピーダンス整合が行われている 2 端子対回路について，入力端子，出力端子に見えるインピーダンスを $Z_{01},Z_{02}$ とし，
+$e^{2\theta} = \frac{V_1I_1}{V_2I_2}$ とする。この時，$Z_{01},Z_{02}$ は **影像インピーダンス**，$\theta$ は **影像伝搬定数** と呼ばれ，
+合わせて **影像パラメータ** と呼ぶ。
+
+この時，以下のような性質が成り立つ。
+- $Z_{01} = \frac{AZ_{02} + B}{CZ_{02} + D},~Z_{02} = \frac{DZ_{01} + B}{CZ_{01} + A}$ より 
+$Z_{01} = \sqrt{\frac{AB}{CD}} = \sqrt{\frac{Z_{11}}{Y_{11}}},~Z_{02} = \sqrt{\frac{DB}{CA}} = \sqrt{\frac{Z_{22}}{Y_{22}}}$
+- $e^{-\theta} = \frac{V_2I_2}{V_1I_1},~e^{\theta} = \sqrt{AD} + \sqrt{BC}$ (相反性を持つ回路の場合)
+- $Z_{01},Z_{02},\theta_1$ の 2 端子対回路，$Z_{02},Z_{03},\theta_2$ の 2 端子対回路，…を繋げると，
+$Z_{01},Z_{0n}, \theta_1 + \theta_2 + \cdots$ の 2 端子対回路が得られる
+
+---
+## 伝達関数の特性
+以後は，2 端子対回路の伝達関数 $H(s) = \frac{V_2}{V_1}$ の特性について考える。
+[信号処理](/docs/physics/signal-processing) や制御工学も参照。
+
+### 伝達関数の基本
+$\displaystyle H(s) = H \frac{(s - s_{1})(s - s_{2}) \cdots (s - s_{n})}{(s - p_1)(s - p_2) \cdots (s - p_m)}$ とおく。
+- **極** $p_i$，**零点** $s_i$。$r$ 重根の場合，$r$ 位の極・零点と呼ぶ
+- 入力として $\delta(t)$ を与えた時の出力がインパルス応答 $h(t)$ であり，このラプラス変換が $H(s)$ である
+- $H(s)$ を部分分数分解して計算することで，$\frac{K}{(s - p_i)^r}$ が $\frac{K}{(r - 1)!} t^{r - 1} e^{p_i t}$ の形になり，
+これの線形和が $h(t)$ になる
+    - 例えば 1 位の極は $Ke^{p_i t}$ の形になる
+
+この時，回路の安定性は以下のように分類できる。
+
+極 | 左半平面のみ | 左半平面と虚軸 | 右半平面にもあり
+--- | --- | --- | ---
+1 位 | 減衰 | 振動・一定 | 発散
+2 位以上 | 減衰 | 発散 | 発散
+
+**つまり，基本的には左半平面に極があることが回路が安定であることを意味する。**
+- 注意 : 虚軸上に 1 位の極がある場合，外部入力に同一の極があると発散してしまう
+
+### 伝達関数の周波数特性
+$H(s) = H \frac{(s - s_{1})(s - s_{2}) \cdots (s - s_{n})}{(s - p_1)(s - p_2) \cdots (s - p_m)} 
+= H \frac{d_{o1}d_{o2} \cdots d_{on}}{d_{p1}d_{p2} \cdots d_{pm}}$ とおく。
+
+- 振幅特性 : $\log{|H(j\omega)|} = \log{|H|} + \sum_{i=1}^{n} \log{|d_{oi}|} - \sum_{j=1}^{m} \log{|d_{pj}|}$
+- 位相特性 : $\arg{H(j\omega)} = \sum_{i=1}^{n} \arg{d_{oi}} - \sum_{j=1}^{m} \arg{d_{pj}}$
+
+従って，複素平面において，極と零点の位置を考えることで，振幅・位相特性を求めることができる。
+
+#### ボード線図
+また，横軸に $\log{\omega}$，縦軸に $20\log{|H(j\omega)|}~[\mathrm{dB}]$ をとってグラフにしたものを **ボード線図** と呼ぶ。
+- 単純には，1 位の極ごとに以降の周波数で $-20\mathrm{dB/dec}$，1 位の零点以降の周波数で $+20\mathrm{dB/dec}$ の傾きを追加していく
+- 振幅特性と位相特性の両方を表示することもある
+- 位相特性では，1 位の極周辺で $-90\mathrm{deg}$，1 位の零点周辺で $+90\mathrm{deg}$ 追加していく
+- ボード線図の例 (画像は [こちら](https://www.analog.com/jp/resources/technical-articles/how-to-generate-a-bode-plot-with-ltspice.html) より引用)
+<img src="https://www.analog.com/jp/_/media/analog/en/landing-pages/technical-articles/how-to-generate-a-bode-plot-with-ltspice/figure2.jpg?h=270&hash=95739830DDFEECBCA211959EDCF35BF1&rev=f1f9370aadf144e8bfef9c196cbfd3d4" alt="ボード線図の例" style={{ width: "50%" }} />
+
+### 一次伝達関数の例
+- LP 型 : $\displaystyle H(s) = \frac{b_0}{s + a_0}$
+    - 例 : $H = \frac{1}{sCR + 1}$。この時，**カットオフ周波数** $\omega_c = \frac{1}{CR}$ となる 
+    (図は [こちら](https://synapse.kyoto/glossary/filter/page001.html) や [こちら](https://suzumushi0.hatenablog.com/entry/2017/06/25/093113) より引用)$\\$
+        - カットオフ周波数とは振幅特性が $-3\mathrm{dB}$， つまり電力が半分，振幅が $1/\sqrt{2}$ になる周波数のこと
+        <div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap'}}>
+        <img src="https://synapse.kyoto/glossary/filter/png/fig005.png?5b2e5bc0" alt="LP フィルタ" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+        <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/s/suzumushi0/20170611/20170611122131.png" alt="LP フィルタのボード線図" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+        </div>
+    -  $\omega_c$ 以下では振幅は一定， $\omega_c$ 以上では振幅が $-20\mathrm{dB/dec}$ で減衰する
+- HP 型 : $\displaystyle H(s) = \frac{b_1s}{s + a_0}$
+    - 例 : $H = \frac{sCR}{sCR + 1}$。この時，**カットオフ周波数** $\omega_c = \frac{1}{CR}$ となる
+    (図は [こちら](https://synapse.kyoto/glossary/filter/page001.html) や [こちら](https://suzumushi0.hatenablog.com/entry/2017/06/25/093113) より引用)$\\$
+        <div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap'}}>
+        <img src="https://synapse.kyoto/glossary/filter/png/fig003.png?5b2df3ec" alt="HP フィルタ" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+        <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/s/suzumushi0/20170611/20170611122132.png" alt="HP フィルタのボード線図" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+        </div>
+    -  $\omega_c$ 以下では振幅が $20\mathrm{dB/dec}$ で増加し， $\omega_c$ 以上では振幅は一定
+- AP 型 : $\displaystyle H(s) = \frac{s - a_0}{s + a_0}$
+    - 例: $H(s) = \frac{sCR - 1}{sCR + 1}$
+    - 振幅は周波数によらず $1$ で一定であり，位相は $\omega_c$ 付近で $180\mathrm{deg}$ から $0\mathrm{deg}$ へと変化する
+    (図のうち $Z_f = R, Z_s = C$ とした回路)$\\$
+        <img src="/img/physics/symmetric-lattice-circuit.png" alt="対称格子回路" style={{ width: "20%" }} />
+- 一般型 : $\displaystyle H(s) = \frac{b_1 s + b_0}{s + a_0}$
+
+### 二次伝達関数の例
+- LP 型 : $\displaystyle H(s) = \frac{H \omega_0^2}{s^2 + \frac{\omega_0}{Q} s + \omega_0^2}$
+    - $Q$ が大きいほど，$\omega_0$ 付近での振幅が鋭く大きくなる ($H(j\omega) = -jHQ$)
+    - $\omega_c$ 以下では振幅は一定， $\omega_c$ 以上では振幅が $-40\mathrm{dB/dec}$ で減衰する
+    - 位相は $\omega_c$ 付近で $0\mathrm{deg}$ から $-180\mathrm{deg}$ へと変化する
+- HP 型 : $\displaystyle H(s) = \frac{H s^2}{s^2 + \frac{\omega_0}{Q} s + \omega_0^2}$
+    - $Q$ が大きいほど，$\omega_0$ 付近での振幅が鋭く大きくなる ($H(j\omega) = jHQ$)
+    - $\omega_c$ 以下では振幅が $40\mathrm{dB/dec}$ で増加し， $\omega_c$ 以上では振幅は一定
+    - 位相は $\omega_c$ 付近で $180\mathrm{deg}$ から $0\mathrm{deg}$ へと変化する
+- BP 型 : $\displaystyle H(s) = \frac{H \frac{\omega_0}{Q} s}{s^2 + \frac{\omega_0}{Q} s + \omega_0^2}$
+    - $\omega_0$ 付近での振幅が最も大きくなり， $\omega_c$ 以下では振幅が $20\mathrm{dB/dec}$ で増加し， $\omega_c$ 以上では振幅が $-20\mathrm{dB/dec}$ で減衰する
+    - $Q$ が大きいほど，$\omega_0$ 付近での振幅特性が鋭くなる 
+    - 位相は $\omega_c$ 付近で $90\mathrm{deg}$ から $-90\mathrm{deg}$ へと変化する
+- ノッチ型 : $\displaystyle H(s) = \frac{H(s^2 + \omega_n^2)}{s^2 + \frac{\omega_0}{Q} s + \omega_0^2}$
+    - $\omega_n$ 付近での振幅が急激に小さくなるフィルタ
+    - $Q$ が大きいほど，$\omega_0$ 付近での振幅が大きくなる
+- AP 型 : $\displaystyle H(s) = \frac{s^2 - \frac{\omega_0}{Q} s + \omega_0^2}{s^2 + \frac{\omega_0}{Q} s + \omega_0^2}$
+    - 振幅は周波数によらず $1$ で一定であり，位相は $\omega_0$ 付近で $0\mathrm{deg}$ から $-360\mathrm{deg}$ へと変化する
+    - $Q$ が大きいほど，$\omega_0$ 付近での位相変化が鋭くなる
+
+
+---
+## AP (全域通過関数) と MPS (最小位相推移関数)
+- **AP (全域通過関数)** : 振幅特性が周波数に依存せず一定である伝達関数
+    - 図において，$Z_s(s)Z_f(s) = R_0^2$ を満たす時，$H(s) = \frac{R_0 - Z_s(s)}{R_0 + Z_s(s)}$ であり，純リアクタンスのみでできている$\\$
+        <img src="/img/physics/symmetric-lattice-circuit.png" alt="対称格子回路" style={{ width: "20%" }} />
+    - 零点と極が原点対称となる
+- **MPS (最小位相推移関数)** : 極と零点が全て左半平面にある伝達関数。同じ振幅特性を持つ AP の中で，位相変化 ( = 群遅延) が最小となる
+
+なお，任意の伝達関数は，MPS と AP の積で表現できる。
+
+例えば，$H(s) = \frac{(s - s_1)…(s - s_j)(s - s_1^\prime)…(s - s_j^\prime)}{(s - p_1)…(s - p_k)}$ で，
+$s_1,…,s_j$ が左半平面にある零点，$s_1^\prime,…,s_j^\prime$ が右半平面にある零点とすると，
+
+$H(s) = \frac{(s - s_1^\prime)…(s - s_j^\prime)}{(s + s_1^\prime)…(s + s_j^\prime)} \cdot 
+\frac{(s + s_1^\prime)…(s + s_j^\prime)(s - s_1)…(s - s_j)}{(s - p_1)…(s - p_k)}$
+となり，AP と MPS の積で表現できる。

@@ -1,7 +1,7 @@
 ---
-title: 1. 電気回路の基礎
+title: 1. 直流回路の基礎
 ---
-電気回路の基礎を解説する。ただ，ある程度の知識を前提としている点には注意。
+直流回路の基礎を解説する。ただ，ある程度の知識を前提としている点には注意。
 
 ## 電気回路の基本法則
 :::note[物理量の定義]
@@ -46,6 +46,8 @@ title: 1. 電気回路の基礎
 ### 基本法則
 - 合成抵抗は，直列接続では $R = R_1 + R_2 + \cdots$、並列接続では $\frac{1}{R} = \frac{1}{R_1} + \frac{1}{R_2} + \cdots$
 
+なお以下は，直流・交流回路の両方に適用される。
+
 :::tip[キルヒホッフの法則]
 #### KCL ( Kirchhoff's current law ) : 回路の任意の節点において，枝から流れ込む電流の総和は $0$ である。
 - 電荷保存則を意味する。$\frac{\partial \rho(\bm{r}, t)}{\partial t} + \nabla \cdot \bm{i}(\bm{r}, t) = 0$ で $\frac{\partial \rho(\bm{r}, t)}{\partial t} = 0$
@@ -55,16 +57,44 @@ title: 1. 電気回路の基礎
 
 :::note[重ね合わせの理]
 複数の電源がある場合，電源が 1 つずつしかない場合の回路を考え，その結果を足し合わせることで全体の回路を解くことができる。
+<img src="https://detail-infomation.com/wp-content/uploads/2022/02/956528fe44c08335a9393eedc8d46050-700x683.png" alt="重ね合わせの理" style={{ width: "80%" }} />
+図は [こちら](https://detail-infomation.com/superposition-theorem/) より引用
 :::
+すなわち，一つの電源以外の電流源を短絡，電圧源を開放して回路を解くことを繰り返し，結果を足し合わせる。
 
-:::note[鳳・テブナンの定理]
+:::note[鳳・テブナンの定理，ノートンの定理]
+ある電源を含む 2 端子回路について，シンプルな回路に変換することができる。
+- 鳳・テブナンの定理 : 2 端子間を開放した時の電圧が $V_0$， 2 端子回路の電源を除去した時のインピーダンスが $Z_0$ の時，$Z_0$ と $V_0$ の直列接続に置き換えられる
+- ノートンの定理 : 2 端子間を短絡した時の電流が $I_0$， 2 端子回路の電源を除去した時のアドミタンスが $Y_0$ の時，$Y_0$ と $I_0$ の並列接続に置き換えられる
+<img src="https://detail-infomation.com/wp-content/uploads/2021/12/4aa9c2a33e4200f04b9004514941d3b6-1-700x576.png" alt="鳳・テブナンの定理とノートンの定理" style={{ width: "80%" }} />
+
+図は [こちら](https://detail-infomation.com/difference-between-thevenin-and-norton/) より引用
+:::
+つまり，2 端子回路でごちゃごちゃしている部分は，電源一つとインピーダンス一つに置き換えることができる。
+結果として， 2 端子間にインピーダンス $Z$ を繋ぐ場合，そこにかかる電圧 $V$ と流れる電流 $I$ は，  
+$V = V_0, I = \frac{V_0}{Z_0 + Z}$ (鳳・テブナンの定理) または $V = \frac{I_0}{Y_0 + Y}, I = I_0$ (ノートンの定理) となる。
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
+    <div style={{ width: '55%' }}>
+    <div>またここから，電圧源と抵抗の直列接続は，電流源と抵抗の並列接続に変換できることがわかる。</div>
+    <ol>
+        <li>$I = \frac{V}{r_v}, r_i = r_v$</li>
+        <li>$V = I r_i, r_v = r_i$</li>
+    </ol>
+    <div>図は [こちら](https://eleking.net/study/s-dccircuit/sd-equivalent.html) より引用</div>
+    </div>
+    <div style={{ width: '40%' }}>
+    <img src="https://eleking.net/img/sd-equivalent0103.png" alt="電圧源と電流源の変換" style={{ width: "100%" }} />
+    </div>
+</div>
 
 
 ---
 ## 直流回路
 :::note[直流回路の解き方]
-直流回路は，基本的にオームの法則 $V = RI$，KCL，KVL を用いれば解ける。ただ，よりシステマティックに解く定式化がある。
+直流回路は，基本的に KCL，KVL を用いれば解ける。ただ，よりシステマティックに解く定式化がある。
 :::
 
 ### 節点解析法
-基準節点
+
+### 網目解析法

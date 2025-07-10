@@ -1,0 +1,149 @@
+---
+title: 2. 交流回路の基礎
+---
+交流回路の基礎を解説する。
+
+## 交流回路の基本
+交流回路のうち，ここでは電源の角周波数が $\omega$ の成分を考える。実際には，これを足し合わせていくことで任意の波形を表現できる。
+
+:::note[複素数表現]
+交流回路では，電圧，電流を複素数で表現することが多い。
+- 電圧 $V(t) = V_m \cos(\omega t + \theta_v)$ の時， $V = V_0 e^{j(\omega t + \theta_v)}$
+- 電流 $I(t) = I_m \cos(\omega t + \theta_i)$ の時， $I = I_0 e^{j(\omega t + \theta_i)}$
+
+ただし，$V_0 = \frac{V_m}{\sqrt{2}}$，$I_0 = \frac{I_m}{\sqrt{2}}$ で **実効値** と呼ばれる。
+
+この時，電力は以下のように定義される。
+- **瞬間電力** : $P(t) = V(t) I(t) = V_m I_m \cos(\omega t + \theta_v) \cos(\omega t + \theta_i)$
+- **平均電力** : $\overline{P} = \frac{1}{T} \int_0^T P(t) dt = \frac{V_m I_m}{2} \cos(\theta_v - \theta_i) = V_0 I_0 \cos(\theta_v - \theta_i)$
+- **複素電力** : $S = V I^* = V_0 I_0 e^{j(\theta_v - \theta_i)} = V_0 I_0 (\cos(\theta_v - \theta_i) + j \sin(\theta_v - \theta_i))$
+    - **有効電力** : $P = \text{Re}(S) = V_0 I_0 \cos(\theta_v - \theta_i)$ (実部，皮相電力 × 力率)
+    - **無効電力** : $Q = \text{Im}(S) = V_0 I_0 \sin(\theta_v - \theta_i)$ (虚部)
+    - **皮相電力** : $|S| = V_0 I_0 = \sqrt{P^2 + Q^2}$
+    - **力率** : $\cos(\theta_v - \theta_i) = \frac{P}{|S|} = \frac{P}{V_0 I_0}$
+        - 進み力率 : $\theta_i > \theta_v$，遅れ力率 : $\theta_i < \theta_v$
+:::
+
+:::tip[ラプラス変換]
+交流回路の解析の際，ラプラス変換を行って $s$ 領域で解析することが多い。ここでは，よく使う式のみを示す。
+なおここでは，$i(t), v(t)$ をそれぞれ $I(s), V(s)$ と表記する。
+- インピーダンス
+    - 抵抗 : $R \to R$
+    - インダクタンス : $L \to sL$ 
+        - なお，$L\frac{di(t)}{dt} \to sLI(s) - i(0)$
+    - キャパシタンス : $C(s) = \frac{1}{sC}$
+        - なお，$\frac{1}{C} \int_{-\infty}^t i(t) dt \to \frac{I(s)}{sC} + \frac{\int_{-\infty}^0 i(t) dt}{sC}$
+- $V_0 \sin(\omega t) \to V(s) = \frac{V_0\omega}{s^2 + \omega^2}$
+- $V_0 \cos(\omega t) \to V(s)= \frac{V_0 s}{s^2 + \omega^2}$
+- $u(t) \to \frac{1}{s},~e^{at} \to \frac{1}{s - a},~t^ne^{at} \to \frac{n!}{(s - a)^{n+1}}$
+- $tf(t) \to -\frac{d}{ds} F(s)$
+:::
+
+:::note[物理量の定義]
+- インピーダンス (記号 $Z$、単位 $\Omega$) : 交流回路における素子の性質を表す量。$Z = \frac{V}{I}$ で定義される
+    - 抵抗 : $Z = R$，インダクタンス : $Z = j \omega L$，キャパシタンス : $Z = \frac{1}{j \omega C}$
+    - インダクタンス : 電流が電圧に対して $\frac{\pi}{2}$ だけ遅れる，キャパシタンス : 電流が電圧に対して $\frac{\pi}{2}$ だけ進む
+- アドミタンス (記号 $Y$、単位 S) : インピーダンスの逆数。$Y = \frac{1}{Z}$ で定義される
+:::
+
+### 変圧器
+:::tip[相互インダクタンス]
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap'}}>
+    <div style={{ width: '65%' }}>
+    <div>コイル同士の影響を考え，右のような状況を考える。この時，**相互インダクタンス** $M$ を利用して，以下の式が成り立つ。</div>
+    <div>
+        $\begin{cases}
+        V_1 &= L_1 \frac{dI_1}{dt} + M \frac{dI_2}{dt} \\
+        V_2 &= L_2 \frac{dI_2}{dt} + M \frac{dI_1}{dt}
+        \end{cases}$
+    </div>
+    <div>この時，**結合係数** $k = \frac{M}{\sqrt{L_1 L_2}}$ が定義される。磁束の漏れがないほど $k = 1$ に近づく。
+    図は [こちら](https://denjoforest.com/transformer-coupling-2) より引用。</div>
+    </div>
+    <div style={{ width: '30%' }}>
+    <img src="https://denjoforest.com/wp-content/uploads/2025/01/c8856789ec11ab8b1013037cef6929f9-5.png" alt="相互インダクタンス" style={{ width: "100%" }} />
+    </div>
+</div>
+:::
+#### 1. 密結合変圧器 ($k = 1$) の場合 : 理想的な変圧器
+左側に電源 $E$，右側に負荷 $Z_L$ があるとする。この時，
+
+$\begin{cases}
+E &= j\omega L_1 I_1 + j\omega M I_2 \\
+Z_L (-I_2) &= j\omega L_2 I_2 + j\omega M I_1
+\end{cases}$
+
+ここで，$a = \frac{M}{L_1} = \frac{L_2}{M}$ とすると，これはコイルの巻き数比を表し，整理すると，
+
+$\begin{cases}
+I_1 &= (\frac{1}{j\omega L_1} + \frac{a^2}{Z_L}) E \\
+I_2 &= -\frac{a}{Z_L}E
+\end{cases}$
+
+また，別の書き方をすると，
+$\begin{cases}
+V_2 &= aV_1 \\
+I_2 &= \frac{1}{a} I_1
+\end{cases}$
+となるため理想的な変圧器においては，  
+**巻き数比 $N = \frac{N_2}{N_1}$ として，電圧を $N$ 倍，電流を $\frac{1}{N}$ 倍に変換するものと考えられる。**
+
+また，入力側と出力側を別に扱うと，以下のような回路が得られる。
+- 入力側 : $Z_{in} = \frac{1}{j\omega L_1} + \frac{a^2}{Z_L},~I_1,~V_1$ (インピーダンスは並列)
+- 出力側 : $Z_{out} = Z_L,~I_2 = -\frac{1}{a} I_1,~V_2 = a V_1$
+
+#### 2. 密結合変圧器でない場合 ($k < 1$)
+$L_1L_2^\prime = M^2$ なる $L_2^\prime$ を考えると，整理して，
+
+$\begin{cases}
+I_1 = \left(\frac{1}{j\omega L_1} + \frac{a^2}{Z_L + j\omega (L_2^\prime - L_2)}\right) E \\
+I_2 = -\frac{a}{Z_L + j\omega (L_2^\prime - L_2)} E
+\end{cases}$
+
+よって，以下のような回路が得られる。
+- 入力側 : $Z_{in} = \frac{1}{j\omega L_1} + \frac{a^2}{Z_L + j\omega (L_2^\prime - L_2)},~I_1,~V_1$ (インピーダンスは並列)
+- 出力側 : $Z_{out} = Z_L + j\omega (L_2^\prime - L_2),~I_2 = -\frac{1}{a} I_1,~V_2 = a V_1$ (インピーダンスは直列)
+    - この結果として，$Z_L$ にかかる電圧が減少している
+
+---
+## 過渡現象・交流回路の解き方
+基本的には，KCL，KVL を用いて微分方程式を立て，それを解けば良い。
+過渡現象の場合には，過渡解と定常解に分けて考えることが多い。
+
+### 直流の過渡現象の例
+$R, L, C$ の直列接続回路を考え，$v(t) = V_0 u(t)$ とする。 
+
+この時，$\displaystyle L \frac{di(t)}{dt} + Ri(t) + \frac{1}{C} \int_{-\infty}^t i(t) dt = V_0~(t \geq 0)$。
+ここで定常解 $i_p(t) = 0$ ($t \to \infty$ を考える)，
+過渡解 $i_h(t) = Ae^{st}$ とすると，$s = -\frac{R}{2L} \pm \sqrt{\frac{R^2}{4L^2} - \frac{1}{LC}}$ となる。
+
+ここから整理すれば，$\gamma = \frac{R}{2L},~\omega_0 = \frac{1}{\sqrt{LC}}$ として，
+$$
+i(t) = \begin{cases}
+\frac{V_0}{L\sqrt{\gamma^2 - \omega_0^2}} e^{-\gamma t} \sinh(\sqrt{\gamma^2 - \omega_0^2} t) & (\gamma > \omega_0, \text{減衰}) \\
+\frac{V_0}{L\sqrt{\omega_0^2 - \gamma^2}} e^{-\gamma t} \sin(\sqrt{\omega_0^2 - \gamma^2} t) & (\gamma < \omega_0, \text{振動}) \\
+\frac{V_0}{L} te^{-\gamma t} & (\gamma = \omega_0, \text{臨界})
+\end{cases}
+$$
+
+- ラプラス変換 : $\displaystyle L(sI(s) - i(0)) + R I(s) + \frac{1}{C} \frac{I(s) + \int_{-\infty}^0 i(t) dt}{s} = \frac{V_0}{s}$  
+  ここから， $I(s) = \frac{V_0}{L(s^2 + \frac{R}{L}s + \frac{1}{LC})}$ がわかり，これを部分分数分解して解けば良い
+
+### 交流回路の例
+$R, L, C$ の直列接続回路を考え，$v(t) = V_0 \cos(\omega t + \phi)u(t)$ とする。
+- 複素領域で計算すれば，定常解は $i =  \frac{V_0 e^{j(\omega t + \phi)}}{R + j\omega L + \frac{1}{j\omega C}}$ となる (ここでは実効値ではなく，振幅)
+- 微分方程式 : $\displaystyle L \frac{di(t)}{dt} + Ri(t) + \frac{1}{C} \int_{-\infty}^t i(t) dt = V_0 \cos(\omega t + \phi)~(t \geq 0)$  
+すなわち，$\frac{d^2i(t)}{dt^2} + \frac{R}{L} \frac{di(t)}{dt} + \frac{1}{LC} i(t) = -\frac{\omega V_0}{L} \sin(\omega t + \phi)$
+- ラプラス変換 : $\displaystyle L(sI(s) - i(0)) + R I(s) + \frac{1}{C} \frac{I(s) + \int_{-\infty}^0 i(t) dt}{s} = \frac{V_0}{s - j\omega} e^{j\phi}$
+    - ただし，一旦複素領域にして $\cos(\omega t + \phi)$ を $e^{j(\omega t + \phi)}$ として考えている
+    - よって，ここでは $I(s)$ は $i(t)$ の複素数表現のラプラス変換
+
+定常解 $i_p(t) = \text{Re}(\frac{V_0}{R + j\omega L + \frac{1}{j\omega C}} e^{j(\omega t + \phi)}) 
+= \frac{V_0}{Z} \cos(\omega t + \phi - \theta)$  
+($Z = \sqrt{R^2 + (\omega L - \frac{1}{\omega C})^2},\tan \theta = \frac{\omega L - \frac{1}{\omega C}}{R}$)
+
+振動的 $(\frac{R^2}{4L^2} < \frac{1}{LC})$ な場合を考えると，過渡解 $i_h(t) = Ae^{\gamma t} \cos(\omega_0 t + \phi)$ となる。
+
+従って，$i(t) = \frac{V_0}{Z} \cos(\omega t + \phi - \theta) + Ae^{\gamma t} \cos(\sqrt{\omega_0^2 - \gamma^2} t + \phi)$  
+($Z = \sqrt{R^2 + (\omega L - \frac{1}{\omega C})^2},~\tan \theta = \frac{\omega L - \frac{1}{\omega C}}{R},~
+\gamma = -\frac{R}{2L},~\omega_0 = \frac{1}{\sqrt{LC}}$)
