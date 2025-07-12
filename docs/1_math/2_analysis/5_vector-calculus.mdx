@@ -1,0 +1,149 @@
+---
+title: 5. ベクトル解析
+---
+
+
+## 曲線
+まずは，ベクトル値関数 $f : \mathbb{R} \to \mathbb{R}^3$ を考える。$(f(t) = f_1(t), f_2(t), f_3(t))$
+- $\frac{df}{dt} = \left(\dot f_1(t), \dot f_2(t), \dot f_3(t)\right),~
+\int f(t)dt = \left(\int f_1(t) dt, \int f_2(t) dt, \int f_3(t) dt\right)$ と定義する
+
+:::note[曲線]
+区間 $I \subset \mathbb{R}$ に対して，$C = \{r(t) | t \in I\}$ と置き，$\bm{r}$ で生成される $\mathbb{R}^3$ 上の空間曲線と呼ぶ。
+:::
+
+以下では，ベクトル値関数 $\bm{r} : \mathbb{R} \to \mathbb{R}^3$ を考える。$(\bm{r}(t) = (x(t), y(t), z(t)))$
+:::tip[定義]
+- **接ベクトル** : $\dot{\bm{r}}(t) = \left(\dot x(t), \dot y(t), \dot z(t) \right)$
+- $C$ が正則 $\Leftrightarrow$ $\dot{\bm{r}}(t) \neq 0$ が任意の $t \in I$ で成り立つ
+- **弧長** : $s(t) = \int_{t_0}^t ||\dot{\bm{r}}(\tau)|| d\tau = \int_{t_0}^t \sqrt{\dot x(\tau)^2 + \dot y(\tau)^2 + \dot z(\tau)^2} d\tau$
+    - 正則な曲線に対して定義され，この時，$t$ と $s$ が 1 対 1 に対応する。よって，$t$ の代わりに $s$ を用いて曲線を表すことも多い
+
+以後，$\bm{r}^\prime$ は $s$ についての微分， $\dot{\bm{r}}$ は $t$ についての微分を表すとする。
+- **単位接ベクトル** : $\bm{t}(s) = \bm{r}^\prime(s) = \frac{\dot{\bm{r}}(t)}{||\dot{\bm{r}}(t)||}$
+- **単位主法線ベクトル** : $\bm{n}(s) = \frac{\bm{t}^\prime(s)}{||\bm{t}^\prime(s)||} = \frac{\bm{r}^{\prime\prime}(s)}{||\bm{r}^{\prime\prime}(s)||}$
+- **単位従法線ベクトル** : $\bm{b}(s) = \bm{t}(s) \times \bm{n}(s)$
+- **曲率** : $\kappa(s) = ||\bm{t}^\prime(s)|| = ||\bm{r}^{\prime\prime}(s)||$
+- **捩率** : $\tau(s) = - \bm{n}(s) \cdot \bm{b}^\prime(s)$
+:::
+なお，各種の性質は以下のようになる。
+- $|\bm{t}(s)| = 1,~|\bm{n}(s)| = 1,~|\bm{b}(s)| = 1$
+- $\bm{t}(s) \cdot \bm{n}(s) = 0,~\bm{t}(s) \cdot \bm{b}(s) = 0,~\bm{n}(s) \cdot \bm{b}(s) = 0$
+    - 一つ目は $|\bm{r}^\prime(s)|^2 = 1$ の両辺の微分でわかる
+- 曲率は，$\Delta\theta(s)$ を $\bm{t}(s)$ と $\bm{t}(s + \Delta s)$ のなす角とすると，
+$\kappa(s) = \lim_{\Delta s \to 0} \frac{\Delta\theta(s)}{\Delta s}$ と定義される
+- 曲率は，$\bm{t}^\prime(s) = \kappa(s) \bm{n}(s)$ とも書ける
+- 捩率は，$\bm{b}^\prime(s) = -\tau(s) \bm{n}(s)$ とも書ける
+
+$|\bm{r}| = 1$ なら $\bm{r}$ と $\bm{r}^\prime$ が直交する，というのが重要な性質となっている。
+まとめると以下が成り立つ。
+:::tip[Frenet-Serret の公式]
+$$
+\begin{pmatrix}
+\bm{t}^\prime(s) \\
+\bm{n}^\prime(s) \\
+\bm{b}^\prime(s)
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 & \kappa(s) & 0 \\
+-\kappa(s) & 0 & -\tau(s) \\
+0 & \tau(s) & 0
+\end{pmatrix}
+\begin{pmatrix}
+\bm{t}(s) \\
+\bm{n}(s) \\
+\bm{b}(s)
+\end{pmatrix}
+$$
+:::
+
+実は，曲率と捩率が定まると，空間曲線は平行・回転移動を許して一意に定まる。
+
+---
+## 勾配・発散・回転
+:::tip[勾配・発散・回転]
+$f: \mathbb{R}^3 \to \mathbb{R}$ を実数値関数，$\bm{f} : \mathbb{R}^3 \to \mathbb{R}^3$ をベクトル値関数とする。
+- **勾配** : $\nabla f(x,y,z) = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z}\right)$
+- **発散** : $\nabla \cdot \bm{f}(x,y,z) = \frac{\partial f_1}{\partial x} + \frac{\partial f_2}{\partial y} + \frac{\partial f_3}{\partial z}$
+- **回転** : $\nabla \times \bm{f}(x,y,z) = \left(\frac{\partial f_3}{\partial y} - \frac{\partial f_2}{\partial z}, \frac{\partial f_1}{\partial z} - \frac{\partial f_3}{\partial x}, \frac{\partial f_2}{\partial x} - \frac{\partial f_1}{\partial y}\right)^T$
+:::
+
+:::note[座標変換]
+$P$ を直交行列として，$\tilde{\bm{x}} = P\bm{x}$ の座標変換を考える。
+この時，$\tilde{\nabla}$ を $\tilde{\bm{x}}$ に関する量と考えると，以下が成り立つ。
+- $\tilde{\nabla} f(\tilde{\bm{x}}) = P \nabla f(\bm{x})$
+- $\tilde{\nabla} \cdot \tilde{\bm{f}}(\tilde{\bm{x}}) = \nabla \cdot \bm{f}(\bm{x})$
+- $\tilde{\nabla} \times \tilde{\bm{f}}(\tilde{\bm{x}}) = \det(P) P \left(\nabla \times \bm{f}(\bm{x})\right)$ (ただし，$\det(P) = \pm 1$ である)
+:::
+
+また，以下のような性質が成り立つ。
+- $\nabla (fg) = f \nabla g + g \nabla f$
+- $\nabla \left(\frac{f}{g}\right) = \frac{g \nabla f - f \nabla g}{g^2}$
+- $\nabla \cdot (f \bm{g}) = f (\nabla \cdot \bm{g}) + (\nabla f) \cdot \bm{g}$
+- $\nabla \times (f \bm{g}) = f (\nabla \times \bm{g}) + (\nabla f) \times \bm{g}$
+- $\nabla \cdot (\bm{f} \times \bm{g}) = \left(\nabla \times \bm{f}\right) \cdot \bm{g} - \bm{f} \cdot \left(\nabla \times \bm{g}\right)$
+- $\nabla \times (\bm{f} \times \bm{g}) = \left(\bm{g} \cdot \nabla\right) \bm{f} - \left(\bm{f} \cdot \nabla\right) \bm{g} + \bm{f} (\nabla \cdot \bm{g}) - \bm{g} (\nabla \cdot \bm{f})$
+    - $\bm{f} \cdot \nabla = f_1 \frac{\partial}{\partial x} + f_2 \frac{\partial}{\partial y} + f_3 \frac{\partial}{\partial z}$ と定義する
+
+---
+## 線積分
+:::tip[線積分]
+$f : \mathbb{R}^3 \to \mathbb{R}$，$\bm{f} : \mathbb{R}^3 \to \mathbb{R}^3$ と曲線 $C : [a,b] \to \mathbb{R}^3$ に対して，
+$f,\bm{f}$ の $C$ に沿った **線積分** を以下のように定義する。
+$$
+\int_C f ds = \int_a^b f(\bm{r}(t)) ||\dot{\bm{r}}(t)|| dt = \int_a^b f(\bm{r}(t)) \sqrt{\dot x(t)^2 + \dot y(t)^2 + \dot z(t)^2} dt
+$$
+$$
+\int_C \bm{f} \cdot d\bm{r} = \int_a^b \bm{f}(\bm{r}(t)) \cdot \dot{\bm{r}}(t) dt 
+= \int_a^b \left(f_1(\bm{r}(t)), f_2(\bm{r}(t)), f_3(\bm{r}(t))\right) \cdot \left(\dot x(t), \dot y(t), \dot z(t)\right) dt
+$$
+:::
+
+この時，以下のような性質が成り立つ。
+:::note[定理]
+- $\int_C \bm{f} \cdot d\bm{r}$ が始点と終点のみで決まる $\Leftrightarrow$ $\exists g : \mathbb{R}^3 \to \mathbb{R}$ で $\bm{f} = \nabla g$ が成り立つ
+    - 力学のエネルギーと保存力の関係
+- $D \subset \mathbb{R}^3$ を単連結領域とし，$\bm{f} \in C^1(D, \mathbb{R}^3)$ とする。
+この時，$\nabla \times \bm{f} = 0 \Leftrightarrow \exists g \in C^2(D, \mathbb{R})$ で $\bm{f} = \nabla g$ 
+:::
+
+---
+## グリーンの定理
+:::tip[グリーンの定理]
+$C$ : 区分的 $C^1$ 級の単純閉曲線，$D$ : $C$ によって囲まれた有界閉集合領域とする。
+この時，$\bm{f} \in C^1(D, \mathbb{R}^2)$ に対して，以下の式が成り立つ。
+$$
+\oint_C \bm{f} \cdot d\bm{r} = \int_D \nabla \times \bm{f} dx dy = \int_D \left(\frac{\partial f_2}{\partial x} - \frac{\partial f_1}{\partial y}\right) dx dy
+$$
+
+つまり，$C$ に沿った線積分は，$C$ によって囲まれた領域 $D$ の面積分に変換できる。
+:::
+ここでは，単純閉曲線 $c(t)$ は，平面曲線 $C = \{r(t) = (x(t), y(t)) \in \mathbb{R}^2 | t \in [a,b]\}$ として，
+$r(a) = r(b)$ かつ $a < c < d < b$ に対して $r(c) \neq r(d)$ とする。
+
+---
+## 曲面論
+:::note[曲面]
+$\bm{P} : \mathbb{R}^2 \to \mathbb{R}^3,~D \subset \mathbb{R}^2$ に対して，
+$S = \{\bm{P}(u,v) | (u,v) \in D\}$ を $\bm{P}$ からなる $\mathbb{R}^3$ 上の曲面と呼ぶ。
+
+ここで，$\bm{P}_u = \frac{\partial \bm{P}}{\partial u} = 
+\left(\frac{\partial P_1}{\partial u}, \frac{\partial P_2}{\partial u}, \frac{\partial P_3}{\partial u}\right),
+\bm{P}_v = \frac{\partial \bm{P}}{\partial v} = 
+\left(\frac{\partial P_1}{\partial v}, \frac{\partial P_2}{\partial v}, \frac{\partial P_3}{\partial v}\right)$ と置き，
+$\bm{P}_u \times \bm{P}_v \neq \bm{0}~~(\forall (u,v) \in D)$ を満たすとき，$S$ は **正則** と呼ぶ。
+:::
+- $\bm{P}_u$ と $\bm{P}_v$ は $\bm{P}$ の $u$ 方向と $v$ 方向の接ベクトルであり，正則の時，一次独立である
+- 特に，曲面上の点 $\bm{r}$ について，$\dot{\bm{r}} = \bm{P}_u \dot u + \bm{P}_v \dot v$ と表せる
+
+:::tip[定義]
+- **単位法線ベクトル** : $\bm{e}(u,v) = \frac{\bm{P}_u \times \bm{P}_v}{||\bm{P}_u \times \bm{P}_v||}$
+- **第一基本量** : $E = ||\bm{P}_u||^2,~F = \bm{P}_u \cdot \bm{P}_v,~G = ||\bm{P}_v||^2$
+- **第一基本形式** : $I = E du^2 + 2F dudv + G dv^2$
+- **第二基本量** : $L = \bm{e} \cdot \bm{P}_{uu},~M = \bm{e}\cdot \bm{P}_{uv},~N = \bm{e} \cdot \bm{P}_{vv}$
+    - $P_{uu} = \frac{\partial^2 \bm{P}}{\partial u^2},~P_{uv} = \frac{\partial^2 \bm{P}}{\partial u \partial v},~P_{vv} = \frac{\partial^2 \bm{P}}{\partial v^2}$
+- **第二基本形式** : $II = L du^2 + 2M dudv + N dv^2$
+- **平均曲率** : $H = \frac{EN - 2FM + GL}{2(EG - F^2)}$
+- **ガウス曲率** : $K = \frac{LN - M^2}{EG - F^2}$
+:::

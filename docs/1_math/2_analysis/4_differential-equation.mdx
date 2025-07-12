@@ -1,0 +1,66 @@
+---
+title: 4. 常微分方程式
+---
+
+:::warning[常微分方程式]
+$F(x, y(x), y'(x), \cdots, y^{(n)}(x)) = 0$ の形で表される方程式を **$n$ 階の常微分方程式** と呼ぶ。
+:::
+
+## 常微分方程式の解法
+画像は [【結論版】微分方程式　解法手順チャート](https://fire-science.net/articles/differential-equation-chart) より引用。
+<img src="https://fire-science.net/articles/2025-02-06_differential-equation-chart/differential-equation-chart.png" alt="常微分方程式の解法" style = {{width: "50%"}} />
+
+基本的には上記チャートの手順に従って解けば良い。ここではいくつかの補足を行う。
+
+- 完全微分型について : 積分因子 $P(x,y)$ を考え，両辺に $P(x,y)$ を掛けることで $f_x(x,y)dx + f_y(x,y) dy = 0$ の形になることも多い
+- ベルヌーイ型について : $z = y^{1 - k}$ と置き換える際に，$y = 0$ の解が除外されていることに注意
+- クレロー型について : $y^\prime = p$ と置き換える。結果として，$y = xC + f(c)$ ($C$ は任意定数) と，特異解 ($ x + g^\prime(p) = 0$ の形) が得られる。
+一般解は，包絡線と直線を乗り換える任意の解となることに注意 (初期値問題の一意性は保証されない)
+- 連立線型方程式 : [連立線形微分方程式](/docs/math/linear-algebra/exponential#連立線形微分方程式) を参照
+- べき級数による解法 : $y(x) = \sum_{n=0}^\infty a_n x^n$ の形で解を仮定し，項別微分などを利用して係数 $a_n$ を求める。
+収束半径 $R$ は $\frac{1}{R} = \lim_{n \to \infty} \sup |a_n|^{\frac{1}{n}}$ で求められる
+    - 定義される関数が実解析的である時にこのような仮定ができる
+
+### ロンスキャン
+:::note[ロンスキャン]
+$\frac{d^2y}{dx^2} + p(x) \frac{dy}{dx} + q(x)y = 0$ の方程式を考える。
+$y = y_1(x),y_2(x)$ がこの方程式の特殊解であるとき，
+
+$W(y_1,y_2)(x) = \det\begin{pmatrix}
+y_1 & y_2 \\
+y_1' & y_2'
+\end{pmatrix} = y_1(x)y_2'(x) - y_2(x)y_1'(x)$ を **ロンスキャン** と呼ぶ。
+
+$y_1(x),y_2(x)$ が 1 次独立な時，$W(y_1,y_2)(x) \neq 0$ が成り立つ。  
+さらに，$y_1(x),y_2(x)$ が 1 次独立ならば，方程式の任意の解は $y(x) = c_1y_1(x) + c_2y_2(x)$ の形で表される。
+:::
+- この時，$y_1(x),y_2(x)$ は基本解と呼ばれる
+- $n$ 階の場合は，
+$W(y_1,y_2,\cdots,y_n)(x) = \det\begin{pmatrix}
+y_1 & y_2 & \cdots & y_n \\
+y_1' & y_2' & \cdots & y_n' \\
+\vdots & \vdots & \ddots & \vdots \\
+y_1^{(n-1)} & y_2^{(n-1)} & \cdots & y_n^{(n-1)}
+\end{pmatrix}$ と定義される
+
+さらに，$\frac{d^2y}{dx^2} + p(x) \frac{dy}{dx} + q(x)y = r(x)$ の形の方程式に対しては，
+基本解を $y_1(x),y_2(x)$ として，特殊解を $c_1(x)y_1(x) + c_2(x)y_2(x)$ (ただし，$c_1^\prime(x)y_1(x) + c_2^\prime(x)y_2(x) = 0$ と制限する) と置くことで，
+$$
+c_1(x) = \int \frac{-y_2(x)r(x)}{W(y_1,y_2)(x)} dx,~~c_2(x) = \int \frac{y_1(x)r(x)}{W(y_1,y_2)(x)} dx
+$$
+が得られる。
+
+- 計算は，
+$\begin{pmatrix}
+y_1 & y_2 \\
+y_1' & y_2'
+\end{pmatrix}
+\begin{pmatrix}
+c_1^\prime(x) \\
+c_2^\prime(x)
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 \\
+r(x)
+\end{pmatrix}$ となることからわかる
