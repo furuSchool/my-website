@@ -26,12 +26,17 @@ title: 5. ベクトル解析
 - **曲率** : $\kappa(s) = ||\bm{t}^\prime(s)|| = ||\bm{r}^{\prime\prime}(s)||$
 - **捩率** : $\tau(s) = - \bm{n}(s) \cdot \bm{b}^\prime(s)$
 :::
+図は [こちら](https://www.f-denshi.com/000TokiwaJPN/24manif/010geo.html) より引用。
+<img src="https://www.f-denshi.com/000TokiwaJPN/24manif/fig/freser1.jpg" alt="曲率や捩率のイメージ" style = {{width: "50%"}} />
+
 なお，各種の性質は以下のようになる。
 - $|\bm{t}(s)| = 1,~|\bm{n}(s)| = 1,~|\bm{b}(s)| = 1$
 - $\bm{t}(s) \cdot \bm{n}(s) = 0,~\bm{t}(s) \cdot \bm{b}(s) = 0,~\bm{n}(s) \cdot \bm{b}(s) = 0$
     - 一つ目は $|\bm{r}^\prime(s)|^2 = 1$ の両辺の微分でわかる
 - 曲率は，$\Delta\theta(s)$ を $\bm{t}(s)$ と $\bm{t}(s + \Delta s)$ のなす角とすると，
 $\kappa(s) = \lim_{\Delta s \to 0} \frac{\Delta\theta(s)}{\Delta s}$ と定義される
+    - 曲がりがきついほど曲率は大きくなる
+    - 曲線を円で近似した時の半径 (曲率半径) の逆数が曲率となる。半径 $r$ の円の曲率は $\frac{1}{r}$
 - 曲率は，$\bm{t}^\prime(s) = \kappa(s) \bm{n}(s)$ とも書ける
 - 捩率は，$\bm{b}^\prime(s) = -\tau(s) \bm{n}(s)$ とも書ける
 
