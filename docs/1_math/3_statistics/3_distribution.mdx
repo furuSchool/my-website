@@ -3,7 +3,12 @@ title: 3. 代表的な確率分布
 ---
 
 ## 一次元・離散分布
-なお，諸々の計算で，二項定理 : $\displaystyle (a + b)^n = \sum_{k=0}^n \binom{n}{k} a^{n - k} b^k$ やテイラー展開 (特に項別微分) が重要になってくる。
+なお，諸々の計算で以下の式を使うことが多い
+- 二項定理 : $\displaystyle (a + b)^n = \sum_{k=0}^n \binom{n}{k} a^{n - k} b^k$
+- テイラー展開 : $\displaystyle f(x) = \sum_{k=0}^\infty \frac{f^{(k)}(a)}{k!} (x - a)^k$
+    - $\displaystyle\sum_{n=0}^\infty x^n = \frac{1}{1 - x}$ ($|x| < 1$)，
+    $\displaystyle\sum_{n=1}^\infty nx^{n-1} = \frac{1}{(1 - x)^2}$ ($|x| < 1$)
+    - $\displaystyle\sum_{n=0}^\infty \binom{n + k - 1}{n} x^n = \frac{1}{(1 - x)^k}$ ($|x| < 1,k \in \mathbb{Z}_{\geq 1}$)
 ### 二項分布
 :::tip[二項分布]
 二項分布 $Bin(n,p)$ は，$n$ 回の独立な試行において，成功確率 $p$ の事象が $k$ 回起こる確率を表す分布である。

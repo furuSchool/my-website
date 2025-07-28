@@ -24,6 +24,11 @@ $\text{Im} \int_C f(z) dz$ は $C$ に沿う $\begin{pmatrix} u \\ -v \end{pmatr
 3. 積分を計算する。$\int_C f(z) dz = \int_a^b (u\frac{dx}{dt} - v\frac{dy}{dt}) dt + i \int_a^b (u\frac{dy}{dt} + v\frac{dx}{dt}) dt$ 
 で，実数と同様に計算できる。または，複素微分の性質を用いれば良い。 **（対数や $n$ 乗根の計算には注意）**
 
+- ただし，グリーンの定理 : $\oint_C p(x,y) dx + q(x,y) dy = \iint_S \left( \frac{\partial q}{\partial x} - \frac{\partial p}{\partial y} \right) dS$ を用いることもできる。
+- これとコーシー・リーマンの方程式 (正則な関数の条件) は対応しており，これによりコーシーの積分定理 $\oint_C f(z) dz = 0$ が成り立つことがわかる
+
+#### 例 : $\displaystyle \oint_{|z|=1} \overline{z} dz = \int_0^{2\pi} e^{-it} i e^{it} dt = i \int_0^{2\pi} dt = 2 \pi i$ (解析的な関数でないため $0$ にならない)
+
 :::tip[基本的な積分]
 $m \in \mathbb{Z},~a \in \mathbb{C},~r > 0$ とする。
 

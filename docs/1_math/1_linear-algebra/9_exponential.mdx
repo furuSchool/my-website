@@ -88,3 +88,15 @@ $$
 $$
 - $\lim_{t \to t_0} A(t) = \left( \lim_{t \to t_0} a_{ij}(t) \right)$ と定義すれば，$\frac{d}{dt} A(t) = \lim_{h \to 0} \frac{A(t+h) - A(t)}{h}$ が成り立つ
 :::
+行列・ベクトルに関する典型的な微分の例 (ここでは，$\frac{dy}{d\bm{x}} = \nabla y$ (ベクトル)，$\frac{d\bm{y}}{d\bm{x}} = \nabla\bm{y}$ (行列) を意味する)
+- $y = \bm{a}^T \bm{x} = \bm{x}^T \bm{a}$ を微分すると，$\frac{dy}{d\bm{x}} = \bm{a}$
+- $y = \|\bm{x}\|^2 = \bm{x}^T \bm{x}$ を微分すると，$\frac{dy}{d\bm{x}} = 2\bm{x}$
+- $y = \bm{y}^T A \bm{x}$ を微分すると，$\frac{dy}{d\bm{x}} = A^T \bm{y}$
+- $y = \bm{x}^T A \bm{y}$ を微分すると，$\frac{dy}{d\bm{x}} = A \bm{y}$
+    - 特に，$y = \bm{x}^T A \bm{x}$ を微分すると，$\frac{dy}{d\bm{x}} =(A + A^T) \bm{x}$
+    - $A$ が対称行列の時は $\frac{dy}{d\bm{x}} = 2A \bm{x}$
+    - $\frac{d^2y}{d\bm{x}^2} = A + A^T$ (ヘッセ行列に対応)
+- $y = \|A \bm{x} + \bm{b}\|^2$ を微分すると，$\frac{dy}{d\bm{x}} = 2A^T (A \bm{x} + \bm{b})$
+- $\bm{y} = A \bm{x}$ を微分すると，$\frac{d\bm{y}}{d\bm{x}} = A^T$
+- $\bm{y} = \bm{x}^T A$ を微分すると，$\frac{d\bm{y}}{d\bm{x}} = A$
+
