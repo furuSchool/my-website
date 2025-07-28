@@ -30,7 +30,7 @@ title: 3. ラプラス変換
 > 1. 線形性：$a f(t) + b g(t)~\leftrightarrow~a F(s) + b G(s)$
 > 2. 畳み込み：$f(t) \ast g(t) = \int_{0}^{t} f(\tau) g(t-\tau) d\tau~\leftrightarrow~F(s) G(s)$
 > 3. 微分：$f^{(n)}(t)~\leftrightarrow~s^n F(s) - s^{n-1} f(0) - \cdots - f^{(n-1)}(0)$  
-微分'：$(-1)^n t^n f(t)~\leftrightarrow~F^{(n)}(s)$。特に，$tf(t)~\leftrightarrow~\frac{d}{ds} F(s)$
+微分'：$(-1)^n t^n f(t)~\leftrightarrow~F^{(n)}(s)$。特に，$tf(t)~\leftrightarrow~-\frac{d}{ds} F(s)$
 > 4. 積分：$\int_{0}^{t} f(\tau) d\tau~\leftrightarrow~\frac{1}{s} F(s)$  
 積分'：$\frac{f(t)}{t}~\leftrightarrow~\int_{s}^{\infty} F(x) dx$
 > 5. 時間の移動：$f(t-\tau) u(t-\tau)~\leftrightarrow~e^{-\tau s} F(s)$

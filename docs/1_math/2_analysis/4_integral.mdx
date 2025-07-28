@@ -1,0 +1,145 @@
+---
+title: 4. 積分
+---
+
+とりあえずメモ書き程度。
+
+:::note[有理関数の積分]
+有理関数 $\frac{f(x)}{g(x)}$ の積分は
+1. 多項式 $P(x)$
+2. $\displaystyle\frac{A}{(x - a)^r}\to  \int \frac{dx}{(x - a)^r} = \begin{cases}
+-\frac{1}{(r-1)(x - a)^{r-1}} & (r \neq 1) \\
+\log |x - a| & (r = 1)
+\end{cases}$
+3. $\displaystyle\frac{Ax + B}{((x - a)^2 + b^2)^r} \to$ 
+$\begin{cases}
+\int\frac{1}{(x - a)^2 + b^2}dx = \frac{1}{b}\arctan\left(\frac{x - a}{b}\right) \\
+\int\frac{x - a}{(x - a)^2 + b^2}dx = \frac{1}{2}\log\left|(x - a)^2 + b^2\right|\\
+\int\frac{x - a}{((x - a)^2 + b^2)^r}dx = -\frac{1}{2(r-1)((x - a)^2 + b^2)^{r-1}} & (r \neq 1) 
+\end{cases}$
+
+の形に部分分数分解でき，それぞれで積分を計算すれば良い。
+:::
+
+また，無理関数の不定積分は，特殊な場合は置き換えを使うことで求めることができる。
+- $\displaystyle\int f\left(x, \left(\sqrt[n]{\frac{ax + b}{cx + d}}\right)\right)dx$ $\to$ $t = \sqrt[n]{\frac{ax + b}{cx + d}}$ と置き換える
+- $\displaystyle\int f\left(x, \sqrt{ax^2 + bx + c}\right)dx~~(a > 0)$ $\to$ $t = \sqrt{ax^2 + bx + c} + \sqrt{a}x$ と置き換える
+- $\displaystyle\int f\left(x, \sqrt{ax^2 + bx + c}\right)dx~~(a < 0, b^2 - 4ac > 0)$ $\to$ 
+$ax^2 + bx + c = 0$ の解 $\alpha, \beta (\alpha < \beta)$ を求め，$\sqrt{ax^2 + bx + c} = \sqrt{-a}(\sqrt{(x - \alpha)(\beta - x)})$ と置き換える
+
+---
+## 代表的な積分
+### ガンマ関数
+:::note[ガンマ関数]
+ガンマ関数 : $\displaystyle\Gamma(x) = \int_0^\infty t^{x-1} e^{-t} dt$ ($x > 0$)
+- $\Gamma(x + 1) = x \Gamma(x)$。特に，$\Gamma(n) = (n-1)!$ ($n \in \mathbb{N}$)
+- $\Gamma(\frac{1}{2}) = \sqrt{\pi}$
+:::
+- $\displaystyle\int_0^\infty \frac{x^m}{1 + x^n} dx = \frac{1}{n} \Gamma\left(\frac{m+1}{n}\right) \Gamma\left(1 - \frac{m+1}{n}\right)$ ($m > -1, n > m + 1$)
+- $\displaystyle \int_0^\infty \int_0^\infty \frac{1}{1 + x^\alpha + y^\beta} dx dy = 
+\frac{1}{\alpha \beta} \Gamma\left(\frac{1}{\alpha}\right) \Gamma\left(\frac{1}{\beta}\right)\Gamma\left(1 - \frac{1}{\alpha} - \frac{1}{\beta}\right)$
+
+### ベータ関数
+:::note[ベータ関数]
+ベータ関数 : $\displaystyle B(x,y) = \int_0^1 t^{x-1} (1-t)^{y-1} dt$ ($x,y > 0$)
+- $\displaystyle B(x,y) = \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}$。特に，$\displaystyle B(n,m) = \frac{(n-1)!(m-1)!}{(n+m-1)!}$ ($n,m \in \mathbb{N}$)
+- $\displaystyle B\left(\frac{1}{2}, \frac{1}{2}\right) = \pi$
+- $\displaystyle B(x,y) = B(y,x)$
+- $\displaystyle xB(x,y+1) = yB(x+1,y)$
+- $\displaystyle B(x,y) = B(x + 1, y) + B(x, y + 1)$
+- $\displaystyle B(x,y) = 2\int_0^{\frac{\pi}{2}} \sin^{2x-1} t \cos^{2y-1} t ~dt$
+:::
+- $\displaystyle \int_0^{\frac{\pi}{2}} \sin^x t \cos^y t ~dt = \frac{1}{2}B\left(\frac{x+1}{2}, \frac{y+1}{2}\right)$
+- $\alpha, \beta > 0,\frac{1}{\alpha} + \frac{1}{\beta} < 1$ の時，
+
+---
+## 二重積分
+:::tip[二重積分]
+$f(x,y)$ が「面積確定」な有界閉領域 $D$ 上で連続な時，$\iint_D f(x,y) dx dy$ が存在し，これを **二重積分** と呼ぶ。
+:::
+- 面積確定とは，おおざっぱには $D$ の面積を長方形によって内側と外側から挟んで近似すれば極限が一致することをいう
+- $\iint_D f(x,y) dx dy$ は $D$ 上の $f(x,y)$ と平面 $z = 0$ で囲まれた立体の体積を表す
+- なお，$n$ 次元の場合も同様に定義される。例えば，$\iiint_V dxdydz$ は $V$ 上の体積を表す。
+
+:::note[二重積分の入れ替え]
+領域 $D$ において，$a\leq x \leq b$ において $\phi_1(x) \leq y \leq \phi_2(x)$ の範囲を動き，一方で
+$c \leq y \leq d$ において $\psi_1(y) \leq x \leq \psi_2(y)$ の範囲を動くとき，以下のように 二重積分を入れ替えることができる。
+$$
+\iint_D f(x,y) dx dy = \int_a^b \left(\int_{\phi_1(x)}^{\phi_2(x)} f(x,y) dy\right) dx = \int_c^d \left(\int_{\psi_1(y)}^{\psi_2(y)} f(x,y) dx\right) dy
+$$
+:::
+
+### 変数変換
+:::note[変数変換]
+面積確定な有界閉領域 $D$ 上で連続な関数 $f(x,y)$ に対して，変数変換 $x = g(u,v), y = h(u,v)$ を行うとき，以下のように二重積分を変換できる。
+$$
+\iint_D f(x,y) dx dy = \iint_{D'} f(g(u,v), h(u,v)) \left|\frac{\partial(x,y)}{\partial(u,v)}\right| du dv
+$$
+ここで，$\left|\frac{\partial(x,y)}{\partial(u,v)}\right|$ はヤコビ行列の行列式 (ヤコビアン) であり，以下のように定義される。
+$$
+\left|\frac{\partial(x,y)}{\partial(u,v)}\right| = \begin{vmatrix}
+\frac{\partial g}{\partial u} & \frac{\partial g}{\partial v} \\
+\frac{\partial h}{\partial u} & \frac{\partial h}{\partial v}
+\end{vmatrix}
+= 
+\begin{vmatrix}
+g_u & g_v \\
+h_u & h_v
+\end{vmatrix}
+$$
+:::
+- ただし，$g(u,v)$, $h(u,v)$ は $D'$ 上 $C^1$ 級であり，$gh$ 平面から $xy$ 平面への単射写像である
+- $D'$ は $gh$ 平面上の積分領域
+- $n$ 次元の場合も同様に定義される。例えば，$x = g(u,v,w), y = h(u,v,w), z = k(u,v,w)$ の時，
+$$
+\iiint_V f(x,y,z) dx dy dz = \iiint_{V'} f(g(u,v,w), h(u,v,w), k(u,v,w)) \left|\frac{\partial(x,y,z)}{\partial(u,v,w)}\right| du dv dw
+$$
+
+#### 典型的な例
+- 極座標変換 : $x = r \cos \theta, y = r \sin \theta$ の時，
+$\left|\frac{\partial(x,y)}{\partial(r,\theta)}\right| = \begin{vmatrix}
+\cos \theta & -r \sin \theta \\
+\sin \theta & r \cos \theta
+\end{vmatrix} = r$
+    - $dxdy = r dr d\theta$
+- アフィン変換 : $x = au + bv + c, y = du + ev + f$ の時，
+$\left|\frac{\partial(x,y)}{\partial(u,v)}\right| = \begin{vmatrix}
+a & b \\
+d & e
+\end{vmatrix} = ae - bd$
+    - $\bm{y} = A \bm{x} + \bm{b}$ の時，$\left|\frac{\partial(\bm{x})}{\partial(\bm{y})}\right| = \frac{1}{\left|\det A\right|}$
+    - $dxdy = \frac{1}{\left|\det A\right|} dudv$
+- 極座標変換 (三次元) : $x = r \sin \theta \cos \phi, y = r \sin \theta \sin \phi, z = r \cos \theta$ の時，  
+$\left|\frac{\partial(x,y,z)}{\partial(r,\theta,\phi)}\right| = \begin{vmatrix}
+\sin \theta \cos \phi & r \cos \theta \cos \phi & -r \sin \theta \sin \phi \\
+\sin \theta \sin \phi & r \cos \theta \sin \phi & r \sin \theta \cos \phi \\
+\cos \theta & -r \sin \theta & 0
+\end{vmatrix} = r^2 \sin \theta$
+    - $dxdy = r^2 \sin \theta dr d\theta d\phi$
+- 円柱座標変換 : $x = r \cos \theta, y = r \sin \theta, z = z$ の時，
+$\left|\frac{\partial(x,y,z)}{\partial(r,\theta,z)}\right| = \begin{vmatrix}
+\cos \theta & -r \sin \theta & 0 \\
+\sin \theta & r \cos \theta & 0 \\
+0 & 0 & 1
+\end{vmatrix} = r$
+    - $dxdy = r dr d\theta dz$
+
+
+### 二重積分の広義積分
+:::note[二重積分の広義積分]
+面積確定な有界閉領域の列 $\{D_n\}$ について，以下が成り立つとする。
+- $D_1 \subset D_2 \subset \cdots$
+- $\bigcup_{n=1}^\infty D_n = D$
+- 任意の有界閉領域 $E \subset D$ に対して，$\exists N$ が存在して $\forall n \geq N, E \subset D_n$ が成り立つ
+
+この時，$\lim_{n \to \infty} \iint_{D_n} f(x,y) dx dy$ が存在し，$\{D_n\}$ の取り方に依存しないとき，
+$f(x,y)$ は $D$ 上で **(広義) 積分可能** と呼び，$\iint_D f(x,y) dx dy = \lim_{n \to \infty} \iint_{D_n} f(x,y) dx dy$ と定義する。
+
+一方で，$f(x,y)$ が一定符号である時，条件を満たすある $\{D_n\}$ に対して $\lim_{n \to \infty} \iint_{D_n} f(x,y) dx dy$ が存在する時，
+$f(x,y)$ は $D$ 上で **積分可能** であって，$\iint_D f(x,y) dx dy = \lim_{n \to \infty} \iint_{D_n} f(x,y) dx dy$ とできる。
+
+**つまり，ある一つの $\{D_n\}$ に対して極限を求められれば自動的にその値が $D$ 上の積分値となる。**
+:::
+- なお，$f$ は，有開閉領域 $D$ または $D \setminus S$ で定義され，$D\setminus S$ で連続かつ $\forall D_n$ に対して
+$D_n \subset D\setminus S$ が成り立つ
+- 広義積分では，一般には積分の順序交換はできない $\leftrightarrow$ 有界の場合は順序交換できる

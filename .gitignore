@@ -21,3 +21,4 @@ yarn-error.log*
 
 # page
 docs/999_others/999_column
+.vercel

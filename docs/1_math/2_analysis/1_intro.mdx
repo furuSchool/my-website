@@ -2,7 +2,7 @@
 title: 1. 微積の基礎
 ---
 
-微積の基礎を解説する。ただ，ある程度の知識を前提としており，証明も行わない。めんどくさいので色々省略している。
+微積の基礎を解説する。ただ，ある程度の知識を前提としており，証明も行わない。めんどくさいので色々省略している。メモ書き程度のもの。
 
 ## 集合
 - 実数 $a$ が集合 $A$ の上界 $\Leftrightarrow$ 任意の $x \in A$ に対して $x \leq a$ (下界も同様)
@@ -13,6 +13,62 @@ title: 1. 微積の基礎
 - 上限 $\Leftrightarrow$ $A$ の上界全体の最小元。$\sup A$ と表す (上限も同様で $\inf A$)
     - $a$ が $A$ の上限 $\Leftrightarrow$ $\forall x \in A, x \leq a$ かつ $\forall \epsilon > 0, \exists x \in A, x > a - \epsilon$
     - 実数の連続性より，$\mathbb{R}$ の空でない部分集合は上に有界ならば上限が存在する (上に有界でない場合は $\sup A = \infty$)
+
+----
+## 数列の極限
+:::note[数列の極限]
+数列 $\{a_n\}_{n=1}^\infty$ について，
+$\forall \epsilon > 0, \exists N$ で $\forall n > N$ に対して $|a_n - L| < \epsilon$ が成り立つ時，
+数列 $a_n$ は **$L$ に収束する** といい，$\lim_{n \to \infty} a_n = L$ と表す。
+:::
+
+:::note[コーシー列]
+数列 $\{a_n\}_{n=1}^\infty$ が **コーシー列** であるとは，
+$\forall \epsilon > 0, \exists N$ で $\forall m,n > N$ に対して $|a_n - a_m| < \epsilon$ が成り立つことをいう。
+
+なお，コーシー列であることと，数列が収束することは同値である。
+:::
+
+### 級数
+:::note[級数]
+数列 $\{a_n\}_{n=1}^\infty$ に対して，$\sum_{n=1}^\infty a_n$ を **級数** と呼ぶ。
+また，部分和 $S_n = \sum_{k=1}^n a_k$ について，$\lim_{n \to \infty} S_n = S$ が成り立つ時，
+級数 $\sum_{n=1}^\infty a_n$ は **収束する** といい，級数の和は $S$ であるという。
+
+また，$\sum_{n=1}^\infty a_n$ が収束する $\Rightarrow$ $\lim_{n \to \infty} a_n = 0$
+:::
+
+:::note[正項級数]
+$a_n \geq 0~(\forall n)$ の時，$\sum_{n=1}^\infty a_n$ を **正項級数** と呼ぶ。この時，以下の性質が成り立つ。
+- $\sum_{n=1}^\infty a_n$ が $\alpha$ に収束する $\Rightarrow$ 項を並び替えてできる級数も $\alpha$ に収束する
+- 正項級数 $\sum_{n=1}^\infty b_n$ が収束しかつ $a_n \leq b_n~(\forall n)$ の時，$\sum_{n=1}^\infty a_n$ も収束する
+- 正項級数 $\sum_{n=1}^\infty b_n$ が発散しかつ $a_n \geq b_n~(\forall n)$ の時，$\sum_{n=1}^\infty a_n$ も発散する
+- ダランベールの判定法 : $\lim_{n \to \infty} \frac{a_{n+1}}{a_n} = \rho$ が成り立つ時，( $\rho = \infty$ も含む)
+    - $\rho < 1$ の時，$\sum_{n=1}^\infty a_n$ は収束する
+    - $\rho > 1$ の時，$\sum_{n=1}^\infty a_n$ は発散する
+- コーシーの判定法 : $\lim_{n \to \infty} \sqrt[n]{a_n} = \rho$ が成り立つ時，( $\rho = \infty$ も含む)
+    - $\rho < 1$ の時，$\sum_{n=1}^\infty a_n$ は収束する
+    - $\rho > 1$ の時，$\sum_{n=1}^\infty a_n$ は発散する
+    - 厳密には，$\limsup_{n \to \infty} \sqrt[n]{a_n} = \rho$
+:::
+
+:::note[交代級数]
+交代級数 $\sum_{n=1}^\infty (-1)^{n+1} a_n$ ($a_n \geq 0$) に対して，
+$a_1 \geq a_2 \geq a_3 \geq \cdots$ かつ $\lim_{n \to \infty} a_n = 0$ が成り立つ時，$\sum_{n=1}^\infty (-1)^{n+1} a_n$ は収束する。
+:::
+
+:::note[絶対収束]
+数列 $\{a_n\}_{n=1}^\infty$ に対して，$\sum_{n=1}^\infty |a_n|$ を絶対値級数と呼び，
+これが収束する時，数列 $\{a_n\}_{n=1}^\infty$ は **絶対収束する** という。
+一方で，絶対収束しないが $\sum_{n=1}^\infty a_n$ が収束するものを **条件収束する** という。
+
+$\{a_n\}$ が絶対収束する時，項を並び替えてできる級数も絶対収束し，同じ値に収束する。
+一方で，級数 $\{a_n\}$ が条件収束する時，項を並び替えることで任意の実数に収束させることができる。
+:::
+- $\sum_{n=1}^\infty a_n$ が絶対収束する $\Rightarrow$ $\sum_{n=1}^\infty a_n$ は収束する
+- $\{a_n\}$ と $\{b_n\}$ がともに絶対収束する時，$\{a_n + b_n\}$ も絶対収束する
+- $\{a_n\}$ と $\{b_n\}$ がともに絶対収束する時，$\sum_{i,j} a_i b_j$ も絶対収束する。
+特に，$\sum_{n=1}^\infty a_n \sum_{n=1}^\infty b_n = \sum_{i,j} a_i b_j$
 
 ---
 ## 関数の性質
@@ -37,6 +93,16 @@ $||f(\bm{x}) - L|| < \epsilon$
 $\forall \bm{x} \in B(\bm{x_0}, \delta) = \{\bm{x} \in \mathbb{R}^n | ||\bm{x} - \bm{x_0}|| < \delta\}$ 
 $\Rightarrow ||f(\bm{x}) - f(\bm{x_0})|| < \epsilon$
 - つまり，$\lim_{\bm{x} \to \bm{x_0}} f(\bm{x}) = f(\bm{x_0})$
+
+さらに，$f(\bm{x})$ 集合 $D$ 上で連続 $\\\Leftrightarrow$ 
+$\forall \bm{x_0} \in D, \forall \epsilon > 0, \exists \delta > 0$ で
+$\forall \bm{x} \in D, ||\bm{x} - \bm{x_0}|| < \delta \Rightarrow ||f(\bm{x}) - f(\bm{x_0})|| < \epsilon$ が成り立つ。
+:::
+
+:::tip[関数の一様連続]
+関数 $f(\bm{x})$ が集合 $D$ 上で一様連続 $\\\Leftrightarrow$
+$\forall \epsilon > 0, \exists \delta > 0$ で
+$\forall \bm{x}, \bm{x}_0 \in D, ||\bm{x} - \bm{x}_0|| < \delta \Rightarrow ||f(\bm{x}) - f(\bm{x}_0)|| < \epsilon$ が成り立つ。
 :::
 
 ### 関数の微分
@@ -49,3 +115,60 @@ $\lim_{\bm{h} \to \bm{0}} \frac{f(\bm{x_0} + \bm{h}) - f(\bm{x_0})}{||\bm{h}||}$
 また，$f$ が定義域全体で微分可能な時，$f$ は **微分可能** といい，$f^{\prime}(\bm{x})$ を **導関数** と呼ぶ。
 :::
 
+### 関数の偏微分
+:::note[偏微分]
+関数 $f(\bm{x})$ が $x_i$ で偏微分可能 $\Leftrightarrow$ $\lim_{h \to 0} \frac{f(\bm{x} + h\bm{e}_i) - f(\bm{x})}{h}$ が存在する。
+
+この時，$D_{x_i} f(\bm{x}) = \lim_{h \to 0} \frac{f(\bm{x} + h\bm{e}_i) - f(\bm{x})}{h}$ と表す。
+($f_{x_i}(\bm{x})$ や $\frac{\partial f}{\partial x_i}(\bm{x})$ とも表す)
+
+また， **全微分可能 $\Leftrightarrow$ 全ての $x_i$ で偏微分可能かつその導関数が連続。**
+:::
+
+ここで，$f(\bm{x})$ が $C^n$ 級とは，$f(\bm{x})$ の全ての偏微分が $n$ 回まで存在し，その全てが連続であることをいう。
+
+:::note[ニ階微分の性質]
+さらに，二変数関数 $f(x,y)$ について，$f_x(x,y),f_y(x,y),f_{xy}(x,y)$ が存在し，かつ $f_{xy}(x,y)$ が連続な時，
+$f_{yx}(x,y)$ が存在し，$f_{xy}(x,y) = f_{yx}(x,y)$ が成り立つ。
+
+ここから，$f(x,y)$ が $C^2$ 級である時，$f_{xy}(x,y) = f_{yx}(x,y)$ が成り立つ。
+:::
+
+
+---
+## 関数列
+:::tip[関数列とその極限]
+区間 $I$ 上の関数列 $\{f_n(x)\}_{n=1}^\infty$ を考える。
+
+- 任意の $x \in I$ に対して，$\lim_{n \to \infty} f_n(x) = f(x)$ が成り立つ時，関数列 $\{f_n(x)\}$ は 
+$I$ 上で **各点収束する** といい，その極限を $f(x)$ と表す。
+    - つまり，$\forall \epsilon > 0, \forall x \in I, \exists N$ で $n > N \Rightarrow |f_n(x) - f(x)| < \epsilon$
+    - $f_n(x)$ が $I$ 上で連続であっても，$f(x)$ が連続であるとは限らない
+- $\forall \epsilon > 0, \exists N, \forall x \in I$ で $n > N \Rightarrow |f_n(x) - f(x)| < \epsilon$ が成り立つ時，関数列 $\{f_n\}$ は **一様収束する** という
+    - つまり，**$N$ が $x$ に依存しない**
+
+また，$f_n(x)$ 一様収束することは以下と同値。
+- $\forall \epsilon > 0, \exists N$ で $ n > N \Rightarrow \sup_{x \in I} |f_n(x) - f(x)| < \epsilon$
+- $\forall \epsilon > 0, \exists N, \forall x \in I$ で $m,n > N \Rightarrow |f_n(x) - f_m(x)| < \epsilon$
+
+**さらに，$f_n(x)$ が $I$ 上で連続で $\{f_n(x)\}$ が一様収束する時，極限関数 $f(x)$ も $I$ 上で連続である。**
+:::
+
+
+:::tip[項別微分・項別積分]
+関数列 $\{f_n(x)\}_{n=1}^\infty$ が閉区間 $[a,b]$ 上で連続で $\{f_n(x)\}$ が $f(x)$ に一様収束する時，以下が成り立つ。
+$$
+\lim_{n \to \infty} \int_a^x f_n(t) dt = \int_a^x f(t) dt
+$$
+特に，$F_n(x) = \int_a^x f_n(t) dt$ とすれば，$\{F_n(x)\}$ は $F(x) = \int_a^x f(t) dt$ に一様収束する。
+
+また，関数列 $\{f_n(x)\}_{n=1}^\infty$ が閉区間 $[a,b]$ で微分可能で，
+$\{f_n(x)\}$ が $[a,b]$ で $f(x)$ に各点収束し，かつ $f_n'(x)$ が $[a,b]$ 上で連続かつ $\{f_n'(x)\}$ が $g(x)$ に一様収束する時，以下が成り立つ。
+$$
+\lim_{n \to \infty} f_n'(x) = g(x) = f^{\prime}(x)
+$$
+つまり，$\{f_n(x)\}$ が微分可能で一様収束であるだけでは不十分。
+:::
+
+条件を緩めると，$f_n(x)$ が閉区間 $[a,b]$ 上で微分可能で $f(x)$ に一様収束し，$f_n'(x)$ が閉区間 $[a,b]$ 上で連続で $g(x)$ に一様収束する時，
+$f(x)$ は $[a,b]$ 上で微分可能であり，$\lim_{n \to \infty} f_n'(x) = g(x) = f^{\prime}(x)$ が成り立つ。

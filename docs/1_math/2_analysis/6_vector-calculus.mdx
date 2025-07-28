@@ -1,5 +1,5 @@
 ---
-title: 5. ベクトル解析
+title: 6. ベクトル解析
 ---
 
 
@@ -152,3 +152,24 @@ $\bm{P}_u \times \bm{P}_v \neq \bm{0}~~(\forall (u,v) \in D)$ を満たすとき
 - **平均曲率** : $H = \frac{EN - 2FM + GL}{2(EG - F^2)}$
 - **ガウス曲率** : $K = \frac{LN - M^2}{EG - F^2}$
 :::
+
+---
+## まとめ
+### 長さ・面積・体積を求める公式
+#### 長さ
+- $y = f(x)~(a \leq x \leq b)$ の曲線の長さ : $\int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2} dx$
+- $x = x(t), y = y(t)~(\alpha \leq t \leq \beta)$ の曲線の長さ : 
+$\int_\alpha^\beta \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2} dt$
+- 極座標表示 $r = f(\theta)~(\alpha \leq \theta \leq \beta)$ の曲線の長さ :
+$\int_\alpha^\beta \sqrt{f(\theta)^2 + \left(\frac{df}{d\theta}\right)^2} d\theta$
+
+#### 面積
+- $y = f(x)~(a \leq x \leq b)$ と $x$ 軸で囲まれた領域の面積 : $\int_a^b f(x) dx$
+- 極座標表示 $r = f(\theta)~(\alpha \leq \theta \leq \beta)$ と $\theta = \alpha,\beta$ で囲まれた領域の面積 :
+$\frac{1}{2} \int_\alpha^\beta f(\theta)^2 d\theta$
+- 関数 $z = f(x,y)~(a \leq x \leq b, c \leq y \leq d)$ の曲面の面積 :
+$\int_a^b \int_c^d \sqrt{1 + \left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2} dx dy$
+
+#### 体積
+- ある立体について，$x$ 軸に垂直な平面で切断した断面の面積が $S(x)~(a \leq x \leq b)$ の時，その立体の体積 : $\int_a^b S(x) dx$
+- 関数 $y = f(x)~(a \leq x \leq b)$ のグラフと $x$ 軸で囲まれた領域を $x$ 軸周りで回転させた時の立体の体積 : $\pi \int_a^b f(x)^2 dx$
