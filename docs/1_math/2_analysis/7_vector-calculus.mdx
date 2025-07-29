@@ -141,16 +141,61 @@ $\bm{P}_u \times \bm{P}_v \neq \bm{0}~~(\forall (u,v) \in D)$ を満たすとき
 :::
 - $\bm{P}_u$ と $\bm{P}_v$ は $\bm{P}$ の $u$ 方向と $v$ 方向の接ベクトルであり，正則の時，一次独立である
 - 特に，曲面上の点 $\bm{r}$ について，$\dot{\bm{r}} = \bm{P}_u \dot u + \bm{P}_v \dot v$ と表せる
+- また，$\bm{r}^\prime = \bm{P}_u u^\prime + \bm{P}_v v^\prime$ と表せる
 
 :::tip[定義]
 - **単位法線ベクトル** : $\bm{e}(u,v) = \frac{\bm{P}_u \times \bm{P}_v}{||\bm{P}_u \times \bm{P}_v||}$
 - **第一基本量** : $E = ||\bm{P}_u||^2,~F = \bm{P}_u \cdot \bm{P}_v,~G = ||\bm{P}_v||^2$
+- **面素** : $dS = |\bm{P}_u du \times \bm{P}_v dv| = \sqrt{EG - F^2} du dv$ (微小な平行四辺形の面積)
 - **第一基本形式** : $I = E du^2 + 2F dudv + G dv^2$
-- **第二基本量** : $L = \bm{e} \cdot \bm{P}_{uu},~M = \bm{e}\cdot \bm{P}_{uv},~N = \bm{e} \cdot \bm{P}_{vv}$
-    - $P_{uu} = \frac{\partial^2 \bm{P}}{\partial u^2},~P_{uv} = \frac{\partial^2 \bm{P}}{\partial u \partial v},~P_{vv} = \frac{\partial^2 \bm{P}}{\partial v^2}$
+        - $|\frac{d}{dt} \bm{P}(u(t), v(t))|^2 = E \dot u^2 + 2F \dot u \dot v + G \dot v^2$ を動機にしている
+- **第二基本量** : $L = \bm{P}_{uu} \cdot \bm{e},~M = \bm{P}_{uv} \cdot \bm{e},~N = \bm{P}_{vv} \cdot \bm{e}$
+    - $\bm{P}_{uu} = \frac{\partial^2 \bm{P}}{\partial u^2},~\bm{P}_{uv} = \frac{\partial^2 \bm{P}}{\partial u \partial v},~\bm{P}_{vv} = \frac{\partial^2 \bm{P}}{\partial v^2}$
 - **第二基本形式** : $II = L du^2 + 2M dudv + N dv^2$
+    - $\kappa(\bm{r}^\prime) = \bm{r}^{\prime\prime} \cdot \bm{e} = L u^{\prime 2} + 2M u^\prime v^\prime + N v^{\prime 2}$ を動機にしている
 - **平均曲率** : $H = \frac{EN - 2FM + GL}{2(EG - F^2)}$
 - **ガウス曲率** : $K = \frac{LN - M^2}{EG - F^2}$
+:::
+$\kappa(\bm{r}^\prime) = L u^{\prime 2} + 2M u^\prime v^\prime + N v^{\prime 2}$ では，
+$\kappa$ は $\bm{r}^\prime$，すなわち曲面の点 $\bm{r}$ の一つの接ベクトルに依存している。
+よって，$\bm{r}^\prime$ すなわち $\bm{u}^\prime,\bm{v}^\prime$ を動かして点 $\bm{r}$ の曲率がどのようになっているかを調べる。
+この際，条件として $|\bm{r}^\prime| = |\bm{P}_u u^\prime + \bm{P}_v v^\prime| = 1$ の場合を考える。
+
+すると，$\kappa$ の最大値と最小値は $\kappa(\bm{u}^\prime,\bm{v}^\prime) - \lambda (1 - |\bm{P}_u u^\prime + \bm{P}_v v^\prime|^2)$ を最小化すればわかる。
+これを計算すると，**主曲率** $\kappa_1, \kappa_2$ が出てくるため，平均曲率 $H = \frac{\kappa_1 + \kappa_2}{2}$ とガウス曲率 $K = \kappa_1 \kappa_2$ を定義できる。
+- 曲率はこの間の値を取るから，ひとまず $H$ と $K$ がわかればなんとなく曲面の形がわかるよねという感じ (主曲率がわかれば任意の曲率がわかるという話もあるらしい ?)
+
+### 面積分
+:::tip[面積分]
+$f : \mathbb{R}^3 \to \mathbb{R}$，$\bm{f} : \mathbb{R}^3 \to \mathbb{R}^3$ と
+$\bm{P} : \mathbb{R}^2 \to \mathbb{R}^3,~D \subset \mathbb{R}^2$ で定義される
+曲面 $S = \{\bm{P}(u,v) | (u,v) \in D\}$ (正則) に対して **面積分** を以下のように定義する。
+
+$$
+\int_S f dS = \int_D f(\bm{P}(u,v)) |\bm{P}_u \times \bm{P}_v| du dv
+$$
+$$
+\int_S \bm{f} \cdot d\bm{S} = \int_S \bm{f}\cdot \bm{e} dS
+= \int_D \bm{f}(\bm{P}(u,v)) \cdot \left(\bm{P}_u \times \bm{P}_v\right) du dv
+$$
+:::
+
+### ストークスの定理
+:::tip[ストークスの定理]
+閉曲線 $C$ と曲面 $S$ は，適切な条件下の元で，$\bm{f} \in C^1(S, \mathbb{R}^3)$ に対して以下の式が成り立つ。
+$$
+\oint_C \bm{f} \cdot d\bm{r} = \int_S \nabla \times \bm{f} \cdot d\bm{S}
+$$
+:::
+$\mathbb{R}^3$ 上の区分的滑らかな単純閉曲線 $C$ をはる曲面 $S$ が，区分的に滑らかで向き付け可能の時に成り立つ。
+
+### ガウスの定理
+:::tip[ガウスの定理]
+$V \subset \mathbb{R}^3$ を有界領域とし，$\partial V$ が区分的 $C^1$ 級の閉曲面とする。
+この時，$\bm{f} \in C^1(\overline{V}, \mathbb{R}^3)$ に対して以下の式が成り立つ。
+$$
+\int_V \nabla \cdot \bm{f} dV = \int_{\partial V} \bm{f} \cdot d\bm{S}
+$$
 :::
 
 ---
@@ -169,6 +214,9 @@ $\int_\alpha^\beta \sqrt{f(\theta)^2 + \left(\frac{df}{d\theta}\right)^2} d\thet
 $\frac{1}{2} \int_\alpha^\beta f(\theta)^2 d\theta$
 - 関数 $z = f(x,y)~(a \leq x \leq b, c \leq y \leq d)$ の曲面の面積 :
 $\int_a^b \int_c^d \sqrt{1 + \left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2} dx dy$
+- $S = \{\bm{P}(u,v) | (u,v) \in D\}$ の面積 :
+$\int_D |\bm{P}_u \times \bm{P}_v| du dv$
+    - $z = f(x,y)$ は，$\bm{P}(u,v) = (u, v, f(u,v))$ として表せる
 
 #### 体積
 - ある立体について，$x$ 軸に垂直な平面で切断した断面の面積が $S(x)~(a \leq x \leq b)$ の時，その立体の体積 : $\int_a^b S(x) dx$
