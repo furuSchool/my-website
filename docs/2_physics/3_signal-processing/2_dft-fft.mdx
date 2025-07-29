@@ -77,9 +77,8 @@ $
 ---
 
 ## 高速フーリエ変換（FFT）
-:::warning[目標]
-DFTの高速演算！
-- DFT は $O(N^2)$ ，FFT は $O(N \log N)$
+:::tip[高速フーリエ変換（FFT）]
+DFTの高速演算 ! DFT は $O(N^2)$ ，FFT は $O(N \log N)$。
 :::
 ### FFT のアルゴリズム
 1. データ長 $N = 2^M$ とする（調整して）。
@@ -91,7 +90,7 @@ DFTの高速演算！
     $G(0) = x(0) + W_N^0 x(2)$，$G(1) = x(0) - W_N^0 x(2)$，$H(0) = x(1) + W_N^0 x(3)$，$H(1) = x(1) - W_N^0 x(3)$
 
 ### FFTバタフライ
-：FFTのアルゴリズムを可視化したもの。下記は，https://www1.gifu-u.ac.jp/~yktlab/sp1.pdf より引用。
+：FFTのアルゴリズムを可視化したもの。下記は，[信号処理](https://www1.gifu-u.ac.jp/~yktlab/sp1.pdf) より引用。
 <img src="/img/physics/fft.png" alt="FFTバタフライ" style={{ width: '50%' }} />
 各蝶々が，$X(k) = G(k) + W_N^k H(k), ~X(k + \frac{N}{2}) = G(k) - W_N^k H(k)$に相当する。
 - この時，$N$ は何個のデータをクロスさせているか，$k$ はクロスしているうちの上から何番目か，という考え方で良いかと
