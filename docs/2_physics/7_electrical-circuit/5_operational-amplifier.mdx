@@ -1,0 +1,104 @@
+---
+title: 5. オペアンプ
+---
+
+:::warning[目標]
+オペアンプの回路における取り扱い方を理解する。
+:::
+
+## オペアンプ
+:::tip[オペアンプ]
+オペアンプ (演算増幅器) は，入力を増幅して出力する素子であり，MOSFET を用いて構成されることが多い。
+- 入力 : 2 端子 $(V_+, V_-)$
+- 出力 : 1 端子 $(V_{out})$
+- 電源 : 2 端子 $(V_{DD}, V_{SS})$。$V_{DD} = 15~\text{V}, V_{SS} = -15~\text{V}$ などが多い。
+
+#### 理想的なオペアンプの特性
+- $V_{out} = A (V_+ - V_-)$ ( $A$ は利得 (ゲイン) と呼ばれる定数で，$A \to \infty$)。つまり，$V_+ = V_-$ となる。これを **仮想接地** と呼ぶ
+- 入力インピーダンス $Z_{in}$ は無限大、出力インピーダンス $Z_{out}$ は $0$
+- 周波数帯域が無限大で，周波数によって特性が変化しない
+
+<img src="https://toshiba.semicon-storage.com/content/dam/toshiba-ss-v3/apc/ja/semiconductor/knowledge/faq/linear_op-amps/what-is-an-operational-amplifier_1_jp.png" alt="オペアンプ" style={{ width: '50%', aspectRatio: 'auto', objectFit: 'contain' }} />
+
+画像は [こちら](https://toshiba.semicon-storage.com/jp/semiconductor/knowledge/faq/linear_opamp/what-is-an-operational-amplifier.html) より引用。
+
+#### 実際のオペアンプの特性
+以下のように近似されることが多い。すなわち，入力インピーダンス $Z_{in}$，出力インピーダンス $Z_{out}$，
+$V_+$ から $V_-$ へ流れる電流を $I_{in}$，$V_{out}$ から出る電流を $I_{out}$ とすると以下の式が成り立つ。
+- $V_+ - V_- = Z_{in} I_{in}$
+- $V_{out} = A (V_+ - V_-) - Z_{out} I_{out}$
+- $V_{out}$ は $V_{DD}$ と $V_{SS}$ によって制限される
+- 高周波数領域では利得が小さくなる。例えば，$A(s) = \frac{A_0}{1 + \frac{s}{\omega_p}}$ のように近似される
+    - そこで，利得 $A(s) = 1$ となる周波数 $f_u = A_0 f_p$ を **ユニティゲイン周波数** と呼ぶ
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '10px' }}>
+    <div  style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }} >
+  <img src="https://electronic-circuit.com/wp-content/uploads/2021/12/opamp-equivalent-real.jpg" alt="オペアンプの等価回路"/>
+    <div>画像は [こちら](https://electronic-circuit.com/opamp-equivalent-internal/) より引用。文字が異なることに注意。</div>  
+  </div>
+  <div  style={{ width: '45%', aspectRatio: 'auto', objectFit: 'contain' }} >
+  <img src="https://jp.ariat-tech.com/upfile/images/b7/20231227165243513.png" alt="オペアンプの内部回路"/>
+  <div>画像は [こちら](https://jp.ariat-tech.com/blog/lm741-operational-amplifier-ic-guide-pinout,internal-circuitry,datasheet-and-applications.html) より引用。</div>
+  </div>
+</div>
+:::
+- さらに，実際にはオペアンプは 3 段以上の MOSFET で構成されており，LPF 三段重ねのような構造になっている。位相特性も，最大 $-270^\circ$ 程度の遅れがありうり，
+これが発振の原因となっている
+
+---
+## オペアンプを用いた回路
+基本的には理想的な状態を考え，$A \to \infty$ として，仮想接地 $V_+ = V_-$ を用いて計算する。
+そうでない場合も，回路方程式を立てて計算すれば良い。
+
+### 反転増幅回路
+:::note[反転増幅回路]
+インピーダンス $Z_1$ と $Z_2$ を用いれば $V_{out} = -\frac{Z_2}{Z_1} V_{in}$ となる。
+- 共に抵抗を用いれば，$V_{out} = -\frac{R_2}{R_1} V_{in}$ となり，ゲイン $\frac{R_2}{R_1}$ の反転増幅回路となる (画像の例)
+- $Z_2 = \frac{1}{j\omega C_2 + \frac{1}{R_2}}$ のようにコンデンサと抵抗を並列にすれば，
+$V_{out} = -\frac{R_2}{R_1} \frac{1}{j\omega C_2 R_2 + 1} V_{in}$ となり，LPF 付きの反転増幅回路となる
+    - $R_2$ を用いなければ ($R_2 = \infty$)，**積分回路** となる
+- $Z_1 = R_1 + \frac{1}{j\omega C_1}$ のようにコンデンサと抵抗を直列にすれば，
+$V_{out} = -\frac{R_2}{R_1 + \frac{1}{j\omega C_1}} V_{in}$ となり，HPF 付きの反転増幅回路となる
+    - $R_1 = 0$ とすれば，**微分回路** となる
+
+<img src="https://spiceman.jp/wp-content/uploads/2021/10/inverting-amplifier-circuit.jpg" alt="反転増幅回路" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+画像は [こちら](https://spiceman.jp/inverting-amplifier-circuit/) より引用。
+:::
+
+なお，ゲイン (この場合は電圧利得) は **デシベル** (dB) で表すことが多い。すなわち，
+$\displaystyle G = 20 \log_{10} \left| \frac{V_{out}}{V_{in}} \right|~\text{dB}$ と表される。
+ボーデ線図もその方が書きやすいしね。
+
+### 非反転増幅回路
+:::note[非反転増幅回路]
+インピーダンス $Z_1$ と $Z_2$ を用いれば
+$V_{out} = \frac{Z_2 + Z_1}{Z_1} V_{in}$ となる。
+- 共に抵抗を用いれば，$V_{out} = \left(1 + \frac{R_2}{R_1}\right) V_{in}$ となり，ゲイン $1 + \frac{R_2}{R_1}$ の非反転増幅回路となる。(画像の例)
+
+<img src="https://spiceman.jp/wp-content/uploads/2021/10/non-inverting-amplifier-circuit.jpg" alt="非反転増幅回路" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+画像は [こちら](https://spiceman.jp/non-inverting-amplifier-circuit/) より引用。
+:::
+
+---
+## 発振回路
+ここで，増幅器を用いた回路について，以下のようなモデルを考える。(画像は [こちら](https://www.rohm.co.jp/electronics-basics/opamps/op_what6) より引用)
+<img src="https://www.rohm.co.jp/documents/11401/4928552/img_01.gif/d4cdad35-ceb5-1a4c-78bd-9a9658670ad6?t=1519973642225" alt="発振回路のモデル" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+
+すなわち，入力 $V_{in}$，出力 $V_{out}$，増幅器の利得 $A(s)$，帰還回路の利得 $\beta (0 < \beta < 1)$ とする。
+なお，帰還回路は入力に対して負とする (位相を反転させる)。この時，計算すると以下が成り立つ。
+$$
+A_V(s) = \frac{V_{out}}{V_{in}} = \frac{A(s)}{1 + A(s) \beta} = \frac{1}{\beta}\frac{A(s)\beta}{1 + A(s)\beta}
+$$
+- なお，この時の $A_V(s)$ は **閉ループ利得**，$A(s)$ は **開ループ利得** と呼ばれる
+
+この時，**発振する**，すなわち入力信号がなくとも微小な雑音によって $V_{out}$ が無限に大きくなってしまう条件は，  
+**極 (この場合は $A(s)\beta + 1 = 0$ の解 ) が右半平面にあること** である。
+
+これは，ナイキストの判定法を用いたり，位相が $-180^\circ$ になる周波数での $A(s)\beta$ の大きさが $1$ より小さいかどうかを調べることで確認できる。
+
+
+#### 例 : 非反転増幅回路
+$A \to \infty$ を用いないと，$A_V(s) = \frac{V_{out}}{V_{in}} = (1 + \frac{R_2}{R_1})\frac{A(s)\frac{R_1}{R_1 + R_2}}{1 + A(s)\frac{R_1}{R_1 + R_2}}$ となるので，
+$\beta = \frac{R_1}{R_1 + R_2}$ である。  
+ここから，$f < f_{th}$ の周波数内で発振しないとすると，$|A(j2\pi f_{th}) \beta| = 1$ が成り立つので，$f_{th} = \frac{f_u}{1 + \frac{R_2}{R_1}}$ となる。
+- ユニティゲイン周波数 $f_u$ を用いた

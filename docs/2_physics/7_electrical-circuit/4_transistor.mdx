@@ -1,0 +1,83 @@
+---
+title: 4. トランジスタ
+---
+
+:::warning[目標]
+トランジスタの性質と回路での扱い方を理解する。
+:::
+
+## MOSFET
+ここでは，トランジスタの中でもよく使われている MOSFET について説明する。
+他には，バイポーラトランジスタ (BJT)などがある。
+- FET : 電界効果トランジスタ
+- BJT : Base, Emitter, Collector をもつ 3 端子素子。入力電流によって出力電流を制御する。
+
+MOSFET には NMOS と PMOS の 2 種類があるが，ここでは NMOS について説明する。  
+- NMOS は p 型の半導体基板上に n 型のソース領域とドレイン領域を形成し，ゲートに正電圧をかけることで電子のチャネルができる
+- PMOS は n 型の半導体基板上に p 型のソース領域とドレイン領域を形成し，ゲートに負電圧をかけることでホールのチャネルができる
+:::tip[MOSFET]
+MOSFET は，ソース (S)，ドレイン (D)，ゲート (G)，バルク(基板，B) の 4 端子素子であり，それぞれの電圧を $V_S, V_D, V_G, V_B$ とする。
+($V_{BS}, V_{GS}, V_{DS}$ とソースを基準にした電圧がよく使われる)。  
+また，閾値電圧として $V_{TH}$ が素子ごとに決まる。ドレインからソースに流れる電流を $I_D$ とする。
+
+この時，量子力学や統計力学を用いた半導体の解析によって，以下の性質が成り立つことが知られている。
+
+1. $V_{GS} < V_{TH}$ の時，**遮断領域** と呼ばれ $I_D = 0$ (実際には，微小な電流であるサブスレッショルド電流が流れる)
+2. $0 < V_{GS} - V_{TH} < V_{DS}$ の時，**飽和領域** と呼ばれ $I_D = \frac{1}{2} \mu C_{ox} \frac{W}{L} (V_{GS} - V_{TH})^2(1 + \lambda V_{DS})$
+3. $V_{DS} < V_{GS} - V_{TH}$ の時，**線形領域** と呼ばれ $I_D = \mu C_{ox} \frac{W}{L} ((V_{GS} - V_{TH})V_{DS} - \frac{1}{2}V_{DS}^2)$
+
+<div style={{ display: 'flex', justifyContent: 'left', gap: '20px', flexWrap: 'wrap', marginBottom: '10px' }}>
+  <img src="/img/physics/mosfet1.png" alt="電流とゲート電圧の関係" style={{ width: '35%', aspectRatio: 'auto', objectFit: 'contain' }} />
+  <img src="/img/physics/mosfet2.png" alt="電流とドレイン電圧の関係" style={{ width: '50%', aspectRatio: 'auto', objectFit: 'contain' }} />
+</div>
+
+画像は [こちら](https://detail-infomation.com/mosfet-transfer-characteristics/) と [こちら](https://detail-infomation.com/mosfet-output-characteristics/) から引用。
+
+また，基板バイアス効果として，以下の式が知られている。これは，$V_{BS}$ が下がると $V_{TH}$ が上がることを表す。
+- $V_{TH} = V_{TH0} + \gamma ( \sqrt{|V_{SB} + 2\Phi_F|} - \sqrt{2\Phi_F})$
+:::
+- $\lambda$ : チャネル長変調係数で，$0.1~\text{V}^{-1}$ 程度。チャネル長変調と呼ばれる現象によって，$V_{DS}$ が大きくなるとチャネル長が短くなり電流が増加する。
+- $C_{ox}$ : ゲート酸化膜の電気容量で $4~\text{f}F/\mu m^2$ 程度
+- $\frac{W}{L}$ : MOSFET の幅と長さの比で，設計で調整可能
+- $\mu$ : デバイスによって決まる電子の移動度で，$350~\text{cm}^2/\text{V}\cdot\text{s}$ 程度 ( PMOS ならホールの移動度で $100~\text{cm}^2/\text{V}\cdot\text{s}$ 程度)
+
+また，ここから以下のようなことが言える。
+:::note[MOSFET の性質]
+- $V_{GS} < V_{TH}$ の時は電流が流れない。つまり MOSFET はスイッチとして働く
+- 飽和領域 (すなわち $V_{DS}$ が十分大きい) では電流源として働く。が，チャネル長変調によって $V_{DS}$ が大きくなると少しだけ電流が増加する
+$\to$ アナログ回路ではこの領域の性質を利用して考える
+:::
+
+---
+## 小信号等価回路
+:::warning[目標]
+MOSFET を含む回路を厳密に解析することは難しい。そこで，以下の近似を用いて回路の解析を行う。これを小信号等価回路と呼ぶ。
+- MOSFET は飽和領域で動作している (つまり，$0 < V_{GS} - V_{TH} < V_{DS}$)
+- 各素子に流れる電流やかかる電圧は，直流成分 (一定，**バイアス** とも) + 微小な交流成分 (= **小信号** ) で表される
+- 小信号成分のみを考えて，素子の性質を線形近似した上で回路を解析する (小信号成分は小文字で表す)
+:::
+ここで，線形素子にかかる直流成分は何であっても小信号等価回路には影響しない。
+一方で，非線形素子は直流成分によって回路の動作が変化する。そこで，直流成分によって決まる素子の基準となる点を **動作点** と呼ぶ。
+
+この時，MOSFET では，以下が成り立つ。
+:::tip[MOSFET の小信号等価回路]
+$$
+\displaystyle i_D = \frac{\partial I_D}{\partial V_{GS}} v_{gs} + \frac{\partial I_D}{\partial V_{DS}} v_{ds} + \frac{\partial I_D}{\partial V_{BS}} v_{bs}
+= g_m v_{gs} + \frac{v_{ds}}{r_o} + g_{mb} v_{bs}
+$$
+
+- **トランスコンダクタンス** : $\displaystyle g_m = \frac{\partial I_D}{\partial V_{GS}} = \mu C_{ox} \frac{W}{L} (V_{GS} - V_{TH}) 
+= \sqrt{2\mu C_{ox} \frac{W}{L} I_D} = \frac{2 I_D}{V_{GS} - V_{TH}}$ 
+- **抵抗** : $\displaystyle r_o = \frac{\partial V_{DS}}{\partial I_D} = \frac{1}{\lambda I_D}$ (チャネル長変調による)
+- **バルクコンダクタンス** : $\displaystyle g_{mb} = \frac{\partial I_D}{\partial V_{BS}} = g_m\frac{\gamma}{2\sqrt{|2\Phi_F - V_{BS}|}}$ (基板バイアス効果による)
+
+つまり，MOSFET の小信号等価回路は以下のようになる。($g_{mb}$ は無視されることも多い)
+<img src="/img/physics/mosfet3.png" alt="MOSFET の小信号等価回路" style={{ width: '30%', aspectRatio: 'auto', objectFit: 'contain' }} />
+
+画像は [こちら](https://www.nuhogachi.com/analog-circuit-basic/small-signal-model/) から引用。
+:::
+
+---
+## 典型的な MOSFET を用いた回路
+
+coming soon...

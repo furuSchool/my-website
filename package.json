@@ -25,7 +25,8 @@
     "react-dom": "^18.0.0",
     "react-player": "^2.16.0",
     "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "vercel": "^44.6.3"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.0",
