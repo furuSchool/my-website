@@ -1,0 +1,68 @@
+---
+title: 8. ウェーブレット変換
+---
+
+:::warning[目標]
+非定常な信号を扱う方法を学ぶ！
+:::
+
+## 短時間フーリエ変換 (STFT)
+フーリエ変換は，信号を定常的な波に分解する手法であり，非定常な信号の分析には適さない場合がある。
+また，DFT や FFT は，サンプル数 $N$ の信号が繰り返されているとして信号を分析していた。
+
+そこで短時間フーリエ変換 (STFT) では，**信号を短い時間窓で切り取りフーリエ変換することを繰り返すことで，信号の時間的な変化を捉えることができる。**
+
+:::tip[短時間フーリエ変換 (STFT)]
+窓関数 $w(t)$ を用いて，信号 $x(t)$ の短時間フーリエ変換は以下のように定義される。
+$$
+X(b, \omega) = \int_{-\infty}^{\infty} w(t - b) x(t) e^{-j \omega t} dt
+$$
+
+$b$ をずらすことで，窓関数を時間軸上で移動させる。
+:::
+
+### 窓関数
+- 方形窓 : $w(t) = \begin{cases} 1 & (|t| \leq \frac{T}{2}) \\ 0 & (|t| > \frac{T}{2}) \end{cases}$
+- 三角窓 : $w(t) = \begin{cases} 1 - \frac{2|t|}{T} & (|t| \leq \frac{T}{2}) \\ 0 & (|t| > \frac{T}{2}) \end{cases}$
+- ハニング窓 : $w(t) = \begin{cases} 0.5 + 0.5 \cos\left(\frac{2\pi t}{T}\right) & (|t| \leq \frac{T}{2}) \\ 0 & (|t| > \frac{T}{2}) \end{cases}$
+- ハミング窓 : $w(t) = \begin{cases} 0.54 + 0.46 \cos\left(\frac{2\pi t}{T}\right) & (|t| \leq \frac{T}{2}) \\ 0 & (|t| > \frac{T}{2}) \end{cases}$ 
+- ブラックマン窓 : $w(t) = \begin{cases} 0.42 + 0.5 \cos\left(\frac{2\pi t}{T}\right) + 0.08 \cos\left(\frac{4\pi t}{T}\right) & (|t| \leq \frac{T}{2}) \\ 0 & (|t| > \frac{T}{2}) \end{cases}$
+- ガウス窓 : $w(t) = \frac{1}{2\sqrt{\pi \alpha}} e^{-\frac{t^2}{4\alpha}}$。$\alpha$ が大きいほど広い窓となる
+    - 特に，ガウス窓を用いる短時間フーリエ変換は **ガボール変換** と呼ばれる
+
+<img src="https://www.kennzo.net/wp-content/uploads/2022/02/windowGraph.png" alt="窓関数のグラフ" style={{ width: '60%' }} />
+画像は [窓関数](https://www.kennzo.net/window-function) より引用。
+
+窓関数をかけた上でフーリエ変換を行うと，周波数領域では元の信号の周波数成分がぼやける (メインローブの幅) と同時に，元信号にはない高周波数成分 (サイドローブ) が現れる。
+これは，窓関数のフーリエ変換を $W(\omega)$ とすると，$X(\omega) = W(\omega)\ast X(\omega)$ となるためである。
+つまり，sinc 関数のような形で元の信号の周波数成分が広がってしまう。
+- メインロープ : 元の信号の周波数成分が集中している部分であり，細く高くしたい
+- サイドローブ : 元の信号の周波数成分が漏れ出ている部分であり，低くしたい
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Main_lobe.png" style={{ width: '40%' }} />
+画像は [窓関数](https://ja.m.wikipedia.org/wiki/%E7%AA%93%E9%96%A2%E6%95%B0) より引用。
+
+:::note[窓関数の幅]
+**窓が大きくなるほど，周波数分解能は高くなるが時間分解能は低くなる。**  
+**窓が小さくなるほど，時間分解能は高くなるが周波数分解能は低くなる。**
+:::
+信号ごとに適切な窓関数の幅を選びたい $\to$ ウェーブレット変換
+
+---
+## ウェーブレット変換
+:::tip[ウェーブレット変換]
+基本波を $\psi_{a,b}(t) = \frac{1}{\sqrt{a}} \psi\left(\frac{t - b}{a}\right)$ を用いて，信号 $x(t)$ のウェーブレット変換は以下のように定義される。
+$$
+(W\psi x)(a,b) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t) \overline{\psi\left(\frac{t - b}{a}\right)} dt
+$$
+$$
+x(t) = \frac{1}{c_{\psi}} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} (W\psi x)(a,b) \psi_{a,b}(t) \frac{da db}{a^2}
+$$
+
+$a$ はスケールを表す。$a$ を小さくするほど，高周波数領域も捉えることができる。$b$ を動かして，時間軸上での分析する位置を決める。
+結果として，時間軸 $b$ と周波数軸 $a$ の平面上で信号の変化を捉えることができる。
+
+<img src="https://jp.mathworks.com/discovery/wavelet-transforms/_jcr_content/mainParsys/image.adapt.full.medium.jpg/1747401988675.jpg" alt="ウェーブレット変換のグラフ" style={{ width: '100%' }} />
+画像は [ウェーブレット変換](https://jp.mathworks.com/discovery/wavelet-transforms.html) より引用。
+:::
+- $c_{\psi} = \int_{-\infty}^{\infty} \frac{|\hat{\psi}(\omega)|^2}{|\omega|} d\omega, ~\hat{\psi}(\omega) = \int_{-\infty}^{\infty} \psi(t) e^{-j \omega t} dt$
